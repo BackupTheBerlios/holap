@@ -28,6 +28,9 @@
 #include <ladspa.h>
 
 
+#define DELAY_LENGTH 64000
+
+
 typedef struct
  {
   unsigned int SAMPLE_RATE;
@@ -35,7 +38,7 @@ typedef struct
   LADSPA_Data *efxoutl;
   LADSPA_Data *efxoutr;
   LADSPA_Data *inputl;
-  LADSPA_Dara *inputr;
+  LADSPA_Data *inputr;
   LADSPA_Data *outvolume;
   LADSPA_Data *dry;
   LADSPA_Data *Ppanning1;		//Panning
@@ -55,25 +58,27 @@ typedef struct
   //Parametrii reali
   float panning1, panning2, lrcross, fb1, fb2, hidamp;
   int dl1, dr1, dl2, dr2, delay1, delay2, lrdelay;
-  void initdelays ();
-  float *ldelay1, *rdelay1, *ldelay2, *rdelay2;
   float oldl1, oldr1, oldl2, oldr2;	//pt. lpf
   int kl1, kr1, kl2, kr2;
- } MDelay_t;
 
+  float ldelay1[DELAY_LENGTH];
+  float rdelay1[DELAY_LENGTH];
+  float ldelay2[DELAY_LENGTH];
+  float rdelay2[DELAY_LENGTH];
+  float indatal[4096];
+  float indatar[4096];
+
+  float Rtempo, RPdelay1,RPdelay2,RPlrdelay;
+   
+
+ } MDelay_t;
 
   void MusicDelay_Init(MDelay_t * s);
   void out (MDelay_t * s, float * smpsl, float * smpr, unsigned long count);
-  void MusicalDelay_Cleanup(MDelay_t * s);
-  void setvolume (int Pvolume);
-  void setpanning (int num, int Ppanning);
-  void setdelay (int num, int Pdelay);
-  void setgain (int num, int Pgain);
-  void setlrdelay (int Plrdelay);
-  void setlrcross (int Plrcross);
-  void setfb (int num, int Pfb);
-  void sethidamp (int Phidamp);
-  void settempo (int Ptempo);
+  void MusicDelay_Cleanup(MDelay_t * s);
+  void MusicDelay_initdelays (MDelay_t * s);
+  void MusicDelay_setdelay (MDelay_t * s);
+  void MusicDelay_settempo (MDelay_t * s, int Ptempo);
 
 
 #endif

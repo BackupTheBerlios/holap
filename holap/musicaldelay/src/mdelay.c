@@ -31,54 +31,31 @@ void
 MusicDelay_Init(MDelay_t * s)
 {
 
-  //default values
-  Ppreset = 0;
-  Pvolume = 50;
-  Ppanning1 = 64;
-  Ppanning2 = 64;
-  Pgain1 = 64;
-  Pgain2 = 64;
-  Pdelay1 = 60;
-  Pdelay2 = 60;
-  Plrdelay = 100;
-  Plrcross = 100;
-  Pfb1 = 40;
-  Pfb2 = 40;
-  Ptempo = 100;
-  Phidamp = 60;
+MusicDelay_Cleanup(s);
 
-  ldelay1 = NULL;
-  rdelay1 = NULL;
-  ldelay2 = NULL;
-  rdelay2 = NULL;
-
-
-  lrdelay = 0;
-
-  MusicalDelay_Cleanup (s);
-};
+}
 
 /*
  * Cleanup the effect
  */
 void
-MusicDelay_Cleanup (MDelay_t * s)
+MusicDelay_Cleanup(MDelay_t * s)
 {
   int i;
-  for (i = 0; i < dl1; i++)
-    ldelay1[i] = 0.0;
-  for (i = 0; i < dr1; i++)
-    rdelay1[i] = 0.0;
-  for (i = 0; i < dl2; i++)
-    ldelay2[i] = 0.0;
-  for (i = 0; i < dr2; i++)
-    rdelay2[i] = 0.0;
+  for (i = 0; i < DELAY_LENGTH; i++)
+    s->ldelay1[i] = 0.0;
+  for (i = 0; i < DELAY_LENGTH; i++)
+    s->rdelay1[i] = 0.0;
+  for (i = 0; i < DELAY_LENGTH; i++)
+    s->ldelay2[i] = 0.0;
+  for (i = 0; i < DELAY_LENGTH; i++)
+    s->rdelay2[i] = 0.0;
 
-  oldl1 = 0.0;
-  oldr1 = 0.0;
-  oldl2 = 0.0;
-  oldr2 = 0.0;
-};
+  s->oldl1 = 0.0;
+  s->oldr1 = 0.0;
+  s->oldl2 = 0.0;
+  s->oldr2 = 0.0;
+}
 
 
 /*
@@ -87,41 +64,26 @@ MusicDelay_Cleanup (MDelay_t * s)
 void
 MusicDelay_initdelays (MDelay_t * s)
 {
-  kl1 = 0;
-  kr1 = 0;
-  dl1 = delay1;
-  if (dl1 < 1)
-    dl1 = 1;
-  dr1 = delay1;
-  if (dr1 < 1)
-    dr1 = 1;
-  kl2 = 0;
-  kr2 = 0;
-  dl2 = delay2 + lrdelay;
-  if (dl2 < 1)
-    dl2 = 1;
-  dr2 = delay2 + lrdelay;
-  if (dr2 < 1)
-    dr2 = 1;
 
+  s->kl1 = 0;
+  s->kr1 = 0;
+  s->dl1 = s->delay1;
+  if (s->dl1 < 1)
+    s->dl1 = 1;
+  s->dr1 = s->delay1;
+  if (s->dr1 < 1)
+    s->dr1 = 1;
+  s->kl2 = 0;
+  s->kr2 = 0;
+  s->dl2 = s->delay2 + s->lrdelay;
+  if (s->dl2 < 1)
+    s->dl2 = 1;
+  s->dr2 = s->delay2 + s->lrdelay;
+  if (s->dr2 < 1)
+    s->dr2 = 1;
 
-  if (ldelay1 != NULL)
-    delete[]ldelay1;
-  if (rdelay1 != NULL)
-    delete[]rdelay1;
-  ldelay1 = new float[dl1];
-  rdelay1 = new float[dr1];
-  if (ldelay2 != NULL)
-    delete[]ldelay2;
-  if (rdelay2 != NULL)
-    delete[]rdelay2;
-  ldelay2 = new float[dl2];
-  rdelay2 = new float[dr2];
-
-
-
-  MusicalDelay_Cleanup (s);
-};
+  MusicDelay_Cleanup (s);
+}
 
 /*
  * Effect output
@@ -132,19 +94,58 @@ out (MDelay_t * s, float * smpsl, float * smpsr, unsigned long count)
   int i;
   float l1, r1, ldl1, rdl1, l2, r2, ldl2, rdl2;
 
+  LADSPA_Data gain1 = *(s->gain1);
+  LADSPA_Data gain2 = *(s->gain2);
+  LADSPA_Data panning1 = *(s->Ppanning1);
+  LADSPA_Data panning2 = *(s->Ppanning2);
+  LADSPA_Data fb1 = *(s->Pfb1);
+  LADSPA_Data fb2 = *(s->Pfb2);
+  LADSPA_Data *const efxoutl = s->efxoutl;
+  LADSPA_Data *const efxoutr = s->efxoutr;  
+  LADSPA_Data hidamp = *(s->Phidamp);
+  LADSPA_Data vol = *(s->outvolume);
+  LADSPA_Data tempo = *(s->Ptempo);
+  LADSPA_Data Pdelay1 = *(s->Pdelay1);
+  LADSPA_Data Pdelay2 = *(s->Pdelay2);
+  LADSPA_Data Plrdelay = *(s->Plrdelay);
+    
+
+  if (s->Rtempo != tempo)
+     {
+       s->Rtempo = tempo;
+       MusicDelay_settempo(s,s->Rtempo);
+     }  
+
+  if (s->RPdelay1 != Pdelay1)
+     {
+       s->RPdelay1 = Pdelay1;
+       MusicDelay_setdelay(s);
+     }  
+ if (s->RPdelay2 != Pdelay2)
+     {
+       s->RPdelay2 = Pdelay2;
+       MusicDelay_setdelay(s);
+     }  
+ if (s->RPlrdelay != Plrdelay)
+     {
+       s->RPlrdelay = Plrdelay;
+       MusicDelay_setdelay(s);
+     }  
+
+
   for (i = 0; i < count; i++)
     {
-      ldl1 = ldelay1[kl1];
-      rdl1 = rdelay1[kr1];
-      l1 = ldl1 * (1.0 - lrcross) + rdl1 * lrcross;
-      r1 = rdl1 * (1.0 - lrcross) + ldl1 * lrcross;
+      ldl1 = s->ldelay1[s->kl1];
+      rdl1 = s->rdelay1[s->kr1];
+      l1 = ldl1 * (1.0 - s->lrcross) + rdl1 * s->lrcross;
+      r1 = rdl1 * (1.0 - s->lrcross) + ldl1 * s->lrcross;
       ldl1 = l1;
       rdl1 = r1;
 
-      ldl2 = ldelay2[kl2];
-      rdl2 = rdelay2[kr2];
-      l2 = ldl2 * (1.0 - lrcross) + rdl2 * lrcross;
-      r2 = rdl2 * (1.0 - lrcross) + ldl2 * lrcross;
+      ldl2 = s->ldelay2[s->kl2];
+      rdl2 = s->rdelay2[s->kr2];
+      l2 = ldl2 * (1.0 - s->lrcross) + rdl2 * s->lrcross;
+      r2 = rdl2 * (1.0 - s->lrcross) + ldl2 * s->lrcross;
       ldl2 = l2;
       rdl2 = r2;
 
@@ -154,151 +155,92 @@ out (MDelay_t * s, float * smpsl, float * smpsr, unsigned long count)
       ldl2 = smpsl[i] * gain2 * panning2 - ldl2 * fb2;
       rdl2 = smpsr[i] * gain2 * (1.0 - panning2) - rdl2 * fb2;
 
-      efxoutl[i] = (ldl1 + ldl2) * 2.0;
-      efxoutr[i] = (rdl1 + rdl2) * 2.0;
+      efxoutl[i] = (ldl1 + ldl2) * 2.0 * vol;
+      efxoutr[i] = (rdl1 + rdl2) * 2.0 * vol;
 
 
 
       //LowPass Filter
-      ldelay1[kl1] = ldl1 = ldl1 * hidamp + oldl1 * (1.0 - hidamp);
-      rdelay1[kr1] = rdl1 = rdl1 * hidamp + oldr1 * (1.0 - hidamp);
-      oldl1 = ldl1;
-      oldr1 = rdl1;
+      s->ldelay1[s->kl1] = ldl1 = ldl1 * hidamp + s->oldl1 * hidamp;
+      s->rdelay1[s->kr1] = rdl1 = rdl1 * hidamp + s->oldr1 * hidamp;
+      s->oldl1 = ldl1;
+      s->oldr1 = rdl1;
 
-      ldelay2[kl2] = ldl2 = ldl2 * hidamp + oldl2 * (1.0 - hidamp);
-      rdelay2[kr2] = rdl2 = rdl2 * hidamp + oldr2 * (1.0 - hidamp);
-      oldl2 = ldl2;
-      oldr2 = rdl2;
+      s->ldelay2[s->kl2] = ldl2 = ldl2 * hidamp + s->oldl2 * hidamp;
+      s->rdelay2[s->kr2] = rdl2 = rdl2 * hidamp + s->oldr2 * hidamp;
+      s->oldl2 = ldl2;
+      s->oldr2 = rdl2;
 
-      if (++kl1 >= dl1)
-	kl1 = 0;
-      if (++kr1 >= dr1)
-	kr1 = 0;
+      if (++s->kl1 >= s->dl1)
+	s->kl1 = 0;
+      if (++s->kr1 >= s->dr1)
+	s->kr1 = 0;
 
-      if (++kl2 >= dl2)
-	kl2 = 0;
-      if (++kr2 >= dr2)
-	kr2 = 0;
+      if (++s->kl2 >= s->dl2)
+	s->kl2 = 0;
+      if (++s->kr2 >= s->dr2)
+	s->kr2 = 0;
 
-    };
-
-};
-
-
-/*
- * Parameter control
-
-void
-MusicDelay::setvolume (int Pvolume)
-{
-  this->Pvolume = Pvolume;
-
-  volume = outvolume = (float) Pvolume / 127.0;
-  if (Pvolume == 0)
-    cleanup ();
-
-};
-
-void
-MusicDelay::setpanning (int num, int Ppanning)
-{
-
-  switch (num)
-    {
-    case 1:
-      this->Ppanning1 = Ppanning;
-      panning1 = ((float) Ppanning1 + 0.5) / 127.0;
-      break;
-    case 2:
-      this->Ppanning2 = Ppanning;
-      panning2 = ((float) Ppanning2 + 0.5) / 127.0;
-      break;
     }
 
-};
+}
+
+
 
 void
-MusicDelay::setdelay (int num, int Pdelay)
+MusicDelay_setdelay (MDelay_t * s)
 {
+
+  LADSPA_Data Ptempo = *(s->Ptempo);  
+  LADSPA_Data Plrdelay = *(s->Plrdelay);
+  LADSPA_Data Pdelay1 = *(s->Pdelay1);
+  LADSPA_Data Pdelay2 = *(s->Pdelay2);
 
   float ntem = 60.0 / (float) Ptempo;
   float coef;
-  switch (num)
-    {
-    case 1:
-      this->Pdelay1 = Pdelay;
-      break;
-    case 2:
-      this->Pdelay2 = Pdelay;
-      break;
-    case 3:
-      this->Plrdelay = Pdelay;
-    }
 
-  delay1 = (int) ((ntem / Pdelay1) * SAMPLE_RATE);
+
+  s->delay1 = (int) ((ntem / Pdelay1) * s->SAMPLE_RATE);
 
   if (Plrdelay != 0)
     coef = ntem / Plrdelay;
   else
     coef = 0;
-  delay2 = (int) ((coef + (ntem / Pdelay2)) * SAMPLE_RATE);
+  s->delay2 = (int) ((coef + (ntem / Pdelay2)) * s->SAMPLE_RATE);
 
 
-  initdelays ();
+  MusicDelay_initdelays (s);
 
-};
+}
 
-void
-MusicDelay::setlrcross (int Plrcross)
-{
-  this->Plrcross = Plrcross;
-  lrcross = (float) Plrcross / 127.0 * 1.0;
-};
+
 
 void
-MusicDelay::setfb (int num, int Pfb)
+MusicDelay_settempo (MDelay_t *s, int tempo)
 {
-  switch (num)
-    {
-    case 1:
-      this->Pfb1 = Pfb;
-      fb1 = (float) Pfb1 / 128.0;
-      break;
-    case 2:
-      this->Pfb2 = Pfb;
-      fb2 = (float) Pfb2 / 128.0;
-      break;
-    }
-};
 
-void
-MusicDelay::sethidamp (int Phidamp)
-{
-  this->Phidamp = Phidamp;
-  hidamp = 1.0 - (float) Phidamp / 127.0;
-};
-
-void
-MusicDelay::settempo (int Ptempo)
-{
+  LADSPA_Data Plrdelay = *(s->Plrdelay);
+  LADSPA_Data Pdelay1 = *(s->Pdelay1);
+  LADSPA_Data Pdelay2 = *(s->Pdelay2);
 
   float coef = 0.0;
 
-  this->Ptempo = Ptempo;
-  float ntem = 60.0 / (float) Ptempo;
+  float ntem = 60.0 / (float) tempo;
 
 
-  delay1 = (int) ((ntem / Pdelay1) * SAMPLE_RATE);
+  s->delay1 = (int) ((ntem / Pdelay1) * s->SAMPLE_RATE);
   if (Plrdelay != 0)
     coef = ntem / Plrdelay;
   else
     coef = 0;
-  delay2 = (int) ((coef + (ntem / Pdelay2)) * SAMPLE_RATE);
+  s->delay2 = (int) ((coef + (ntem / Pdelay2)) * s->SAMPLE_RATE);
 
-  initdelays ();
+  MusicDelay_initdelays (s);
 
 
 
-};
+}
 
-*/
+
+
+

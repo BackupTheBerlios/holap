@@ -44,6 +44,7 @@
 #define MusicalDelay_FB1 14
 #define MusicalDelay_FB2 15
 #define MusicalDelay_DAMP 16
+#define MusicalDelay_LRCROSS 17
 
 static LADSPA_Descriptor *MusicalDelayLDescriptor = NULL;
 
@@ -117,10 +118,10 @@ connectPortMusicalDelay (LADSPA_Handle instance, unsigned long port,
       plugin->Plrdelay = data;
       break;
     case MusicalDelay_GAIN1:
-      plugin->Pgain1 = data;
+      plugin->gain1 = data;
       break;
     case MusicalDelay_GAIN2:
-      plugin->Pgain2 = data;
+      plugin->gain2 = data;
       break;
     case MusicalDelay_FB1:
       plugin->Pfb1 = data;
@@ -130,7 +131,10 @@ connectPortMusicalDelay (LADSPA_Handle instance, unsigned long port,
       break;
     case MusicalDelay_DAMP:
       plugin->Phidamp = data;
-      break;    
+      break;
+    case MusicalDelay_LRCROSS:
+      plugin->Plrcross = data;
+      break;      
     }
 }
 
@@ -148,7 +152,7 @@ instantiateMusicalDelay (const LADSPA_Descriptor * descriptor,
   if (mdelay)
   {
   mdelay->SAMPLE_RATE = s_rate;
-  MusicalDelay_Init (mdelay);
+  MusicDelay_Init(mdelay);
   
   }
 
@@ -169,7 +173,6 @@ void
 MusicalDelay_deactivate (LADSPA_Handle instance)
 {
   MDelay_t *mdelay = (MDelay_t *) instance;
-  Chorus_cleanup (mdelay);
 }
 
 
@@ -201,7 +204,7 @@ runMusicalDelay (LADSPA_Handle instance, unsigned long sample_count)
            mdelay->indatar[i]=pinputr[i];
          }  
 
-   out(mdelay, pinputl,pinputr,sample_count);
+         out(mdelay, pinputl,pinputr,sample_count);
 
           for (i=0; i<sample_count; i++)
            
@@ -234,7 +237,7 @@ _init ()
       MusicalDelayLDescriptor->Name = "MusicalDelay";
       MusicalDelayLDescriptor->Maker = "Josep Andreu <holborn@telefonica.net>";
       MusicalDelayLDescriptor->Copyright = "GNU General Public License version 2";
-      MusicalDelayLDescriptor->PortCount = 17;
+      MusicalDelayLDescriptor->PortCount = 18;
       port_descriptors =
 	(LADSPA_PortDescriptor *)
 	calloc (MusicalDelayLDescriptor->PortCount,
@@ -281,7 +284,7 @@ _init ()
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE |
 	LADSPA_HINT_DEFAULT_MIDDLE; 
       port_range_hints[MusicalDelay_DRY].LowerBound = 0.0;
-      port_range_hints[MusicalDelay_DRY].UpperBound = 2.0;
+      port_range_hints[MusicalDelay_DRY].UpperBound = 1.0;
 
       /* Parameters for Wet */
       port_descriptors[MusicalDelay_WET] =
@@ -291,7 +294,7 @@ _init ()
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[MusicalDelay_WET].LowerBound = 0.0;
-      port_range_hints[MusicalDelay_WET].UpperBound = 2.0;
+      port_range_hints[MusicalDelay_WET].UpperBound = 1.0;
 
       /* Parameters for Tempo */
       port_descriptors[MusicalDelay_TEMPO] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -309,7 +312,7 @@ _init ()
       port_range_hints[MusicalDelay_PAN1].HintDescriptor =
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE |
 	LADSPA_HINT_DEFAULT_MIDDLE;
-      port_range_hints[MusicalDelay_PAN1].LowerBound = -1.0;
+      port_range_hints[MusicalDelay_PAN1].LowerBound = 0.0;
       port_range_hints[MusicalDelay_PAN1].UpperBound = 1.0;
 
       /* Parameters for Pan 2 */
@@ -319,7 +322,7 @@ _init ()
       port_range_hints[MusicalDelay_PAN2].HintDescriptor =
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE |
 	LADSPA_HINT_DEFAULT_MIDDLE;
-      port_range_hints[MusicalDelay_PAN2].LowerBound = -1.0;
+      port_range_hints[MusicalDelay_PAN2].LowerBound = 0.0;
       port_range_hints[MusicalDelay_PAN2].UpperBound = 1.0;
 
       /* Parameters for Delay 1 */
@@ -327,7 +330,7 @@ _init ()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[MusicalDelay_DELAY1] = "Subdivision 1";
       port_range_hints[MusicalDelay_DELAY1].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HIN_INTEGER |
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[MusicalDelay_DELAY1].LowerBound = 0;
       port_range_hints[MusicalDelay_DELAY1].UpperBound = 7;
@@ -337,7 +340,7 @@ _init ()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[MusicalDelay_DELAY2] = "Subdivision 2";
       port_range_hints[MusicalDelay_DELAY2].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HIN_INTEGER |
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[MusicalDelay_DELAY2].LowerBound = 0;
       port_range_hints[MusicalDelay_DELAY2].UpperBound = 7;
@@ -347,7 +350,7 @@ _init ()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[MusicalDelay_DELAY3] = "Sub Between 1 2";
       port_range_hints[MusicalDelay_DELAY3].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HIN_INTEGER |
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[MusicalDelay_DELAY3].LowerBound = 0;
       port_range_hints[MusicalDelay_DELAY3].UpperBound = 7;
@@ -398,9 +401,20 @@ _init ()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[MusicalDelay_DAMP] = "Damp";
       port_range_hints[MusicalDelay_DAMP].HintDescriptor =
-	LADSPA_HINT_DEFAULT_0 | LADSPA_HINT_TOGGLED;
-      port_range_hints[MusicalDelay_DAMP].LowerBound = 0;
-      port_range_hints[MusicalDelay_DAMP].UpperBound = 1;
+      LADSPA_HINT_DEFAULT_MIDDLE |
+      LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[MusicalDelay_DAMP].LowerBound = 0.0;
+      port_range_hints[MusicalDelay_DAMP].UpperBound = 1.0;
+
+      /* Parameters for LR cross */
+      port_descriptors[MusicalDelay_LRCROSS] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[MusicalDelay_LRCROSS] = "LR Cross";
+      port_range_hints[MusicalDelay_LRCROSS].HintDescriptor =
+      LADSPA_HINT_DEFAULT_MIDDLE |
+      LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[MusicalDelay_LRCROSS].LowerBound = 0.0;
+      port_range_hints[MusicalDelay_LRCROSS].UpperBound = 1.0;
 
       
       MusicalDelayLDescriptor->instantiate = instantiateMusicalDelay;
