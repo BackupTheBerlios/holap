@@ -145,22 +145,22 @@ out (ZEq10ban_t * s, float * smpsl, float * smpsr, unsigned long count)
   if (s->Rgain1 != gain1)
     {
       s->Rgain1 = gain1;
-      setgain (s,&s->b1_l,s->Rgain1*15.0);
-      setgain (s,&s->b1_r,s->Rgain1*15.0);
+      setgain (s,&s->b1_l,s->Rgain1*30.0);
+      setgain (s,&s->b1_r,s->Rgain1*30.0);
     }
    
   if (s->Rgain2 != gain2)
     {
       s->Rgain2 = gain2;
-      setgain (s,&s->b2_l,s->Rgain2*15.0);
-      setgain (s,&s->b2_r,s->Rgain2*15.0);
+      setgain (s,&s->b2_l,s->Rgain2*30.0);
+      setgain (s,&s->b2_r,s->Rgain2*30.0);
     }
    
   if (s->Rgain3 != gain3)
     {
       s->Rgain3 = gain3;
-      setgain (s,&s->b3_l,s->Rgain3*15.0);
-      setgain (s,&s->b3_r,s->Rgain3*15.0);
+      setgain (s,&s->b3_l,s->Rgain3*30.0);
+      setgain (s,&s->b3_r,s->Rgain3*39.0);
     }
    
   if (s->Rgain4 != gain4)

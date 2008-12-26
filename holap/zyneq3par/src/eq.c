@@ -110,24 +110,24 @@ out (ZEq3par_t * s, float * smpsl, float * smpsr, unsigned long count)
   if (s->Rlowgain != lowgain)
     {
       s->Rlowgain = lowgain;
-      setgain (s,&s->Low_l,s->Rlowgain*15.0);
-      setgain (s,&s->Low_r,s->Rlowgain*15.0);
+      setgain (s,&s->Low_l,s->Rlowgain*30.0);
+      setgain (s,&s->Low_r,s->Rlowgain*30.0);
     }
     
     
   if (s->Rmidgain != midgain)
     {
       s->Rmidgain = midgain;
-      setgain (s,&s->Mid_l,s->Rmidgain*15.0);
-      setgain (s,&s->Mid_r,s->Rmidgain*15.0);
+      setgain (s,&s->Mid_l,s->Rmidgain*30.0);
+      setgain (s,&s->Mid_r,s->Rmidgain*30.0);
     }
     
     
   if (s->Rhighgain != highgain)
     {
       s->Rhighgain = highgain;
-      setgain (s,&s->High_l,s->Rhighgain*15.0);
-      setgain (s,&s->High_r,s->Rhighgain*15.0);
+      setgain (s,&s->High_l,s->Rhighgain*30.0);
+      setgain (s,&s->High_r,s->Rhighgain*30.0);
     }
     
     
