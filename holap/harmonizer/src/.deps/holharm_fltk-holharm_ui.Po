@@ -1,0 +1,215 @@
+holharm_fltk-holharm_ui.o: holharm_ui.cxx /usr/include/libintl.h \
+  /usr/include/features.h /usr/include/sys/cdefs.h \
+  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+  /usr/include/gnu/stubs-32.h holharm_ui.h /usr/include/FL/Fl.H \
+  /usr/include/FL/Enumerations.H /usr/include/FL/Fl_Export.H \
+  /usr/include/stdio.h /usr/lib/gcc/i486-linux-gnu/4.3.3/include/stddef.h \
+  /usr/include/bits/types.h /usr/include/bits/typesizes.h \
+  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+  /usr/lib/gcc/i486-linux-gnu/4.3.3/include/stdarg.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+  /usr/include/bits/stdio.h /usr/include/stdlib.h \
+  /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
+  /usr/include/endian.h /usr/include/bits/endian.h /usr/include/xlocale.h \
+  /usr/include/sys/types.h /usr/include/time.h /usr/include/sys/select.h \
+  /usr/include/bits/select.h /usr/include/bits/sigset.h \
+  /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
+  /usr/include/bits/pthreadtypes.h /usr/include/alloca.h \
+  /usr/include/string.h ../config.h /usr/include/FL/Fl_Shared_Image.H \
+  /usr/include/FL/Fl_Image.H /usr/include/FL/Fl_Valuator.H \
+  /usr/include/FL/Fl_Widget.H /usr/include/FL/Fl_Dial.H \
+  /usr/include/FL/Fl_Box.H /usr/include/FL/fl_draw.H \
+  /usr/include/FL/Fl_File_Chooser.H /usr/include/FL/Fl_Double_Window.H \
+  /usr/include/FL/Fl_Window.H /usr/include/FL/Fl_Group.H \
+  /usr/include/FL/Fl_Group.H /usr/include/FL/Fl_Choice.H \
+  /usr/include/FL/Fl_Menu_.H /usr/include/FL/Fl_Menu_Item.H \
+  /usr/include/FL/Fl_Menu_Button.H /usr/include/FL/Fl_Button.H \
+  /usr/include/FL/Fl_Preferences.H /usr/include/FL/Fl_Tile.H \
+  /usr/include/FL/Fl_File_Browser.H /usr/include/FL/Fl_Browser.H \
+  /usr/include/FL/Fl_Browser_.H /usr/include/FL/Fl_Scrollbar.H \
+  /usr/include/FL/Fl_Slider.H /usr/include/FL/Fl_File_Icon.H \
+  /usr/include/FL/Fl.H /usr/include/FL/filename.H /usr/include/dirent.h \
+  /usr/include/bits/dirent.h /usr/include/bits/posix1_lim.h \
+  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+  /usr/include/FL/Fl_Check_Button.H /usr/include/FL/Fl_Light_Button.H \
+  /usr/include/FL/Fl_Button.H /usr/include/FL/Fl_File_Input.H \
+  /usr/include/FL/Fl_Input.H /usr/include/FL/Fl_Input_.H \
+  /usr/include/FL/Fl_Return_Button.H /usr/include/FL/fl_ask.H \
+  /usr/include/FL/x.H /usr/include/X11/Xlib.h /usr/include/X11/X.h \
+  /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h \
+  /usr/include/X11/Xutil.h /usr/include/X11/keysym.h \
+  /usr/include/X11/keysymdef.h /usr/include/X11/Xatom.h
+
+/usr/include/libintl.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-32.h:
+
+holharm_ui.h:
+
+/usr/include/FL/Fl.H:
+
+/usr/include/FL/Enumerations.H:
+
+/usr/include/FL/Fl_Export.H:
+
+/usr/include/stdio.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.3.3/include/stddef.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.3.3/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/bits/waitflags.h:
+
+/usr/include/bits/waitstatus.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/xlocale.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/time.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/alloca.h:
+
+/usr/include/string.h:
+
+../config.h:
+
+/usr/include/FL/Fl_Shared_Image.H:
+
+/usr/include/FL/Fl_Image.H:
+
+/usr/include/FL/Fl_Valuator.H:
+
+/usr/include/FL/Fl_Widget.H:
+
+/usr/include/FL/Fl_Dial.H:
+
+/usr/include/FL/Fl_Box.H:
+
+/usr/include/FL/fl_draw.H:
+
+/usr/include/FL/Fl_File_Chooser.H:
+
+/usr/include/FL/Fl_Double_Window.H:
+
+/usr/include/FL/Fl_Window.H:
+
+/usr/include/FL/Fl_Group.H:
+
+/usr/include/FL/Fl_Group.H:
+
+/usr/include/FL/Fl_Choice.H:
+
+/usr/include/FL/Fl_Menu_.H:
+
+/usr/include/FL/Fl_Menu_Item.H:
+
+/usr/include/FL/Fl_Menu_Button.H:
+
+/usr/include/FL/Fl_Button.H:
+
+/usr/include/FL/Fl_Preferences.H:
+
+/usr/include/FL/Fl_Tile.H:
+
+/usr/include/FL/Fl_File_Browser.H:
+
+/usr/include/FL/Fl_Browser.H:
+
+/usr/include/FL/Fl_Browser_.H:
+
+/usr/include/FL/Fl_Scrollbar.H:
+
+/usr/include/FL/Fl_Slider.H:
+
+/usr/include/FL/Fl_File_Icon.H:
+
+/usr/include/FL/Fl.H:
+
+/usr/include/FL/filename.H:
+
+/usr/include/dirent.h:
+
+/usr/include/bits/dirent.h:
+
+/usr/include/bits/posix1_lim.h:
+
+/usr/include/bits/local_lim.h:
+
+/usr/include/linux/limits.h:
+
+/usr/include/FL/Fl_Check_Button.H:
+
+/usr/include/FL/Fl_Light_Button.H:
+
+/usr/include/FL/Fl_Button.H:
+
+/usr/include/FL/Fl_File_Input.H:
+
+/usr/include/FL/Fl_Input.H:
+
+/usr/include/FL/Fl_Input_.H:
+
+/usr/include/FL/Fl_Return_Button.H:
+
+/usr/include/FL/fl_ask.H:
+
+/usr/include/FL/x.H:
+
+/usr/include/X11/Xlib.h:
+
+/usr/include/X11/X.h:
+
+/usr/include/X11/Xfuncproto.h:
+
+/usr/include/X11/Xosdefs.h:
+
+/usr/include/X11/Xutil.h:
+
+/usr/include/X11/keysym.h:
+
+/usr/include/X11/keysymdef.h:
+
+/usr/include/X11/Xatom.h:

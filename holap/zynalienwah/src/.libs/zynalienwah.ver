@@ -1,0 +1,3 @@
+{ global:
+ladspa_descriptor;
+local: *; };
