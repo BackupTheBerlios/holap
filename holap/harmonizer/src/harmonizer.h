@@ -39,7 +39,7 @@
 #define MAX_PEAKS 8
 #define D_NOTE          1.059463094359
 #define MAX_FRAME_LENGTH 2048
-#define STEP_SIZE 128
+#define STEP_SIZE 4096
 #define LOG_10 2.302585093
 #define rap2dB(rap) ((20*log(rap)/LOG_10))
 #define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
