@@ -438,7 +438,7 @@ runholharm (LADSPA_Handle instance, unsigned long sample_count,
       count =
 	(sample_count - pos) > STEP_SIZE ? STEP_SIZE : sample_count - pos;
     
-      if (((psel == 1) || (psel == 2)) && (har->val_sum > -30.0))
+      if (((psel == 1) || (psel == 2)) && (har->val_sum > -24.0))
         {    
        	  schmittFloat (har, pinputl, pinputr, count);
 	  if ((har->rc.reconota != -1) && (har->rc.reconota != har->last))
@@ -450,7 +450,7 @@ runholharm (LADSPA_Handle instance, unsigned long sample_count,
 	       har->lastcandidate = har->candidate;
 	       }
 	       else har->lcount++; 
-	      if (har->lcount > 32)
+	      if (har->lcount > 8)
 		{
 		  Vamos (har, 1, interl);
 		  Vamos (har, 2, interr);
