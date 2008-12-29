@@ -1,2 +1,2 @@
-pkgdata_DATA = musicaldelay.rdf
+pkgdata_DATA = musicaldelay.rdf musicaldelay_scales.rdf
 pkgdatadir = $(datadir)/ladspa/rdf
