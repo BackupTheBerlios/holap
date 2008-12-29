@@ -19,6 +19,21 @@
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
+rdff19 ZynEq10ban_VOLUME 4
+rdff19 ZynEq10ban_Q 5
+rdff19 ZynEq10ban_GAIN1 6
+rdff19 ZynEq10ban_GAIN2 7
+rdff19 ZynEq10ban_GAIN3 8
+rdff19 ZynEq10ban_GAIN4 9
+rdff19 ZynEq10ban_GAIN5 10
+rdff19 ZynEq10ban_GAIN6 11
+rdff19 ZynEq10ban_GAIN7 12
+rdff19 ZynEq10ban_GAIN8 13
+rdff19 ZynEq10ban_GAIN9 14
+rdff19 ZynEq10ban_GAIN10 15
+
+
+
 */
 
 
@@ -193,8 +208,8 @@ runZynEq10ban (LADSPA_Handle instance, unsigned long sample_count)
 }
 
 
-void
-_init ()
+void __attribute((constructor))
+zyneq10ban_init()
 {
 
 
@@ -388,8 +403,8 @@ _init ()
 }
 
 
-void
-_fini ()
+void __attribute__ ((destructor))
+zyneq10ban_fini ()
 {
   if (ZynEq10banLDescriptor)
     {

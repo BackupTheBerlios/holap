@@ -19,6 +19,18 @@
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
+rdff19 ZynReverb_DRY 4
+rdff19 ZynReverb_WET 5
+rdff19 ZynReverb_PAN 6
+rdff19 ZynReverb_TIME 7
+rdff19 ZynReverb_IDEL 8
+rdff19 ZynReverb_EARLYREF 9
+rdff19 ZynReverb_ROOMSIZE 10
+rdff19 ZynReverb_LPF_FREQ 11
+rdff19 ZynReverb_HPF_FREQ 12
+rdff19 ZynReverb_DAMP 13
+
+
 */
 
 
@@ -194,8 +206,9 @@ runZynReverb (LADSPA_Handle instance, unsigned long sample_count)
 }
 
 
-void
-_init ()
+void __attribute__ ((constructor))
+zynreverb_init ()
+
 {
 
 
@@ -364,9 +377,10 @@ _init ()
 
 }
 
+void __attribute__ ((destructor))
+zynreverb_fini ()
 
-void
-_fini ()
+
 {
   if (ZynReverbLDescriptor)
     {

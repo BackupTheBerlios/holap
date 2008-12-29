@@ -19,6 +19,24 @@
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
+rdff19 ZynChorus_INPUT_L 0
+rdff19 ZynChorus_INPUT_R 1
+rdff19 ZynChorus_OUTPUT_L 2
+rdff19 ZynChorus_OUTPUT_R 3
+rdff19 ZynChorus_DRY 4
+rdff19 ZynChorus_WET 5
+rdff19 ZynChorus_PAN 6
+rdff19 ZynChorus_DEPTH 7
+rdff19 ZynChorus_DELAY 8
+rdff19 ZynChorus_FB 9
+rdff19 ZynChorus_LRCROSS 10
+rdff19 ZynChorus_RANDOM 11
+rdff19 ZynChorus_LFOTYPE 12
+rdff19 ZynChorus_STEREO 13
+rdff19 ZynChorus_LFOFREQ 14
+rdff19 ZynChorus_SUBTRACT 15
+
+
 */
 
 
@@ -211,8 +229,9 @@ runZynChorus (LADSPA_Handle instance, unsigned long sample_count)
 }
 
 
-void
-_init ()
+void __attribute__((constructor))
+zynchorus_init()
+
 {
 
 
@@ -404,7 +423,8 @@ _init ()
 
 
 void
-_fini ()
+__attribute__((destructor))
+zynchorus_fini()
 {
   if (ZynChorusLDescriptor)
     {

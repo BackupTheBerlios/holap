@@ -9,7 +9,7 @@ zynalienwah_la_SOURCES = zynalienwah.c \
 
 AM_LDFLAGS = -module -avoid-version -Wc,-nostartfiles
 
-zynalienwah_la_LDFLAGS = -avoid-version -module -lexpat -shared -export-symbols-regex "ladspa_descriptor"
+zynalienwah_la_LDFLAGS = -avoid-version -module -shared -export-symbols-regex "ladspa_descriptor"
 
 ACLOCAL_AMFLAGS = -I m4
 

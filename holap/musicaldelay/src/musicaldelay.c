@@ -19,6 +19,23 @@
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
+rdff19 MusicalDelay_DRY 4
+rdff19 MusicalDelay_WET 5
+rdff19 MusicalDelay_TEMPO 6
+rdff19 MusicalDelay_PAN1 7
+rdff19 MusicalDelay_PAN2 8
+rdff19 MusicalDelay_DELAY1 9
+rdff19 MusicalDelay_DELAY2 10
+rdff19 MusicalDelay_DELAY3 11
+rdff19 MusicalDelay_GAIN1 12
+rdff19 MusicalDelay_GAIN2 13
+rdff19 MusicalDelay_FB1 14
+rdff19 MusicalDelay_FB2 15
+rdff19 MusicalDelay_DAMP 16
+rdff19 MusicalDelay_LRCROSS 17
+
+
+
 */
 
 
@@ -218,8 +235,8 @@ runMusicalDelay (LADSPA_Handle instance, unsigned long sample_count)
 }
 
 
-void
-_init ()
+void __attribute__((constructor))
+musicaldelay_init()
 {
 
 
@@ -432,8 +449,8 @@ _init ()
 }
 
 
-void
-_fini ()
+void __attribute__((destructor))
+musicaldelay_fini()
 {
   if (MusicalDelayLDescriptor)
     {

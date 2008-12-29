@@ -10,7 +10,7 @@ zynreverb_la_SOURCES = zynreverb.c \
 
 AM_LDFLAGS = -module -avoid-version -Wc,-nostartfiles
 
-zynreverb_la_LDFLAGS = -avoid-version -module -lexpat -shared -export-symbols-regex "ladspa_descriptor"
+zynreverb_la_LDFLAGS = -avoid-version -module -shared -export-symbols-regex "ladspa_descriptor"
 
 ACLOCAL_AMFLAGS = -I m4
 

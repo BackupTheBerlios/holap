@@ -9,7 +9,7 @@ zynphaser_la_SOURCES = zynphaser.c \
 
 AM_LDFLAGS = -module -avoid-version -Wc,-nostartfiles
 
-zynphaser_la_LDFLAGS = -avoid-version -module -lexpat -shared -export-symbols-regex "ladspa_descriptor"
+zynphaser_la_LDFLAGS = -avoid-version -module -shared -export-symbols-regex "ladspa_descriptor"
 
 ACLOCAL_AMFLAGS = -I m4
 

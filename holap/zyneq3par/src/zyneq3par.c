@@ -19,6 +19,17 @@
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
+rdff19 ZynEq3par_LOWFREQ 5
+rdff19 ZynEq3par_LOWGAIN 6
+rdff19 ZynEq3par_LOWQ 7
+rdff19 ZynEq3par_MIDFREQ 8
+rdff19 ZynEq3par_MIDGAIN 9
+rdff19 ZynEq3par_MIDQ 10
+rdff19 ZynEq3par_HIGHFREQ 11
+rdff19 ZynEq3par_HIGHGAIN 12
+rdff19 ZynEq3par_HIGHQ 13
+
+
 */
 
 
@@ -185,8 +196,10 @@ runZynEq3par (LADSPA_Handle instance, unsigned long sample_count)
 }
 
 
-void
-_init ()
+void __attribute__ ((constructor))
+zyneq3par_init ()
+
+
 {
 
 
@@ -357,9 +370,9 @@ _init ()
 
 }
 
+void __attribute__ ((destructor))
+zyneq3par_fini ()
 
-void
-_fini ()
 {
   if (ZynEq3parLDescriptor)
     {

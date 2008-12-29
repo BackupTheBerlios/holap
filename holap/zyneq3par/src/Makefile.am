@@ -10,7 +10,7 @@ zyneq3par_la_SOURCES = zyneq3par.c \
 
 AM_LDFLAGS = -module -avoid-version -Wc,-nostartfiles
 
-zyneq3par_la_LDFLAGS = -avoid-version -module -lexpat -shared -export-symbols-regex "ladspa_descriptor"
+zyneq3par_la_LDFLAGS = -avoid-version -module -shared -export-symbols-regex "ladspa_descriptor"
 
 ACLOCAL_AMFLAGS = -I m4
 

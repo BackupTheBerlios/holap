@@ -19,6 +19,20 @@
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
+rdff19 ZynAlienwah_DRY 4
+rdff19 ZynAlienwah_WET 5
+rdff19 ZynAlienwah_PAN 6
+rdff19 ZynAlienwah_DEPTH 7
+rdff19 ZynAlienwah_DELAY 8
+rdff19 ZynAlienwah_FB 9
+rdff19 ZynAlienwah_LRCROSS 10
+rdff19 ZynAlienwah_RANDOM 11
+rdff19 ZynAlienwah_LFOTYPE 12
+rdff19 ZynAlienwah_STEREO 13
+rdff19 ZynAlienwah_LFOFREQ 14
+rdff19 ZynAlienwah_PHASE 15
+
+
 */
 
 
@@ -211,8 +225,9 @@ runZynAlienwah (LADSPA_Handle instance, unsigned long sample_count)
 }
 
 
-void
-_init ()
+void __attribute__((constructor))
+zynalienwah_init()
+
 {
 
 
@@ -404,8 +419,9 @@ _init ()
 }
 
 
-void
-_fini ()
+void __attribute((destructor))
+zynalienwah_fini()
+
 {
   if (ZynAlienwahLDescriptor)
     {

@@ -19,6 +19,21 @@
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
+rdff19 ZynPhaser_DRY 4
+rdff19 ZynPhaser_WET 5
+rdff19 ZynPhaser_PAN 6
+rdff19 ZynPhaser_DEPTH 7
+rdff19 ZynPhaser_FB 8
+rdff19 ZynPhaser_LRCROSS 9
+rdff19 ZynPhaser_RANDOM 10
+rdff19 ZynPhaser_LFOTYPE 11
+rdff19 ZynPhaser_STEREO 12
+rdff19 ZynPhaser_LFOFREQ 13
+rdff19 ZynPhaser_PHASE 14
+rdff19 ZynPhaser_SUBTRACT 15
+rdff19 ZynPhaser_STAGES 16
+
+
 */
 
 
@@ -223,8 +238,9 @@ runZynPhaser (LADSPA_Handle instance, unsigned long sample_count)
 }
 
 
-void
-_init ()
+void __attribute__ ((constructor))
+zynphaser_init ()
+
 {
 
 
@@ -425,9 +441,9 @@ _init ()
 
 }
 
+void __attribute__ ((destructor))
+zynphaser_fini ()
 
-void
-_fini ()
 {
   if (ZynPhaserLDescriptor)
     {
