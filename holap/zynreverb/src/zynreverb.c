@@ -35,6 +35,7 @@ rdff19 ZynReverb_DAMP 13
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <ladspa.h>
 #include "reverb.h"
 

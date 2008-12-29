@@ -38,6 +38,7 @@ rdff19 ZynEq10ban_GAIN10 15
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <ladspa.h>
 #include "eq10.h"
 

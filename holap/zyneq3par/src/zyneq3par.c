@@ -34,6 +34,7 @@ rdff19 ZynEq3par_HIGHQ 13
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <ladspa.h>
 #include "eq.h"
 

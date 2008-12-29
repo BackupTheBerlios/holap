@@ -41,6 +41,7 @@ rdff19 ZynChorus_SUBTRACT 15
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <ladspa.h>
 #include "chorus.h"
 

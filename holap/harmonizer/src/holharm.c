@@ -28,6 +28,7 @@
 #include <ladspa.h>
 #include <pthread.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <lo/lo.h>
 #include "harmonizer.h"
 
