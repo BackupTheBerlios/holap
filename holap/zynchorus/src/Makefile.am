@@ -7,7 +7,7 @@ zynchorus_la_SOURCES = zynchorus.c \
 	effectlfo.c \
 	chorus.h
 
-AM_LDFLAGS = -module -avoid-version -Wc,-nostartfiles
+AM_LDFLAGS = -module -avoid-version
 
 zynchorus_la_LDFLAGS = -avoid-version -module -shared -export-symbols-regex "ladspa_descriptor"
 

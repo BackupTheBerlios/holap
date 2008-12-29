@@ -8,7 +8,7 @@ zynreverb_la_SOURCES = zynreverb.c \
 	analogfilter.c \
 	reverb.h
 
-AM_LDFLAGS = -module -avoid-version -Wc,-nostartfiles
+AM_LDFLAGS = -module -avoid-version
 
 zynreverb_la_LDFLAGS = -avoid-version -module -shared -export-symbols-regex "ladspa_descriptor"
 

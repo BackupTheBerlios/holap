@@ -7,7 +7,7 @@ musicaldelay_la_SOURCES = musicaldelay.c \
 	mdelay.h
 	
 
-AM_LDFLAGS = -module -avoid-version -Wc,-nostartfiles
+AM_LDFLAGS = -module -avoid-version 
 
 musicaldelay_la_LDFLAGS = -avoid-version -module -shared -export-symbols-regex "ladspa_descriptor"
 

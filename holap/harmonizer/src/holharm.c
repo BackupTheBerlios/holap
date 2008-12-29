@@ -507,7 +507,6 @@ getControllerholharm (LADSPA_Handle instance, unsigned long port)
 }
 
 
-
 void __attribute__ ((constructor))
 holharm_init()
 {
@@ -660,7 +659,7 @@ holharm_init()
 }
 
 
-void __attribute__((destructor))
+void __attribute__ ((destructor))
 holharm_fini()
 {
   if (holharmLDescriptor)

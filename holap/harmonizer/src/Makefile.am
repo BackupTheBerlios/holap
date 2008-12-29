@@ -27,6 +27,7 @@ holharm_la_SOURCES =  holharm.c \
   
 holharm_la_LIBADD = -lm -lpthread 
   
-holharm_la_LDFLAGS = -module -avoid-version -Wc,-nostartfiles
+holharm_la_LDFLAGS = -module -avoid-version -export-symbols-regex "(ladspa_|dssi_)descriptor"
+
 
 
