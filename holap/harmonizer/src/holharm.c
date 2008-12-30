@@ -45,7 +45,7 @@
 #define holharm_TYPE 9
 #define holharm_NOTE 10
 #define holharm_CHORDTYPE 11
-
+#define holharm_RECOCOUNT 12
 
 static LADSPA_Descriptor *holharmLDescriptor = NULL;
 static DSSI_Descriptor *holharmDDescriptor = NULL;
@@ -130,6 +130,10 @@ connectPortholharm (LADSPA_Handle instance, unsigned long port,
     case holharm_CHORDTYPE:
       plugin->Ptype = data;
       break;
+    case holharm_RECOCOUNT:
+      plugin->recocount = data;
+      break;  
+      
     }
 }
 
@@ -318,6 +322,8 @@ runholharm (LADSPA_Handle instance, unsigned long sample_count,
   LADSPA_Data psel = *(har->PSELECT);
   LADSPA_Data Snote = *(har->Hnote);
   LADSPA_Data Ch_Type = *(har->Ptype);  
+  LADSPA_Data recocount = *(har->recocount);
+
   unsigned long event_pos = 0;
   unsigned long pos;
   unsigned long count;
@@ -451,7 +457,7 @@ runholharm (LADSPA_Handle instance, unsigned long sample_count,
 	       har->lastcandidate = har->candidate;
 	       }
 	       else har->lcount++; 
-	      if (har->lcount > 8)
+	      if (har->lcount > recocount)
 		{
 		  Vamos (har, 1, interl);
 		  Vamos (har, 2, interr);
@@ -526,7 +532,7 @@ holharm_init()
       holharmLDescriptor->Name = "holharm";
       holharmLDescriptor->Maker = "Josep Andreu <holborn@telefonica.net>";
       holharmLDescriptor->Copyright = "GNU General Public License version 2";
-      holharmLDescriptor->PortCount = 12;
+      holharmLDescriptor->PortCount = 13;
       port_descriptors =
 	(LADSPA_PortDescriptor *)
 	calloc (holharmLDescriptor->PortCount,
@@ -631,6 +637,18 @@ holharm_init()
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[holharm_CHORDTYPE].LowerBound = 0;
       port_range_hints[holharm_CHORDTYPE].UpperBound = 33;
+      /* Parameters for RecoCount */
+      port_descriptors[holharm_RECOCOUNT] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[holharm_RECOCOUNT] = "Recognize Times";
+      port_range_hints[holharm_RECOCOUNT].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;	
+      port_range_hints[holharm_RECOCOUNT].LowerBound = 0;
+      port_range_hints[holharm_RECOCOUNT].UpperBound = 48;
+
+
+
       holharmLDescriptor->instantiate = instantiateholharm;
       holharmLDescriptor->connect_port = connectPortholharm;
       holharmLDescriptor->activate = activateholharm;

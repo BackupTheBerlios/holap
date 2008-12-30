@@ -111,8 +111,12 @@ thread1 (void *arg)
           update_sel_chord((int)gui.D_Note->value(), (int)gui.D_ChType->value());
 	}
      
-
-
+      if (gui.D_recocount_c)
+        { 
+          lo_send (m_host, osc_control_path, "if", 12, (float) gui.D_recocount->value ());
+                    gui.D_recocount_c = 0;
+                    
+        }
 
     }
 

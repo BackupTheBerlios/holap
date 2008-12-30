@@ -227,6 +227,13 @@ void holharm_ui::cb_D_ChType(Fl_Choice* o, void* v) {
   ((holharm_ui*)(o->parent()->user_data()))->cb_D_ChType_i(o,v);
 }
 
+void holharm_ui::cb_D_recocount_i(Rueda*, void*) {
+  D_recocount_c=1;
+}
+void holharm_ui::cb_D_recocount(Rueda* o, void* v) {
+  ((holharm_ui*)(o->parent()->user_data()))->cb_D_recocount_i(o,v);
+}
+
 holharm_ui::holharm_ui() {
   fl_open_display();
 Fl::visual(FL_DOUBLE|FL_RGB);
@@ -354,7 +361,7 @@ Fl_Double_Window* holharm_ui::make_window() {
       o->labelsize(11);
       o->labelcolor(FL_BACKGROUND2_COLOR);
     } // Fl_Box* o
-    { ShowMode = new Fl_Box(225, 147, 155, 33, gettext("Normal"));
+    { ShowMode = new Fl_Box(235, 147, 145, 33, gettext("Normal"));
       ShowMode->box(FL_PLASTIC_THIN_DOWN_BOX);
       ShowMode->color((Fl_Color)147);
       ShowMode->labelcolor((Fl_Color)4);
@@ -363,7 +370,7 @@ Fl_Double_Window* holharm_ui::make_window() {
       o->labelsize(11);
       o->labelcolor(FL_BACKGROUND2_COLOR);
     } // Fl_Box* o
-    { SelectedChord = new Fl_Box(225, 211, 155, 32);
+    { SelectedChord = new Fl_Box(235, 211, 145, 32);
       SelectedChord->box(FL_PLASTIC_THIN_DOWN_BOX);
       SelectedChord->color((Fl_Color)147);
       SelectedChord->labelcolor((Fl_Color)1);
@@ -372,7 +379,7 @@ Fl_Double_Window* holharm_ui::make_window() {
       o->labelsize(11);
       o->labelcolor(FL_BACKGROUND2_COLOR);
     } // Fl_Box* o
-    { ShowChord = new Fl_Box(225, 277, 155, 31);
+    { ShowChord = new Fl_Box(235, 277, 145, 31);
       ShowChord->box(FL_PLASTIC_THIN_DOWN_BOX);
       ShowChord->color((Fl_Color)147);
       ShowChord->labelcolor((Fl_Color)168);
@@ -408,7 +415,7 @@ Fl_Double_Window* holharm_ui::make_window() {
       } // Fl_Check_Button* q16
       Quality->end();
     } // Fl_Group* Quality
-    { D_Type = new Fl_Choice(80, 220, 90, 20, gettext("Mode"));
+    { D_Type = new Fl_Choice(130, 220, 90, 20, gettext("Mode"));
       D_Type->box(FL_PLASTIC_THIN_DOWN_BOX);
       D_Type->down_box(FL_UP_BOX);
       D_Type->color((Fl_Color)14);
@@ -418,7 +425,7 @@ Fl_Double_Window* holharm_ui::make_window() {
       D_Type->textsize(11);
       D_Type->callback((Fl_Callback*)cb_D_Type);
     } // Fl_Choice* D_Type
-    { D_Note = new Fl_Choice(80, 255, 90, 20, gettext("Note"));
+    { D_Note = new Fl_Choice(130, 255, 90, 20, gettext("Base"));
       D_Note->box(FL_PLASTIC_THIN_DOWN_BOX);
       D_Note->down_box(FL_UP_BOX);
       D_Note->color((Fl_Color)14);
@@ -428,7 +435,7 @@ Fl_Double_Window* holharm_ui::make_window() {
       D_Note->textsize(11);
       D_Note->callback((Fl_Callback*)cb_D_Note);
     } // Fl_Choice* D_Note
-    { D_ChType = new Fl_Choice(80, 285, 90, 20, gettext("Chord Type"));
+    { D_ChType = new Fl_Choice(130, 285, 90, 20, gettext("Chord"));
       D_ChType->box(FL_PLASTIC_THIN_DOWN_BOX);
       D_ChType->down_box(FL_UP_BOX);
       D_ChType->color((Fl_Color)14);
@@ -438,6 +445,23 @@ Fl_Double_Window* holharm_ui::make_window() {
       D_ChType->textsize(11);
       D_ChType->callback((Fl_Callback*)cb_D_ChType);
     } // Fl_Choice* D_ChType
+    { Rueda* o = D_recocount = new Rueda(10, 234, 50, 60, gettext("Rec. Times"));
+      D_recocount->box(FL_FLAT_BOX);
+      D_recocount->color((Fl_Color)147);
+      D_recocount->selection_color(FL_INACTIVE_COLOR);
+      D_recocount->labeltype(FL_NORMAL_LABEL);
+      D_recocount->labelfont(0);
+      D_recocount->labelsize(11);
+      D_recocount->labelcolor(FL_BACKGROUND2_COLOR);
+      D_recocount->minimum(1);
+      D_recocount->maximum(48);
+      D_recocount->step(1);
+      D_recocount->value(24);
+      D_recocount->callback((Fl_Callback*)cb_D_recocount);
+      D_recocount->align(FL_ALIGN_TOP);
+      D_recocount->when(FL_WHEN_CHANGED);
+      strcpy(o->theformat,"%2.0f");
+    } // Rueda* D_recocount
     ui_win->end();
   } // Fl_Double_Window* ui_win
   return ui_win;

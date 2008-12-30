@@ -44,6 +44,7 @@ public:
   int D_Type_c; 
   int D_Note_c; 
   int D_ChType_c; 
+  int D_recocount_c; 
   int Pexitprogram; 
   holharm_ui();
   Fl_Double_Window* make_window();
@@ -117,6 +118,11 @@ public:
 private:
   void cb_D_ChType_i(Fl_Choice*, void*);
   static void cb_D_ChType(Fl_Choice*, void*);
+public:
+  Rueda *D_recocount;
+private:
+  void cb_D_recocount_i(Rueda*, void*);
+  static void cb_D_recocount(Rueda*, void*);
 public:
   static void tick(void* v);
   void quit();

@@ -156,7 +156,8 @@ return i;} {}
   }
 } 
 
-class holharm_ui {} {
+class holharm_ui {open
+} {
   decl {int SQuality;} {public
   }
   decl {int D_Vol_c;} {public
@@ -177,6 +178,8 @@ class holharm_ui {} {
   }
   decl {int D_ChType_c;} {public
   }
+  decl {int D_recocount_c;} {public
+  }
   decl {int Pexitprogram;} {public
   }
   Function {holharm_ui()} {} {
@@ -192,8 +195,8 @@ Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   Function {make_window()} {} {
     Fl_Window ui_win {
       label holharm
-      callback {Pexitprogram=1;} open selected
-      xywh {1862 87 390 322} type Double color 147 hide
+      callback {Pexitprogram=1;}
+      xywh {1841 66 390 322} type Double color 147 hide
     } {
       Fl_Box d_osc_label {
         xywh {0 -2 390 22} labelsize 9 labelcolor 3
@@ -257,21 +260,21 @@ Fl::add_timeout(1.0 * 0.04,tick,v);} {}
       }
       Fl_Box ShowMode {
         label Normal
-        xywh {225 147 155 33} box PLASTIC_THIN_DOWN_BOX color 147 labelcolor 4
+        xywh {235 147 145 33} box PLASTIC_THIN_DOWN_BOX color 147 labelcolor 4
       }
       Fl_Box {} {
         label {Selected Chord}
         xywh {225 188 145 21} labelsize 11 labelcolor 7
       }
       Fl_Box SelectedChord {
-        xywh {225 211 155 32} box PLASTIC_THIN_DOWN_BOX color 147 labelcolor 1
+        xywh {235 211 145 32} box PLASTIC_THIN_DOWN_BOX color 147 labelcolor 1
       }
       Fl_Box {} {
         label {MIDI Chord}
         xywh {225 254 145 21} labelsize 11 labelcolor 7
       }
       Fl_Box ShowChord {
-        xywh {225 277 155 31} box PLASTIC_THIN_DOWN_BOX color 147 labelcolor 168
+        xywh {235 277 145 31} box PLASTIC_THIN_DOWN_BOX color 147 labelcolor 168
       }
       Fl_Group Quality {
         label Quality
@@ -322,18 +325,25 @@ Qadjust(SQuality);
       Fl_Choice D_Type {
         label Mode
         callback {D_Type_c=1;} open
-        xywh {80 220 90 20} box PLASTIC_THIN_DOWN_BOX down_box UP_BOX color 14 selection_color 147 labelsize 11 labelcolor 7 textsize 11
+        xywh {130 220 90 20} box PLASTIC_THIN_DOWN_BOX down_box UP_BOX color 14 selection_color 147 labelsize 11 labelcolor 7 textsize 11
       } {}
       Fl_Choice D_Note {
-        label Note
-        callback {D_Note_c=1;} open
-        xywh {80 255 90 20} box PLASTIC_THIN_DOWN_BOX down_box UP_BOX color 14 selection_color 147 labelsize 11 labelcolor 7 textsize 11
+        label Base
+        callback {D_Note_c=1;} open selected
+        xywh {130 255 90 20} box PLASTIC_THIN_DOWN_BOX down_box UP_BOX color 14 selection_color 147 labelsize 11 labelcolor 7 textsize 11
       } {}
       Fl_Choice D_ChType {
-        label {Chord Type}
+        label Chord
         callback {D_ChType_c=1;} open
-        xywh {80 285 90 20} box PLASTIC_THIN_DOWN_BOX down_box UP_BOX color 14 selection_color 147 labelsize 11 labelcolor 7 textsize 11
+        xywh {130 285 90 20} box PLASTIC_THIN_DOWN_BOX down_box UP_BOX color 14 selection_color 147 labelsize 11 labelcolor 7 textsize 11
       } {}
+      Fl_Dial D_recocount {
+        label {Rec. Times}
+        callback {D_recocount_c=1;}
+        xywh {10 234 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 1 maximum 48 step 1 value 24
+        code0 {strcpy(o->theformat,"%2.0f");}
+        class Rueda
+      }
     }
   }
   Function {tick(void* v)} {return_type {static void}

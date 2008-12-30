@@ -56,6 +56,9 @@ In this mode holharm analyzes the input audio signal and try to recognize the mu
 then adjust the interval, using the Intervals, Note and Chord Type selected
 by the user on the GUI.
 
+The Rec Times parameter is the times to validate a new note recognized,
+adjust to get better results.
+
 This is usefull to harmonize small parts of a song that use the same chord.
 
 Mode MIDI

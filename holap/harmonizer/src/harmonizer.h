@@ -191,6 +191,7 @@ typedef struct
   LADSPA_Data *intervall;
   LADSPA_Data *intervalr;
   LADSPA_Data *Hnote;
+  LADSPA_Data *recocount;
   float ratiol;
   float ratior;
   float outil[2048];
