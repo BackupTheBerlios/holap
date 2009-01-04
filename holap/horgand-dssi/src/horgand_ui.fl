@@ -153,12 +153,21 @@ return i;} {}
   }
 } 
 
-class horgand_ui {} {
+class horgand_ui {open
+} {
   decl {int ready;} {public
   }
   decl {int D_Vol_c;} {public
   }
   decl {int D_Tune_c;} {public
+  }
+  decl {int D_Reverb_c;} {public
+  }
+  decl {int D_Chorus_c;} {public
+  }
+  decl {int D_Rotary_c;} {public
+  }
+  decl {int D_Delay_c;} {public
   }
   decl {int Pexitprogram;} {public
   }
@@ -173,20 +182,20 @@ ui_win->xclass("horgand-dssi");
 ready=1;
 ui_win->show();
 void * v=MT;
-Fl::add_timeout(1.0 * 0.04,tick,v);} {selected
-    }
+Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {} {
+  Function {make_window()} {open
+  } {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;} open
-      xywh {1779 211 290 252} type Double color 147 hide
+      callback {Pexitprogram=1;} selected
+      xywh {1585 118 330 280} type Double color 147 hide
     } {
       Fl_Box {} {
-        image {horgand128.xpm} xywh {125 54 165 116} labelsize 18
+        image {horgand128.xpm} xywh {170 49 165 116} labelsize 18
       }
       Fl_Box setBankFile {
         label Default
-        xywh {85 224 205 18} labelsize 9 labelcolor 3
+        xywh {5 257 330 18} labelsize 9 labelcolor 3
       }
       Fl_Menu_Bar {} {open
         xywh {0 0 345 25} labelsize 18 textsize 18
@@ -209,15 +218,15 @@ ready=1;}
         }
       }
       Fl_Box d_osc_label {
-        xywh {0 23 290 22} labelsize 9 labelcolor 3
+        xywh {0 23 330 21} labelsize 9 labelcolor 3
       }
       Fl_Box {} {
         label {<c> 2004-2009 by Josep Andreu}
-        xywh {110 193 180 22} labelsize 9 labelcolor 7
+        xywh {170 198 160 22} labelsize 9 labelcolor 7
       }
       Fl_Box {} {
         label Horgand
-        xywh {120 166 170 34} labelfont 1 labelsize 21 labelcolor 7
+        xywh {185 166 145 29} labelfont 1 labelsize 21 labelcolor 7
       }
       Fl_Box MT {
         xywh {85 243 120 16} labelsize 11
@@ -239,8 +248,28 @@ ready=1;}
       Fl_Choice PresetSelect {
         label Preset
         callback {ready=2;} open
-        xywh {5 60 90 20} box PLASTIC_DOWN_BOX down_box FLAT_BOX color 31 selection_color 147 labelsize 11 labelcolor 7 align 1 when 1 textsize 9
+        xywh {5 60 150 20} box PLASTIC_DOWN_BOX down_box FLAT_BOX color 31 selection_color 147 labelsize 11 labelcolor 7 align 1 when 1 textsize 9
       } {}
+      Fl_Button D_Reverb {
+        label Reverb
+        callback {D_Reverb_c=1;}
+        xywh {105 99 50 20} type Toggle box PLASTIC_UP_BOX color 215 selection_color 3 labelsize 10
+      }
+      Fl_Button D_Chorus {
+        label Chorus
+        callback {D_Chorus_c=1;}
+        xywh {105 129 50 20} type Toggle box PLASTIC_UP_BOX color 215 selection_color 3 labelsize 10
+      }
+      Fl_Button D_Rotary {
+        label Rotary
+        callback {D_Rotary_c=1;}
+        xywh {105 159 50 20} type Toggle box PLASTIC_UP_BOX color 215 selection_color 3 labelsize 10
+      }
+      Fl_Button D_Delay {
+        label Delay
+        callback {D_Delay_c=1;}
+        xywh {105 189 50 21} type Toggle box PLASTIC_UP_BOX color 215 selection_color 3 labelsize 10
+      }
     }
   }
   Function {tick(void* v)} {return_type {static void}

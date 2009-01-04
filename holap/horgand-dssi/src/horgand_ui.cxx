@@ -865,6 +865,34 @@ void horgand_ui::cb_PresetSelect(Fl_Choice* o, void* v) {
   ((horgand_ui*)(o->parent()->user_data()))->cb_PresetSelect_i(o,v);
 }
 
+void horgand_ui::cb_D_Reverb_i(Fl_Button*, void*) {
+  D_Reverb_c=1;
+}
+void horgand_ui::cb_D_Reverb(Fl_Button* o, void* v) {
+  ((horgand_ui*)(o->parent()->user_data()))->cb_D_Reverb_i(o,v);
+}
+
+void horgand_ui::cb_D_Chorus_i(Fl_Button*, void*) {
+  D_Chorus_c=1;
+}
+void horgand_ui::cb_D_Chorus(Fl_Button* o, void* v) {
+  ((horgand_ui*)(o->parent()->user_data()))->cb_D_Chorus_i(o,v);
+}
+
+void horgand_ui::cb_D_Rotary_i(Fl_Button*, void*) {
+  D_Rotary_c=1;
+}
+void horgand_ui::cb_D_Rotary(Fl_Button* o, void* v) {
+  ((horgand_ui*)(o->parent()->user_data()))->cb_D_Rotary_i(o,v);
+}
+
+void horgand_ui::cb_D_Delay_i(Fl_Button*, void*) {
+  D_Delay_c=1;
+}
+void horgand_ui::cb_D_Delay(Fl_Button* o, void* v) {
+  ((horgand_ui*)(o->parent()->user_data()))->cb_D_Delay_i(o,v);
+}
+
 horgand_ui::horgand_ui() {
   fl_open_display();
 Fl::visual(FL_DOUBLE|FL_RGB);
@@ -878,14 +906,14 @@ Fl::add_timeout(1.0 * 0.04,tick,v);
 }
 
 Fl_Double_Window* horgand_ui::make_window() {
-  { ui_win = new Fl_Double_Window(290, 252);
+  { ui_win = new Fl_Double_Window(330, 280);
     ui_win->color((Fl_Color)147);
     ui_win->callback((Fl_Callback*)cb_ui_win, (void*)(this));
-    { Fl_Box* o = new Fl_Box(125, 54, 165, 116);
+    { Fl_Box* o = new Fl_Box(170, 49, 165, 116);
       o->image(image_horgand128);
       o->labelsize(18);
     } // Fl_Box* o
-    { setBankFile = new Fl_Box(85, 224, 205, 18, gettext("Default"));
+    { setBankFile = new Fl_Box(5, 257, 330, 18, gettext("Default"));
       setBankFile->labelsize(9);
       setBankFile->labelcolor((Fl_Color)3);
     } // Fl_Box* setBankFile
@@ -894,15 +922,15 @@ Fl_Double_Window* horgand_ui::make_window() {
       o->textsize(18);
       o->menu(menu_);
     } // Fl_Menu_Bar* o
-    { d_osc_label = new Fl_Box(0, 23, 290, 22);
+    { d_osc_label = new Fl_Box(0, 23, 330, 21);
       d_osc_label->labelsize(9);
       d_osc_label->labelcolor((Fl_Color)3);
     } // Fl_Box* d_osc_label
-    { Fl_Box* o = new Fl_Box(110, 193, 180, 22, gettext("<c> 2004-2009 by Josep Andreu"));
+    { Fl_Box* o = new Fl_Box(170, 198, 160, 22, gettext("<c> 2004-2009 by Josep Andreu"));
       o->labelsize(9);
       o->labelcolor(FL_BACKGROUND2_COLOR);
     } // Fl_Box* o
-    { Fl_Box* o = new Fl_Box(120, 166, 170, 34, gettext("Horgand"));
+    { Fl_Box* o = new Fl_Box(185, 166, 145, 29, gettext("Horgand"));
       o->labelfont(1);
       o->labelsize(21);
       o->labelcolor(FL_BACKGROUND2_COLOR);
@@ -940,7 +968,7 @@ Fl_Double_Window* horgand_ui::make_window() {
       D_Tune->when(FL_WHEN_CHANGED);
       strcpy(o->theformat,"%1.2f");
     } // Rueda* D_Tune
-    { PresetSelect = new Fl_Choice(5, 60, 90, 20, gettext("Preset"));
+    { PresetSelect = new Fl_Choice(5, 60, 150, 20, gettext("Preset"));
       PresetSelect->box(FL_PLASTIC_DOWN_BOX);
       PresetSelect->down_box(FL_FLAT_BOX);
       PresetSelect->color((Fl_Color)31);
@@ -952,6 +980,38 @@ Fl_Double_Window* horgand_ui::make_window() {
       PresetSelect->align(FL_ALIGN_TOP);
       PresetSelect->when(FL_WHEN_CHANGED);
     } // Fl_Choice* PresetSelect
+    { D_Reverb = new Fl_Button(105, 99, 50, 20, gettext("Reverb"));
+      D_Reverb->type(1);
+      D_Reverb->box(FL_PLASTIC_UP_BOX);
+      D_Reverb->color((Fl_Color)215);
+      D_Reverb->selection_color((Fl_Color)3);
+      D_Reverb->labelsize(10);
+      D_Reverb->callback((Fl_Callback*)cb_D_Reverb);
+    } // Fl_Button* D_Reverb
+    { D_Chorus = new Fl_Button(105, 129, 50, 20, gettext("Chorus"));
+      D_Chorus->type(1);
+      D_Chorus->box(FL_PLASTIC_UP_BOX);
+      D_Chorus->color((Fl_Color)215);
+      D_Chorus->selection_color((Fl_Color)3);
+      D_Chorus->labelsize(10);
+      D_Chorus->callback((Fl_Callback*)cb_D_Chorus);
+    } // Fl_Button* D_Chorus
+    { D_Rotary = new Fl_Button(105, 159, 50, 20, gettext("Rotary"));
+      D_Rotary->type(1);
+      D_Rotary->box(FL_PLASTIC_UP_BOX);
+      D_Rotary->color((Fl_Color)215);
+      D_Rotary->selection_color((Fl_Color)3);
+      D_Rotary->labelsize(10);
+      D_Rotary->callback((Fl_Callback*)cb_D_Rotary);
+    } // Fl_Button* D_Rotary
+    { D_Delay = new Fl_Button(105, 189, 50, 21, gettext("Delay"));
+      D_Delay->type(1);
+      D_Delay->box(FL_PLASTIC_UP_BOX);
+      D_Delay->color((Fl_Color)215);
+      D_Delay->selection_color((Fl_Color)3);
+      D_Delay->labelsize(10);
+      D_Delay->callback((Fl_Callback*)cb_D_Delay);
+    } // Fl_Button* D_Delay
     ui_win->end();
   } // Fl_Double_Window* ui_win
   return ui_win;

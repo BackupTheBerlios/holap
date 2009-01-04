@@ -84,6 +84,31 @@ thread1 (void *arg)
 	  gui.D_Tune_c = 0;
 	}
 
+      if (gui.D_Reverb_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 5, (float) gui.D_Reverb->value ());
+	  gui.D_Reverb_c = 0;
+	}
+
+      if (gui.D_Chorus_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 6, (float) gui.D_Chorus->value ());
+	  gui.D_Chorus_c = 0;
+	}
+      if (gui.D_Rotary_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 7, (float) gui.D_Rotary->value ());
+	  gui.D_Rotary_c = 0;
+	}
+
+      if (gui.D_Delay_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 8, (float) gui.D_Delay->value ());
+	  gui.D_Delay_c = 0;
+	}
+
+      
+
 
     }
 
@@ -105,6 +130,19 @@ update_widgets (int port, float value)
       break;
     case 3:
       gui.D_Tune->value (value);
+      break;
+    case 5:
+      gui.D_Reverb->value (value);
+      break;
+    case 6:
+      gui.D_Chorus->value (value);
+      break;
+    
+    case 7:
+      gui.D_Rotary->value (value);
+      break;
+    case 8:
+      gui.D_Delay->value (value);
       break;
     }
 
@@ -307,7 +345,6 @@ control_handler (const char *path, const char *types, lo_arg ** argv,
 
   const int port = argv[0]->i;
   const float value = argv[1]->f;
-
   update_widgets (port, value);
 
 
@@ -318,7 +355,7 @@ int
 program_handler (const char *path, const char *types, lo_arg ** argv,
 		 int argc, lo_message msg, void *user_data)
 {
-  int bank, program;
+  int bank, program, i;
 
   if (argc < 2)
     {
@@ -328,8 +365,9 @@ program_handler (const char *path, const char *types, lo_arg ** argv,
 
   bank = argv[0]->i;
   program = argv[1]->i;
-
   gui.PresetSelect->value (program - 1);
+  
+
 
 
 

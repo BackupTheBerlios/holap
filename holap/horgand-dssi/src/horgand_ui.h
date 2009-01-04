@@ -29,12 +29,17 @@ public:
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Choice.H>
+#include <FL/Fl_Button.H>
 
 class horgand_ui {
 public:
   int ready; 
   int D_Vol_c; 
   int D_Tune_c; 
+  int D_Reverb_c; 
+  int D_Chorus_c; 
+  int D_Rotary_c; 
+  int D_Delay_c; 
   int Pexitprogram; 
   char uBankFilename[255]; 
   horgand_ui();
@@ -66,6 +71,26 @@ public:
 private:
   void cb_PresetSelect_i(Fl_Choice*, void*);
   static void cb_PresetSelect(Fl_Choice*, void*);
+public:
+  Fl_Button *D_Reverb;
+private:
+  void cb_D_Reverb_i(Fl_Button*, void*);
+  static void cb_D_Reverb(Fl_Button*, void*);
+public:
+  Fl_Button *D_Chorus;
+private:
+  void cb_D_Chorus_i(Fl_Button*, void*);
+  static void cb_D_Chorus(Fl_Button*, void*);
+public:
+  Fl_Button *D_Rotary;
+private:
+  void cb_D_Rotary_i(Fl_Button*, void*);
+  static void cb_D_Rotary(Fl_Button*, void*);
+public:
+  Fl_Button *D_Delay;
+private:
+  void cb_D_Delay_i(Fl_Button*, void*);
+  static void cb_D_Delay(Fl_Button*, void*);
 public:
   static void tick(void* v);
   void quit();
