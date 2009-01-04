@@ -29,5 +29,10 @@ holharm_la_LIBADD = -lm -lpthread
   
 holharm_la_LDFLAGS = -module -avoid-version -export-symbols-regex "(ladspa_|dssi_)descriptor"
 
+install-data-hook:
+	rm $(plugindir)/holharm.la
+	rm $(plugindir)/holharm.a
+	               
+
 
 

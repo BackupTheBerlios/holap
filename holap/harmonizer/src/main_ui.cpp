@@ -1,8 +1,8 @@
 /*
-  horgand-dssi - a syhth-organ plugin software
+  holharm - a smart harmonizer DSSI plugin software
 
   main_ui.cpp  -  Main dssi GUI file of the plugin
-  Copyright (C) 2004-2008 Josep Andreu (Holborn)
+  Copyright (C) 2008-2009 Josep Andreu (Holborn)
   Author: Josep Andreu
 
   This program is free software; you can redistribute it and/or modify

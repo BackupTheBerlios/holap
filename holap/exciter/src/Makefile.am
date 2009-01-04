@@ -27,4 +27,7 @@ exciter_la_SOURCES =  exciter.c \
 exciter_la_LDFLAGS = -module -avoid-version -export-symbols-regex "(ladspa_|dssi_)descriptor"
 
 
-
+install-data-hook:
+	rm $(plugindir)/exciter.la
+	rm $(plugindir)/exciter.a
+	

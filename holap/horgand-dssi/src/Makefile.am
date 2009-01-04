@@ -32,3 +32,8 @@ horgand_la_LIBADD = -lm -lpthread
 
 horgand_la_LDFLAGS = -module -avoid-version 
 
+install-data-hook:
+	rm $(plugindir)/horgand.la
+	rm $(plugindir)/horgand.a
+	
+        
