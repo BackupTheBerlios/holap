@@ -332,7 +332,7 @@ zynalienwah_init()
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE |
 	LADSPA_HINT_DEFAULT_MINIMUM;
       port_range_hints[ZynAlienwah_DELAY].LowerBound = 0.0;
-      port_range_hints[ZynAlienwah_DELAY].UpperBound = 100.0;
+      port_range_hints[ZynAlienwah_DELAY].UpperBound = 1.0;
 
       /* Parameters for FB */
       port_descriptors[ZynAlienwah_FB] =
