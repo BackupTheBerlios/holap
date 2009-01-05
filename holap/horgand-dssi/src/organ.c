@@ -657,7 +657,7 @@ Alg1s (horgand_synth_t * s, int nframes)
 
   s->a[0].E_Chorus_On = *(s->E_Chorus_On);
   s->a[0].E_Rotary_On = *(s->E_Rotary_On);
-  s->a[0].E_Reverb_On = *(s->E_Delay_On);
+  s->a[0].E_Delay_On = *(s->E_Delay_On);
   s->a[0].E_Reverb_On = *(s->E_Reverb_On);
 
 

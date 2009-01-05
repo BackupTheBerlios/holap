@@ -520,7 +520,7 @@ horgand_init()
       /* Parameters for Delay */
       port_descriptors[horgand_DELAY] =
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-      port_names[horgand_DELAY] = "Reverb";
+      port_names[horgand_DELAY] = "Delay";
       port_range_hints[horgand_DELAY].HintDescriptor =
 	LADSPA_HINT_DEFAULT_1 | LADSPA_HINT_TOGGLED;
       port_range_hints[horgand_DELAY].LowerBound = 0;
