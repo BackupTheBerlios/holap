@@ -29,6 +29,7 @@ data_DATA = Default.horeb \
         Lead2.horeb \
         Lead3.horeb \
         Other.horeb \
+        Pad.horeb \
         E_Piano_1.horeb \
         E_Piano_2.horeb \
         E_Piano_Wurlitzer.horeb \
