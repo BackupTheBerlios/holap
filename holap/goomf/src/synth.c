@@ -252,16 +252,15 @@ Get_Keyb_Level_Scaling (goomf_synth_t * s, int nota)
 float
 pitch_Operator (goomf_synth_t * s, int i)
 {
-  return (s->lasfreq[s->Op[i].harmonic] +
-	  s->Op[i].harmonic_fine);
+
+  return (s->lasfreq[(int)*(s->H[i])+(int)*(s->HF[i])]);
 }
 
 
 float
 pitch_Operator2 (goomf_synth_t * s, int i)
 {
-  return (s->lasfreq[s->Op[i].harmonic] -
-	  s->Op[i].harmonic_fine);
+  return (s->lasfreq[(int)*(s->H[i])-(int)*(s->HF[i])]);
 }
 
 
@@ -283,15 +282,19 @@ Jenvelope (goomf_synth_t * s, int op, int gate, float t)
 {
 
   float Env = 0.0f;
+  float attack  = (float) *(s->attack[op]);
+  float decay   = (float) *(s->decay[op]);
+  float sustain = (float) *(s->sustain[op]);
+  float release = (float) *(s->release[op]);
 
   if (gate)
     {
-      if (t > s->Op[op].attack + s->Op[op].decay)
-	return (s->Op[op].sustain);
-      if (t > s->Op[op].attack)
-	return (1.0 - (1.0 - s->Op[op].sustain) * (t - s->Op[op].attack) * (1.0 / s->Op[op].decay ));
+      if (t > attack + decay )
+	return (sustain);
+      if (t > attack)
+	return (1.0 - (1.0 - sustain) * (t - attack * (1.0 /decay )));
 
-      return (t * (1.0 / s->Op[op].attack));
+      return (t * (1.0 / attack));
     }
   else
     {
@@ -300,7 +303,7 @@ Jenvelope (goomf_synth_t * s, int op, int gate, float t)
 	{
 	  if (s->Op[op].release > t)
 	    {
-	      Env = s->Envelope_Volume * (1.0 - t * (1.0 / s->Op[op].release ));
+	      Env = s->Envelope_Volume * (1.0 - t * (1.0 / release ));
 	      if (Env < 0.0015)
 		{
 		  s->env_time=0.0f;
@@ -319,10 +322,10 @@ Jenvelope (goomf_synth_t * s, int op, int gate, float t)
 
       else
 	{
-	  if (s->Op[op].sustain != 0)
-	    return (s->Op[op].sustain);
+	  if (sustain != 0)
+	    return (sustain);
 	  else
-	    return (1.0 - (t - s->Op[op].attack) * ( 1.0 / s->Op[op].decay ));
+	    return (1.0 - (t - attack) * ( 1.0 / decay ));
 	}
     }
 
@@ -433,11 +436,18 @@ Alg1s (goomf_synth_t * s, int nframes)
   float mEnv_Vol = 0.0f;
   float LFO_Volume = 0.0f;
   float m_partial;
+  float volumen;
+  float wave;
+  float wave1;
+  float aLFO;
+  float pLFO;
 
   memset (s->buf, 0, sizeof(float) * 8192);
 
 
+
 	  m_partial = Get_Partial(s);
+          printf("%f\n",m_partial);
 
 	  for (l1 = 0; l1 < nframes; l1 += 2)
 	    {
@@ -452,41 +462,54 @@ Alg1s (goomf_synth_t * s, int nframes)
 
                  //L
                  
-                      Env_Vol = s->velocity*s->Op[i].volumen*Jenvelope(s,i,s->gate,s->env_time)*s->LFO_Volume*s->Op[i].aLFO;
+                      volumen = (float) *(s->Ovol[i]);
+                      aLFO = (float) *(s->aLFO[i]);
+                      pLFO = (float) *(s->pLFO[i]);
+                      wave = (int) *(s->wave[i]);
+                      wave1 = (int) *(s->wave[i+1]);
+                 
+                      Env_Vol = s->velocity*volumen*Jenvelope(s,i,s->gate,s->env_time)*s->LFO_Volume*aLFO;
 
-		      s->f[i].dphi = m_partial * (pitch_Operator(s,i)+s->LFO_Volume*s->Op[i].pLFO);
+		      s->f[i].dphi = m_partial * (pitch_Operator(s,i)+s->LFO_Volume*pLFO);
 		      if (s->f[i].dphi > D_PI) s->f[i].dphi -= D_PI;
 		      s->f[i].phi += s->f[i].dphi;
 		      if (s->f[i].phi > D_PI) s->f[i].phi -= D_PI;
+                      
+                      volumen = (float) *(s->Ovol[i+1]);
+                      aLFO = (float) *(s->aLFO[i+1]);
+                      pLFO = (float) *(s->pLFO[i+1]);
 
-                      mEnv_Vol = s->velocity*s->Op[i+1].volumen*Jenvelope(s,i+1,s->gate,s->env_time)*s->LFO_Volume*s->Op[i+1].aLFO;
+                      mEnv_Vol = s->velocity*volumen*Jenvelope(s,i+1,s->gate,s->env_time)*s->LFO_Volume*aLFO;
 
-		      s->f[i+1].dphi = m_partial * (pitch_Operator(s,i+1)+s->LFO_Volume*s->Op[i+1].pLFO);
+		      s->f[i+1].dphi = m_partial * (pitch_Operator(s,i+1)+s->LFO_Volume*pLFO);
 		      if (s->f[i+1].dphi > D_PI) s->f[i+1].dphi -= D_PI;
 		      s->f[i+1].phi += s->f[i+1].dphi;
 		      if (s->f[i+1].phi > D_PI) s->f[i+1].phi -= D_PI;
                       
                   //R 
+                      pLFO = (float) *(s->pLFO[i]); 
 
-		      s->f[i].dphi2 = m_partial * (pitch_Operator2(s,i)+s->LFO_Volume*s->Op[i].pLFO);
+		      s->f[i].dphi2 = m_partial * (pitch_Operator2(s,i)+s->LFO_Volume*pLFO);
 		      if (s->f[i].dphi2 > D_PI)	s->f[i].dphi2 -= D_PI;
 		      s->f[i].phi2 += s->f[i].dphi2;
 		      if (s->f[i].phi2 > D_PI) s->f[i].phi2 -= D_PI;
 
-		      s->f[i+1].dphi2 = m_partial * (pitch_Operator2(s,i+1)+s->LFO_Volume*s->Op[i+1].pLFO);
+                      pLFO = (float) *(s->pLFO[i+1]);
+
+		      s->f[i+1].dphi2 = m_partial * (pitch_Operator2(s,i+1)+s->LFO_Volume*pLFO);
 		      if (s->f[i+1].dphi2 > D_PI) s->f[i+1].dphi2 -= D_PI;
 		      s->f[i+1].phi2 += s->f[i+1].dphi2;
 		      if (s->f[i+1].phi2 > D_PI) s->f[i+1].phi2 -= D_PI;
 
 
 
-	      sound += Env_Vol * NFsin (s, s->Op[i].wave, s->f[i].phi + mEnv_Vol * NFsin(s,s->Op[i+1].wave,s->f[i+1].phi));
-	      sound2 += Env_Vol * NFsin (s, s->Op[i].wave, s->f[i].phi2 + mEnv_Vol * NFsin(s,s->Op[i+1].wave,s->f[i+1].phi2));
+	      sound += Env_Vol * NFsin (s, wave, s->f[i].phi + mEnv_Vol * NFsin(s,wave1,s->f[i+1].phi));
+	      sound2 += Env_Vol * NFsin (s,wave, s->f[i].phi2 + mEnv_Vol * NFsin(s,wave1,s->f[i+1].phi2));
 
 		}
 
-	      s->buf[l1] += sound * s->master_volume;
-	      s->buf[l1 + 1] += sound2 * s->master_volume;
+	      s->buf[l1] += sound;
+	      s->buf[l1 + 1] += sound2;
 	      s->env_time += s->increment;
 	    }
 

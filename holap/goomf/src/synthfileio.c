@@ -30,7 +30,6 @@ int
 loadbank (goomf_synth_t * s, const char *filename)
 {
 
-  int i;
   FILE *fn;
 
 

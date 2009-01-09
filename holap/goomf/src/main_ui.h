@@ -36,6 +36,7 @@ void update_patches (const char *filename);
 
 goomf_ui gui;
 char elpath[256];
+char tmpchar[4];
 lo_server osc_server;
 lo_address m_host;
 char *osc_configure_path;

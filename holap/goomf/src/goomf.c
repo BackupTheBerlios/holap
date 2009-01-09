@@ -22,11 +22,13 @@
 */
 
 
-#include "goomf.h"
 #include <math.h>
 #include <dssi.h>
 #include <ladspa.h>
 #include <pthread.h>
+#include <lo/lo.h>
+#include "goomf.h"
+
 
 #define goomf_OUTPUT_L 0
 #define goomf_OUTPUT_R 1
@@ -158,7 +160,7 @@ connectPortgoomf (LADSPA_Handle instance, unsigned long port,
       plugin->output_r = data;
       break;
     case goomf_VOLUME:
-      plugin->vol = data;
+      plugin->master_volume = data;
       break;
     case goomf_MASTERTUNE:
       plugin->tune = data;
@@ -371,6 +373,57 @@ connectPortgoomf (LADSPA_Handle instance, unsigned long port,
 }
 
 
+static char *
+osc_build_path (char *base_path, const char *method)
+{
+  char buffer[256];
+  char *full_path;
+
+  snprintf (buffer, 256, "%s%s", base_path, method);
+  if (!(full_path = strdup (buffer)))
+    {
+      printf ("out of memory!\n");
+      exit (1);
+    }
+  return strdup (buffer);
+}
+
+static void
+osc_error (int num, const char *msg, const char *path)
+{
+  printf (" error: liblo server error %d in path \"%s\": %s\n",
+          num, (path ? path : "(null)"), msg);
+}
+
+
+static void
+create_osc (LADSPA_Handle instance, const char *value)
+{
+
+  goomf_synth_t *s = (goomf_synth_t *) instance;
+
+  char *temp;
+  char *host = lo_url_get_hostname (value);
+  char *port = lo_url_get_port (value);
+  char *path = lo_url_get_path (value);
+
+  s->osc_server = 0;
+  s->m_host = lo_address_new (host, port);
+  s->osc_configure_path = osc_build_path (path, "/configure");
+  s->osc_control_path = osc_build_path (path, "/control");
+  s->osc_server = lo_server_new (NULL, osc_error);
+  lo_server_add_method (s->osc_server, s->osc_configure_path, "ss", NULL, NULL);
+  lo_server_add_method (s->osc_server, s->osc_control_path, "if", NULL, NULL);
+  lo_server_add_method (s->osc_server, s->osc_actualiza_path, "ss", NULL, NULL);
+  lo_server_add_method (s->osc_server, s->osc_control_path, "if", NULL, NULL);
+
+  temp = lo_server_get_url (s->osc_server);
+
+  return;
+
+}
+
+
 
 char *
 goomfConfigure (LADSPA_Handle instance, const char *key, const char *value)
@@ -389,8 +442,71 @@ goomfConfigure (LADSPA_Handle instance, const char *key, const char *value)
 	return NULL;
     }
 
+  if (!strcmp (key, "url"))
+    {
+      create_osc (instance, value);
+      return NULL;
+    }
+
+  if (!strcmp (key, "op"))
+    {
+
+     sscanf(value,"%d",&i); 
+
+     lo_send(synth->m_host,synth->osc_control_path, "if",5+i,(float) *(synth->wave[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",11+i,(float) *(synth->H[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",17+i,(float) *(synth->HF[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",23+i,(float) *(synth->Ovol[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",29+i,(float) *(synth->attack[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",35+i,(float) *(synth->decay[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",41+i,(float) *(synth->sustain[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",47+i,(float) *(synth->release[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",53+i,(float) *(synth->pLFO[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",59+i,(float) *(synth->aLFO[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",65+i,(float) *(synth->vsr[i]));
+     
+     return NULL;   
+    }
+
+
   return strdup ("error: unrecognized configure key");
 }
+
+
+char *
+goomfActualiza (LADSPA_Handle instance, const char *key, const char *value)
+{
+  int i = 0;
+  goomf_synth_t *synth = (goomf_synth_t *) instance;
+
+ if (!strcmp (key, "op"))
+    {
+     sscanf(value,"%d",&i); 
+
+     lo_send(synth->m_host,synth->osc_control_path, "if",5+i,(float) *(synth->wave[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",11+i,(float) *(synth->H[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",17+i,(float) *(synth->HF[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",23+i,(float) *(synth->Ovol[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",29+i,(float) *(synth->attack[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",35+i,(float) *(synth->decay[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",41+i,(float) *(synth->sustain[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",47+i,(float) *(synth->release[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",53+i,(float) *(synth->pLFO[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",59+i,(float) *(synth->aLFO[i]));
+     lo_send(synth->m_host,synth->osc_control_path, "if",65+i,(float) *(synth->vsr[i]));
+     
+     return NULL;   
+    }
+
+
+  return strdup ("error: unrecognized configure key");
+}
+
+
+
+
+
+
 
 const DSSI_Program_Descriptor *
 goomf_get_program (LADSPA_Handle handle, unsigned long index)
@@ -400,7 +516,6 @@ goomf_get_program (LADSPA_Handle handle, unsigned long index)
 
   if (index < 32)
     {
-
       pd.Bank = 0;
       pd.Program = index + 1;
       pd.Name = synth->Banco[index + 1].Name;
@@ -483,7 +598,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
   goomf_synth_t *synth = (goomf_synth_t *) instance;
   LADSPA_Data *const outputl = synth->output_l;
   LADSPA_Data *const outputr = synth->output_r;
-  LADSPA_Data vol = *(synth->vol);
+  LADSPA_Data vol = *(synth->master_volume);
 
   unsigned long event_pos = 0;
   unsigned long pos;
@@ -523,8 +638,8 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 
 	      if (events[event_pos].data.control.param == 7)
 		{
-		  synth->master_volume =
-		    (float) events[event_pos].data.control.value / 128.0;
+		  *(synth->master_volume) = 
+		    (LADSPA_Data) events[event_pos].data.control.value / 128.0;
 		  break;
 		}
 	      if (events[event_pos].data.control.param == 64)
@@ -544,11 +659,10 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	      if (events[event_pos].data.note.velocity != 0)
 		{
 			  synth->note= events[event_pos].data.note.note;
-			  synth->velocity = events[event_pos].data.note.velocity / 126.0;
+			  synth->velocity = events[event_pos].data.note.velocity /127.0;
 			  if (synth->scaling)
 			    synth->velocity=Get_Keyb_Level_Scaling (synth,synth->note);
-			  if (synth->velocity> 1.0)
-			    synth->velocity= 1.0;
+			  if (synth->velocity> 1.0) synth->velocity= 1.0;
 			  synth->env_time = 0;
 			  synth->gate=1;
 			  break;
@@ -583,7 +697,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 
 
 
-      // Alg1s (synth, count);
+      Alg1s (synth, count);
 
       for (i = 0; i < count; i += 2)
 	{

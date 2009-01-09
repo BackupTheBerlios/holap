@@ -25,6 +25,7 @@
 #define DXEMU_H
 #include <alsa/asoundlib.h>
 #include "../config.h"
+#include <lo/lo.h>
 #include <ladspa.h>
 #define D_PI 6.283185
 #define F2I(x)  ( lrintf(x) )
@@ -80,10 +81,15 @@ typedef struct
 typedef struct
 {
   pthread_mutex_t mutex;
+  lo_server osc_server;
+  lo_address m_host;
+  char *osc_configure_path;
+  char *osc_actualiza_path;
+  char *osc_control_path;       
 
   LADSPA_Data *output_l;
   LADSPA_Data *output_r;
-  LADSPA_Data *vol;
+  LADSPA_Data *master_volume;
   LADSPA_Data *tune;
   LADSPA_Data *rmodulation;
   LADSPA_Data *portamento;
@@ -129,7 +135,6 @@ typedef struct
   int gate;
   float Envelope_Volume;
   float lasfreq[22];
-  float master_volume;
   int pedal;
   float LFO_Volume;
   float LFO_Frequency;

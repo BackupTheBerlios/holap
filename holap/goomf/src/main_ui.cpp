@@ -40,8 +40,6 @@ thread1 (void *arg)
 
   while (gui.Pexitprogram == 0)
     {
-      Fl::wait ();
-
       switch (gui.ready)
 	{
 	case 1:
@@ -53,7 +51,6 @@ thread1 (void *arg)
 	case 2:
 	  lo_send (m_host, osc_program_path, "ii", 0,
 		   (int) gui.PresetSelect->value () + 1);
-
 
 	  break;
 	}
@@ -72,6 +69,12 @@ thread1 (void *arg)
 
       funcion = 0;
 
+      if (gui.cop)
+        {
+          sprintf(tmpchar,"%d",gui.op);
+          lo_send(m_host,osc_configure_path, "ss","op",tmpchar);
+          gui.cop=0;
+        }  
       if (gui.D_Vol_c)
 	{
 	  lo_send (m_host, osc_control_path, "if", 2, gui.D_Vol->value ());
@@ -151,12 +154,12 @@ thread1 (void *arg)
 
       if (gui.D_VSR_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 41+gui.op, gui.D_VSR->value ());
+	  lo_send (m_host, osc_control_path, "if", 65+gui.op, gui.D_VSR->value ());
 	  gui.D_VSR_c[gui.op] = 0;
 	}
 
 
-
+        Fl::wait();
     }
 
   lo_send (m_host, osc_exiting_path, "");
@@ -367,38 +370,8 @@ control_handler (const char *path, const char *types, lo_arg ** argv,
   const float value = argv[1]->f;
 
 
-if (port < 5)
-  update_widgets (port, value);
-  else
-  {
-   gui.op = ((port+1)%6);
-   switch(gui.op)
-   {
-     case 0:
-        gui.OP1->setonly();
-        break;
-     case 1:
-        gui.OP2->setonly();
-        break;
-     case 2:
-        gui.OP3->setonly();
-        break;
-     case 3:
-        gui.OP4->setonly();
-        break;
-     case 4:
-        gui.OP5->setonly();
-        break;
-     case 5:
-        gui.OP6->setonly();
-        break;
-   }
-  
-  
-  update_widgets(((port+1)/6)+4,value);
-  printf("pp es %d Actualizando %d con valor %f\n",(port+1)%6,((port+1)/6)+5,value);
-  
-  }
+if (port < 5)  update_widgets (port, value);
+  else  update_widgets(((port+1)/6)+4,value);
   
   return 0;
 }
@@ -435,6 +408,7 @@ int
 main (int argc, char **argv)
 {
 
+  int i;
   int lo_fd;
   fd_set rfds;
   struct timeval tv;
@@ -446,7 +420,27 @@ main (int argc, char **argv)
   gui.ready = 0;
   gui.D_Vol_c = 0;
   gui.D_Tune_c = 0;
-  sprintf (gui.uBankFilename, "%s/Default.horeb", DATADIR);
+  gui.D_Portamento_c  = 0;
+  gui.cop = 0;
+  for (i=0; i<6; i++)
+  {
+    gui.D_Wave_c[i]=0;
+    gui.D_H_c[i]=0;
+    gui.D_HF_c[i]=0;
+    gui.D_OVol_c[i]=0;
+    gui.D_VSR_c[i]=0;
+    gui.D_pLFO_c[i]=0;
+    gui.D_aLFO_c[i]=0;
+    gui.D_Attack_c[i]=0;
+    gui.D_Decay_c[i]=0;
+    gui.D_Sustain_c[i]=0;
+    gui.D_Release_c[i]=0;
+  }  
+  
+  
+    
+  
+  sprintf (gui.uBankFilename, "%s/Default.goomf", DATADIR);
   update_patches (gui.uBankFilename);
 
   char *url = argv[1];
@@ -498,9 +492,9 @@ main (int argc, char **argv)
 
   gui.d_osc_label->copy_label (myurl);
 
-  
-
   lo_send (m_host, osc_update_path, "s", myurl);
+
+  lo_send (m_host, osc_configure_path, "ss", "url",myurl);
 
   lo_fd = lo_server_get_socket_fd (osc_server);
 

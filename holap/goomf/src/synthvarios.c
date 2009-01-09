@@ -65,11 +65,12 @@ New (goomf_synth_t * s)
 
   s->Pitch_LFO_Speed = 0;
   s->Pitch_LFO_Delay = 0;
+  s->LFO_Wave = 1;
   s->LFOpitch = 0;
+
   s->modulation = .99;
   s->pitch = 0;
   s->pedal = 0;
-  s->master_volume = 0.70;
   s->scaling = 0;
   bzero (s->Name, sizeof (s->Name));
 

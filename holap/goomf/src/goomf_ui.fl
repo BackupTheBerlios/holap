@@ -61,8 +61,7 @@ if (w != 50)
     code {img ->release();
 delete temp;} {}
   }
-  Function {draw()} {open
-  } {
+  Function {draw()} {} {
     code {int ox,oy,ww,hh;
 int paso;
 char buf[128];
@@ -79,6 +78,7 @@ hh = h();
     val = 0.5;
   else {
     val = (value()-minimum())/(maximum()-minimum());
+     
     if (val > 1.0) val = 1.0;
     else if (val < 0.0) val = 0.0;
   }
@@ -87,21 +87,15 @@ hh = h();
   paso = (int) (val * 47);
 
 
-if (damage()&FL_DAMAGE_ALL)
+if (damage())
 {
 draw_box(box(), ox, oy, ww, hh, color());
 }
 
 
-// if (Fl::focus() == this) box(FL_THIN_UP_BOX); else box(FL_FLAT_BOX);
-
-
 draw_box(box(), ox, oy, ww, hh, color());
 
 temp->draw(ox,oy,ww,hh,paso*ww,0);
-
-
-// format(buf);
 
 bzero(buf,sizeof(buf));
 
@@ -113,7 +107,8 @@ fl_font(FL_HELVETICA, 11);
 
 fl_color(active_r() ? labelcolor() : fl_inactive(labelcolor()));
 
-fl_draw(buf, ox, oy+ww,ww,hh-ww,FL_ALIGN_CLIP);} {}
+fl_draw(buf, ox, oy+ww,ww,hh-ww,FL_ALIGN_CLIP);} {selected
+    }
   }
   Function {handle(int  event)} {return_type int
   } {
@@ -121,7 +116,7 @@ fl_draw(buf, ox, oy+ww,ww,hh-ww,FL_ALIGN_CLIP);} {}
 
 if (event == FL_PUSH && Fl::visible_focus()) {
     Fl::focus(this);
-    redraw();
+    draw();
 } 
 
 
@@ -148,16 +143,18 @@ switch (event)
 
 
  i = Fl_Dial::handle(event);
+ 
 
 return i;} {}
   }
 } 
 
-class goomf_ui {open
-} {
+class goomf_ui {} {
   decl {int ready;} {public
   }
   decl {int op;} {public
+  }
+  decl {int cop;} {public
   }
   decl {int D_Vol_c;} {public
   }
@@ -203,10 +200,11 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {} {
+  Function {make_window()} {open
+  } {
     Fl_Window ui_win {
       callback {Pexitprogram=1;}
-      xywh {1543 76 495 405} type Double color 147 hide
+      xywh {1536 69 495 405} type Double color 147 hide
     } {
       Fl_Box setBankFile {
         label Default
@@ -270,11 +268,11 @@ ready=1;}
       Fl_Choice PresetSelect {
         label Preset
         callback {ready=2;}
-        xywh {255 105 120 20} box PLASTIC_DOWN_BOX down_box FLAT_BOX color 31 selection_color 147 labelsize 11 labelcolor 5 align 1 when 1 textsize 9
+        xywh {255 105 120 20} box PLASTIC_DOWN_BOX down_box FLAT_BOX color 31 selection_color 147 labelfont 1 labelsize 11 labelcolor 5 align 1 when 1 textsize 9
       } {}
       Fl_Group {} {
-        label {Operator Parameters} open
-        xywh {10 175 480 210} box THIN_DOWN_FRAME color 147 labelsize 11 labelcolor 5
+        label {Operator Parameters}
+        xywh {10 175 480 210} box THIN_DOWN_FRAME color 147 labelfont 1 labelsize 11 labelcolor 5
       } {
         Fl_Dial D_Wave {
           label Wave
@@ -327,7 +325,7 @@ ready=1;}
         }
         Fl_Dial D_Attack {
           label Attack
-          callback {D_Attack_c[op]=1;} selected
+          callback {D_Attack_c[op]=1;}
           xywh {30 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.001 step 0.001 value 0.001
           code0 {strcpy(o->theformat,"%1.3f");}
           class Rueda
@@ -356,37 +354,43 @@ ready=1;}
       }
       Fl_Group {} {
         label {Operator Selector}
-        xywh {385 105 105 65} box THIN_DOWN_FRAME color 147 labelsize 11 labelcolor 5
+        xywh {385 105 105 65} box THIN_DOWN_FRAME color 147 labelfont 1 labelsize 11 labelcolor 5
       } {
         Fl_Button OP1 {
           label 1
-          callback {op=0;}
-          xywh {395 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
+          callback {op=0;
+cop=1;}
+          xywh {395 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP2 {
           label 2
-          callback {op=1;}
-          xywh {395 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
+          callback {op=1;
+cop=1;}
+          xywh {395 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP3 {
           label 3
-          callback {op=2;}
-          xywh {425 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
+          callback {op=2;
+cop=1;}
+          xywh {425 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP4 {
           label 4
-          callback {op=3;}
-          xywh {425 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
+          callback {op=3;
+cop=1;}
+          xywh {425 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP5 {
           label 5
-          callback {op=4;}
-          xywh {455 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
+          callback {op=4;
+cop=1;}
+          xywh {455 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP6 {
           label 6
-          callback {op=5;}
-          xywh {455 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
+          callback {op=5;
+cop=1;}
+          xywh {455 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
       }
     }
