@@ -32,6 +32,74 @@
 #define goomf_OUTPUT_R 1
 #define goomf_VOLUME 2
 #define goomf_MASTERTUNE 3
+#define goomf_PORTAMENTO 4
+#define goomf_WAVE_0 5
+#define goomf_WAVE_1 6
+#define goomf_WAVE_2 7
+#define goomf_WAVE_3 8
+#define goomf_WAVE_4 9
+#define goomf_WAVE_5 10
+#define goomf_H_0 11
+#define goomf_H_1 12
+#define goomf_H_2 13
+#define goomf_H_3 14
+#define goomf_H_4 15
+#define goomf_H_5 16
+#define goomf_HF_0 17
+#define goomf_HF_1 18
+#define goomf_HF_2 19
+#define goomf_HF_3 20
+#define goomf_HF_4 21
+#define goomf_HF_5 22
+#define goomf_Vol_0 23
+#define goomf_Vol_1 24
+#define goomf_Vol_2 25
+#define goomf_Vol_3 26
+#define goomf_Vol_4 27
+#define goomf_Vol_5 28
+#define goomf_Attack_0 29
+#define goomf_Attack_1 30
+#define goomf_Attack_2 31
+#define goomf_Attack_3 32
+#define goomf_Attack_4 33
+#define goomf_Attack_5 34
+#define goomf_Decay_0 35
+#define goomf_Decay_1 36
+#define goomf_Decay_2 37
+#define goomf_Decay_3 38
+#define goomf_Decay_4 39
+#define goomf_Decay_5 40
+#define goomf_Sustain_0 41
+#define goomf_Sustain_1 42
+#define goomf_Sustain_2 43
+#define goomf_Sustain_3 44
+#define goomf_Sustain_4 45
+#define goomf_Sustain_5 46
+#define goomf_Release_0 47
+#define goomf_Release_1 48
+#define goomf_Release_2 49
+#define goomf_Release_3 50
+#define goomf_Release_4 51
+#define goomf_Release_5 52
+#define goomf_pLFO_0 53
+#define goomf_pLFO_1 54
+#define goomf_pLFO_2 55
+#define goomf_pLFO_3 56
+#define goomf_pLFO_4 57
+#define goomf_pLFO_5 58
+#define goomf_aLFO_0 59
+#define goomf_aLFO_1 60
+#define goomf_aLFO_2 61
+#define goomf_aLFO_3 62
+#define goomf_aLFO_4 63
+#define goomf_aLFO_5 64
+#define goomf_VSR_0 65
+#define goomf_VSR_1 66
+#define goomf_VSR_2 67
+#define goomf_VSR_3 68
+#define goomf_VSR_4 69
+#define goomf_VSR_5 70
+
 
 #define STEP_SIZE 64
 
@@ -95,6 +163,209 @@ connectPortgoomf (LADSPA_Handle instance, unsigned long port,
     case goomf_MASTERTUNE:
       plugin->tune = data;
       break;
+    case goomf_PORTAMENTO:
+      plugin->portamento = data;
+      break;
+    case goomf_WAVE_0:
+      plugin->wave[0] = data;
+      break;
+    case goomf_WAVE_1:
+      plugin->wave[1] = data;
+      break;
+    case goomf_WAVE_2:
+      plugin->wave[2] = data;
+      break;
+    case goomf_WAVE_3:
+      plugin->wave[3] = data;
+      break;
+    case goomf_WAVE_4:
+      plugin->wave[4] = data;
+      break;
+    case goomf_WAVE_5:
+      plugin->wave[5] = data;
+      break;
+    case goomf_H_0:
+      plugin->H[0] = data;
+      break;
+    case goomf_H_1:
+      plugin->H[1] = data;
+      break;
+    case goomf_H_2:
+      plugin->H[2] = data;
+      break;
+    case goomf_H_3:
+      plugin->H[3] = data;
+      break;
+    case goomf_H_4:
+      plugin->H[4] = data;
+      break;
+    case goomf_H_5:
+      plugin->H[5] = data;
+      break;
+    case goomf_HF_0:
+      plugin->HF[0] = data;
+      break;
+    case goomf_HF_1:
+      plugin->HF[1] = data;
+      break;
+    case goomf_HF_2:
+      plugin->HF[2] = data;
+      break;
+    case goomf_HF_3:
+      plugin->HF[3] = data;
+      break;
+    case goomf_HF_4:
+      plugin->HF[4] = data;
+      break;
+    case goomf_HF_5:
+      plugin->HF[5] = data;
+      break;
+    case goomf_Vol_0:
+      plugin->Ovol[0] = data;
+      break;
+    case goomf_Vol_1:
+      plugin->Ovol[1] = data;
+      break;
+    case goomf_Vol_2:
+      plugin->Ovol[2] = data;
+      break;
+    case goomf_Vol_3:
+      plugin->Ovol[3] = data;
+      break;
+    case goomf_Vol_4:
+      plugin->Ovol[4] = data;
+      break;
+    case goomf_Vol_5:
+      plugin->Ovol[5] = data;
+      break;
+    case goomf_Attack_0:
+      plugin->attack[0] = data;
+      break;
+    case goomf_Attack_1:
+      plugin->attack[1] = data;
+      break;
+    case goomf_Attack_2:
+      plugin->attack[2] = data;
+      break;
+    case goomf_Attack_3:
+      plugin->attack[3] = data;
+      break;
+    case goomf_Attack_4:
+      plugin->attack[4] = data;
+      break;
+    case goomf_Attack_5:
+      plugin->attack[5] = data;
+      break;
+    case goomf_Decay_0:
+      plugin->decay[0] = data;
+      break;
+    case goomf_Decay_1:
+      plugin->decay[1] = data;
+      break;
+    case goomf_Decay_2:
+      plugin->decay[2] = data;
+      break;
+    case goomf_Decay_3:
+      plugin->decay[3] = data;
+      break;
+    case goomf_Decay_4:
+      plugin->decay[4] = data;
+      break;
+    case goomf_Decay_5:
+      plugin->decay[5] = data;
+      break;
+    case goomf_Sustain_0:
+      plugin->sustain[0] = data;
+      break;
+    case goomf_Sustain_1:
+      plugin->sustain[1] = data;
+      break;
+    case goomf_Sustain_2:
+      plugin->sustain[2] = data;
+      break;
+    case goomf_Sustain_3:
+      plugin->sustain[3] = data;
+      break;
+    case goomf_Sustain_4:
+      plugin->sustain[4] = data;
+      break;
+    case goomf_Sustain_5:
+      plugin->sustain[5] = data;
+      break;
+    case goomf_Release_0:
+      plugin->release[0] = data;
+      break;
+    case goomf_Release_1:
+      plugin->release[1] = data;
+      break;
+    case goomf_Release_2:
+      plugin->release[2] = data;
+      break;
+    case goomf_Release_3:
+      plugin->release[3] = data;
+      break;
+    case goomf_Release_4:
+      plugin->release[4] = data;
+      break;
+    case goomf_Release_5:
+      plugin->release[5] = data;
+      break;
+    case goomf_pLFO_0:
+      plugin->pLFO[0] = data;
+      break;
+    case goomf_pLFO_1:
+      plugin->pLFO[1] = data;
+      break;
+    case goomf_pLFO_2:
+      plugin->pLFO[2] = data;
+      break;
+    case goomf_pLFO_3:
+      plugin->pLFO[3] = data;
+      break;
+    case goomf_pLFO_4:
+      plugin->pLFO[4] = data;
+      break;
+    case goomf_pLFO_5:
+      plugin->pLFO[5] = data;
+      break;
+    case goomf_aLFO_0:
+      plugin->aLFO[0] = data;
+      break;
+    case goomf_aLFO_1:
+      plugin->aLFO[1] = data;
+      break;
+    case goomf_aLFO_2:
+      plugin->aLFO[2] = data;
+      break;
+    case goomf_aLFO_3:
+      plugin->aLFO[3] = data;
+      break;
+    case goomf_aLFO_4:
+      plugin->aLFO[4] = data;
+      break;
+    case goomf_aLFO_5:
+      plugin->aLFO[5] = data;
+      break;
+    case goomf_VSR_0:
+      plugin->vsr[0] = data;
+      break;
+    case goomf_VSR_1:
+      plugin->vsr[1] = data;
+      break;
+    case goomf_VSR_2:
+      plugin->vsr[2] = data;
+      break;
+    case goomf_VSR_3:
+      plugin->vsr[3] = data;
+      break;
+    case goomf_VSR_4:
+      plugin->vsr[4] = data;
+      break;
+    case goomf_VSR_5:
+      plugin->vsr[5] = data;
+      break;
+    
+      
     }
 
 }
@@ -365,7 +636,7 @@ goomf_init()
       goomfLDescriptor->Name = "goomf";
       goomfLDescriptor->Maker = "Josep Andreu <holborn@telefonica.net>";
       goomfLDescriptor->Copyright = "GNU General Public License version 2";
-      goomfLDescriptor->PortCount = 4;
+      goomfLDescriptor->PortCount = 71;
 
 
       port_descriptors = (LADSPA_PortDescriptor *)
@@ -414,6 +685,692 @@ goomf_init()
 	LADSPA_HINT_DEFAULT_MIDDLE;
       port_range_hints[goomf_MASTERTUNE].LowerBound = -1.0;
       port_range_hints[goomf_MASTERTUNE].UpperBound = 1.0;
+
+      /* Parameters for Portamento */
+      port_descriptors[goomf_PORTAMENTO] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_PORTAMENTO] = "Portamento";
+      port_range_hints[goomf_PORTAMENTO].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_PORTAMENTO].LowerBound = 0.0;
+      port_range_hints[goomf_PORTAMENTO].UpperBound = 1.0;
+
+      /* Parameters for Wave_0 */
+      port_descriptors[goomf_WAVE_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_WAVE_0] = "Wave_0";
+      port_range_hints[goomf_WAVE_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_WAVE_0].LowerBound = 1.0;
+      port_range_hints[goomf_WAVE_0].UpperBound = 9.0;
+
+      /* Parameters for Wave_1 */
+      port_descriptors[goomf_WAVE_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_WAVE_1] = "Wave_1";
+      port_range_hints[goomf_WAVE_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_WAVE_1].LowerBound = 1.0;
+      port_range_hints[goomf_WAVE_1].UpperBound = 9.0;
+
+      /* Parameters for Wave_2 */
+      port_descriptors[goomf_WAVE_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_WAVE_2] = "Wave_2";
+      port_range_hints[goomf_WAVE_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_WAVE_2].LowerBound = 1.0;
+      port_range_hints[goomf_WAVE_2].UpperBound = 9.0;
+
+      /* Parameters for Wave_3 */
+      port_descriptors[goomf_WAVE_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_WAVE_3] = "Wave_3";
+      port_range_hints[goomf_WAVE_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_WAVE_3].LowerBound = 1.0;
+      port_range_hints[goomf_WAVE_3].UpperBound = 9.0;
+
+      /* Parameters for Wave_4 */
+      port_descriptors[goomf_WAVE_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_WAVE_4] = "Wave_4";
+      port_range_hints[goomf_WAVE_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_WAVE_4].LowerBound = 1.0;
+      port_range_hints[goomf_WAVE_4].UpperBound = 9.0;
+
+      /* Parameters for Wave_5 */
+      port_descriptors[goomf_WAVE_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_WAVE_5] = "Wave_5";
+      port_range_hints[goomf_WAVE_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_WAVE_5].LowerBound = 1.0;
+      port_range_hints[goomf_WAVE_5].UpperBound = 9.0;
+
+      /* Parameters for H_0 */
+      port_descriptors[goomf_HF_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_HF_0] = "H_0";
+      port_range_hints[goomf_HF_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_HF_0].LowerBound = 0.0;
+      port_range_hints[goomf_HF_0].UpperBound = 21.0;
+
+
+      /* Parameters for H_1 */
+      port_descriptors[goomf_H_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_H_1] = "H_1";
+      port_range_hints[goomf_H_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_H_1].LowerBound = 0.0;
+      port_range_hints[goomf_H_1].UpperBound = 21.0;
+
+      /* Parameters for H_2 */
+      port_descriptors[goomf_H_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_H_2] = "H_2";
+      port_range_hints[goomf_H_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_H_2].LowerBound = 0.0;
+      port_range_hints[goomf_H_2].UpperBound = 21.0;
+
+      /* Parameters for H_3 */
+      port_descriptors[goomf_H_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_H_3] = "H_3";
+      port_range_hints[goomf_H_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_H_3].LowerBound = 0.0;
+      port_range_hints[goomf_H_3].UpperBound = 21.0;
+
+      /* Parameters for H_4 */
+      port_descriptors[goomf_H_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_H_4] = "H_4";
+      port_range_hints[goomf_H_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_H_4].LowerBound = 0.0;
+      port_range_hints[goomf_H_4].UpperBound = 21.0;
+
+      /* Parameters for H_5 */
+      port_descriptors[goomf_H_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_H_5] = "H_5";
+      port_range_hints[goomf_H_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_H_5].LowerBound = 0.0;
+      port_range_hints[goomf_H_5].UpperBound = 21.0;
+
+
+      /* Parameters for HF_0 */
+      port_descriptors[goomf_HF_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_HF_0] = "HF_0";
+      port_range_hints[goomf_HF_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_HF_0].LowerBound = -0.5;
+      port_range_hints[goomf_HF_0].UpperBound = 0.5;
+
+      /* Parameters for HF_1 */
+      port_descriptors[goomf_HF_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_HF_1] = "HF_1";
+      port_range_hints[goomf_HF_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_HF_1].LowerBound = -0.5;
+      port_range_hints[goomf_HF_1].UpperBound = 0.5;
+
+      /* Parameters for HF_2 */
+      port_descriptors[goomf_HF_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_HF_2] = "HF_2";
+      port_range_hints[goomf_HF_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_HF_2].LowerBound = -0.5;
+      port_range_hints[goomf_HF_2].UpperBound = 0.5;
+
+      /* Parameters for HF_3 */
+      port_descriptors[goomf_HF_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_HF_3] = "HF_3";
+      port_range_hints[goomf_HF_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_HF_3].LowerBound = -0.5;
+      port_range_hints[goomf_HF_3].UpperBound = 0.5;
+
+      /* Parameters for HF_4 */
+      port_descriptors[goomf_HF_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_HF_4] = "HF_4";
+      port_range_hints[goomf_HF_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_HF_4].LowerBound = -0.5;
+      port_range_hints[goomf_HF_4].UpperBound = 0.5;
+
+      /* Parameters for HF_5 */
+      port_descriptors[goomf_HF_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_HF_5] = "HF_5";
+      port_range_hints[goomf_HF_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_HF_5].LowerBound = -0.5;
+      port_range_hints[goomf_HF_5].UpperBound = 0.5;
+
+      /* Parameters for Vol_0 */
+      port_descriptors[goomf_Vol_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Vol_0] = "Vol_0";
+      port_range_hints[goomf_Vol_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Vol_0].LowerBound = 0.0;
+      port_range_hints[goomf_Vol_0].UpperBound = 1.0;
+
+      /* Parameters for Vol_1 */
+      port_descriptors[goomf_Vol_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Vol_1] = "Vol_1";
+      port_range_hints[goomf_Vol_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Vol_1].LowerBound = 0.0;
+      port_range_hints[goomf_Vol_1].UpperBound = 1.0;
+
+      /* Parameters for Vol_2 */
+      port_descriptors[goomf_Vol_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Vol_2] = "Vol_2";
+      port_range_hints[goomf_Vol_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Vol_2].LowerBound = 0.0;
+      port_range_hints[goomf_Vol_2].UpperBound = 1.0;
+
+      /* Parameters for Vol_3 */
+      port_descriptors[goomf_Vol_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Vol_3] = "Vol_3";
+      port_range_hints[goomf_Vol_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Vol_3].LowerBound = 0.0;
+      port_range_hints[goomf_Vol_3].UpperBound = 1.0;
+
+      /* Parameters for Vol_4 */
+      port_descriptors[goomf_Vol_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Vol_4] = "Vol_4";
+      port_range_hints[goomf_Vol_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Vol_4].LowerBound = 0.0;
+      port_range_hints[goomf_Vol_4].UpperBound = 1.0;
+
+      /* Parameters for Vol_5 */
+      port_descriptors[goomf_Vol_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Vol_5] = "Vol_5";
+      port_range_hints[goomf_Vol_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Vol_5].LowerBound = 0.0;
+      port_range_hints[goomf_Vol_5].UpperBound = 1.0;
+
+
+      /* Parameters for Attack_0 */
+      port_descriptors[goomf_Attack_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Attack_0] = "Attack_0";
+      port_range_hints[goomf_Attack_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Attack_0].LowerBound = 0.001;
+      port_range_hints[goomf_Attack_0].UpperBound = 1.0;
+
+      /* Parameters for Attack_1 */
+      port_descriptors[goomf_Attack_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Attack_1] = "Attack_1";
+      port_range_hints[goomf_Attack_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Attack_1].LowerBound = 0.001;
+      port_range_hints[goomf_Attack_1].UpperBound = 1.0;
+
+      /* Parameters for Attack_2 */
+      port_descriptors[goomf_Attack_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Attack_2] = "Attack_2";
+      port_range_hints[goomf_Attack_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Attack_2].LowerBound = 0.001;
+      port_range_hints[goomf_Attack_2].UpperBound = 1.0;
+
+      /* Parameters for Attack_3 */
+      port_descriptors[goomf_Attack_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Attack_3] = "Attack_3";
+      port_range_hints[goomf_Attack_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Attack_3].LowerBound = 0.001;
+      port_range_hints[goomf_Attack_3].UpperBound = 1.0;
+
+      /* Parameters for Attack_4 */
+      port_descriptors[goomf_Attack_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Attack_4] = "Attack_4";
+      port_range_hints[goomf_Attack_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Attack_4].LowerBound = 0.001;
+      port_range_hints[goomf_Attack_4].UpperBound = 1.0;
+
+      /* Parameters for Attack_5 */
+      port_descriptors[goomf_Attack_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Attack_5] = "Attack_5";
+      port_range_hints[goomf_Attack_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Attack_5].LowerBound = 0.001;
+      port_range_hints[goomf_Attack_5].UpperBound = 1.0;
+
+
+      /* Parameters for Decay_0 */
+      port_descriptors[goomf_Decay_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Decay_0] = "Decay_0";
+      port_range_hints[goomf_Decay_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Decay_0].LowerBound = 0.001;
+      port_range_hints[goomf_Decay_0].UpperBound = 1.0;
+
+      /* Parameters for Decay_1 */
+      port_descriptors[goomf_Decay_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Decay_1] = "Decay_1";
+      port_range_hints[goomf_Decay_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Decay_1].LowerBound = 0.001;
+      port_range_hints[goomf_Decay_1].UpperBound = 1.0;
+
+      /* Parameters for Decay_2 */
+      port_descriptors[goomf_Decay_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Decay_2] = "Decay_2";
+      port_range_hints[goomf_Decay_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Decay_2].LowerBound = 0.001;
+      port_range_hints[goomf_Decay_2].UpperBound = 1.0;
+
+      /* Parameters for Decay_3 */
+      port_descriptors[goomf_Decay_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Decay_3] = "Decay_3";
+      port_range_hints[goomf_Decay_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Decay_3].LowerBound = 0.001;
+      port_range_hints[goomf_Decay_3].UpperBound = 1.0;
+
+      /* Parameters for Decay_4 */
+      port_descriptors[goomf_Decay_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Decay_4] = "Decay_4";
+      port_range_hints[goomf_Decay_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Decay_4].LowerBound = 0.001;
+      port_range_hints[goomf_Decay_4].UpperBound = 1.0;
+
+      /* Parameters for Decay_5 */
+      port_descriptors[goomf_Decay_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Decay_5] = "Decay_5";
+      port_range_hints[goomf_Decay_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Decay_5].LowerBound = 0.001;
+      port_range_hints[goomf_Decay_5].UpperBound = 1.0;
+
+
+      /* Parameters for Sustain_0 */
+      port_descriptors[goomf_Sustain_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Sustain_0] = "Sustain_0";
+      port_range_hints[goomf_Sustain_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Sustain_0].LowerBound = 0.0;
+      port_range_hints[goomf_Sustain_0].UpperBound = 1.0;
+
+      /* Parameters for Sustain_1 */
+      port_descriptors[goomf_Sustain_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Sustain_1] = "Sustain_1";
+      port_range_hints[goomf_Sustain_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Sustain_1].LowerBound = 0.0;
+      port_range_hints[goomf_Sustain_1].UpperBound = 1.0;
+
+      /* Parameters for Sustain_2 */
+      port_descriptors[goomf_Sustain_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Sustain_2] = "Sustain_2";
+      port_range_hints[goomf_Sustain_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Sustain_2].LowerBound = 0.0;
+      port_range_hints[goomf_Sustain_2].UpperBound = 1.0;
+
+      /* Parameters for Sustain_3 */
+      port_descriptors[goomf_Sustain_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Sustain_3] = "Sustain_3";
+      port_range_hints[goomf_Sustain_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Sustain_3].LowerBound = 0.0;
+      port_range_hints[goomf_Sustain_3].UpperBound = 1.0;
+
+      /* Parameters for Sustain_4 */
+      port_descriptors[goomf_Sustain_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Sustain_4] = "Sustain_4";
+      port_range_hints[goomf_Sustain_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Sustain_4].LowerBound = 0.0;
+      port_range_hints[goomf_Sustain_4].UpperBound = 1.0;
+
+      /* Parameters for Sustain_5 */
+      port_descriptors[goomf_Sustain_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Sustain_5] = "Sustain_5";
+      port_range_hints[goomf_Sustain_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Sustain_5].LowerBound = 0.0;
+      port_range_hints[goomf_Sustain_5].UpperBound = 1.0;
+
+
+      /* Parameters for Release_0 */
+      port_descriptors[goomf_Release_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Release_0] = "Release_0";
+      port_range_hints[goomf_Release_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Release_0].LowerBound = 0.001;
+      port_range_hints[goomf_Release_0].UpperBound = 1.0;
+
+      /* Parameters for Release_1 */
+      port_descriptors[goomf_Release_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Release_1] = "Release_1";
+      port_range_hints[goomf_Release_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Release_1].LowerBound = 0.001;
+      port_range_hints[goomf_Release_1].UpperBound = 1.0;
+
+      /* Parameters for Release_2 */
+      port_descriptors[goomf_Release_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Release_2] = "Release_2";
+      port_range_hints[goomf_Release_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Release_2].LowerBound = 0.001;
+      port_range_hints[goomf_Release_2].UpperBound = 1.0;
+
+      /* Parameters for Release_3 */
+      port_descriptors[goomf_Release_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Release_3] = "Release_3";
+      port_range_hints[goomf_Release_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Release_3].LowerBound = 0.001;
+      port_range_hints[goomf_Release_3].UpperBound = 1.0;
+
+      /* Parameters for Release_4 */
+      port_descriptors[goomf_Release_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Release_4] = "Release_4";
+      port_range_hints[goomf_Release_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Release_4].LowerBound = 0.001;
+      port_range_hints[goomf_Release_4].UpperBound = 1.0;
+
+      /* Parameters for Release_5 */
+      port_descriptors[goomf_Release_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Release_5] = "Release_5";
+      port_range_hints[goomf_Release_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_Release_5].LowerBound = 0.001;
+      port_range_hints[goomf_Release_5].UpperBound = 1.0;
+
+      
+
+      /* Parameters for pLFO_0 */
+      port_descriptors[goomf_pLFO_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_pLFO_0] = "pLFO_0";
+      port_range_hints[goomf_pLFO_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_pLFO_0].LowerBound = 0.0;
+      port_range_hints[goomf_pLFO_0].UpperBound = 1.0;
+
+      /* Parameters for pLFO_1 */
+      port_descriptors[goomf_pLFO_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_pLFO_1] = "pLFO_1";
+      port_range_hints[goomf_pLFO_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_pLFO_1].LowerBound = 0.0;
+      port_range_hints[goomf_pLFO_1].UpperBound = 1.0;
+
+      /* Parameters for pLFO_2 */
+      port_descriptors[goomf_pLFO_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_pLFO_2] = "pLFO_2";
+      port_range_hints[goomf_pLFO_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_pLFO_2].LowerBound = 0.0;
+      port_range_hints[goomf_pLFO_2].UpperBound = 1.0;
+
+      /* Parameters for pLFO_3 */
+      port_descriptors[goomf_pLFO_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_pLFO_3] = "pLFO_3";
+      port_range_hints[goomf_pLFO_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_pLFO_3].LowerBound = 0.0;
+      port_range_hints[goomf_pLFO_3].UpperBound = 1.0;
+
+      /* Parameters for pLFO_4 */
+      port_descriptors[goomf_pLFO_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_pLFO_4] = "pLFO_4";
+      port_range_hints[goomf_pLFO_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_pLFO_4].LowerBound = 0.0;
+      port_range_hints[goomf_pLFO_4].UpperBound = 1.0;
+
+      /* Parameters for pLFO_5 */
+      port_descriptors[goomf_pLFO_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_pLFO_5] = "pLFO_5";
+      port_range_hints[goomf_pLFO_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_pLFO_5].LowerBound = 0.0;
+      port_range_hints[goomf_pLFO_5].UpperBound = 1.0;
+
+      
+
+      /* Parameters for aLFO_0 */
+      port_descriptors[goomf_aLFO_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_aLFO_0] = "aLFO_0";
+      port_range_hints[goomf_aLFO_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_aLFO_0].LowerBound = 0.0;
+      port_range_hints[goomf_aLFO_0].UpperBound = 1.0;
+
+      /* Parameters for aLFO_1 */
+      port_descriptors[goomf_aLFO_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_aLFO_1] = "aLFO_1";
+      port_range_hints[goomf_aLFO_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_aLFO_1].LowerBound = 0.0;
+      port_range_hints[goomf_aLFO_1].UpperBound = 1.0;
+
+      /* Parameters for aLFO_2 */
+      port_descriptors[goomf_aLFO_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_aLFO_2] = "aLFO_2";
+      port_range_hints[goomf_aLFO_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_aLFO_2].LowerBound = 0.0;
+      port_range_hints[goomf_aLFO_2].UpperBound = 1.0;
+
+      /* Parameters for aLFO_3 */
+      port_descriptors[goomf_aLFO_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_aLFO_3] = "aLFO_3";
+      port_range_hints[goomf_aLFO_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_aLFO_3].LowerBound = 0.0;
+      port_range_hints[goomf_aLFO_3].UpperBound = 1.0;
+
+      /* Parameters for aLFO_4 */
+      port_descriptors[goomf_aLFO_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_aLFO_4] = "aLFO_4";
+      port_range_hints[goomf_aLFO_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_aLFO_4].LowerBound = 0.0;
+      port_range_hints[goomf_aLFO_4].UpperBound = 1.0;
+
+      /* Parameters for aLFO_5 */
+      port_descriptors[goomf_aLFO_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_aLFO_5] = "aLFO_5";
+      port_range_hints[goomf_aLFO_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_aLFO_5].LowerBound = 0.0;
+      port_range_hints[goomf_aLFO_5].UpperBound = 1.0;
+
+      
+
+      /* Parameters for VSR_0 */
+      port_descriptors[goomf_VSR_0] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_VSR_0] = "VSR_0";
+      port_range_hints[goomf_VSR_0].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_VSR_0].LowerBound = 0.0;
+      port_range_hints[goomf_VSR_0].UpperBound = 1.0;
+
+      /* Parameters for VSR_1 */
+      port_descriptors[goomf_VSR_1] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_VSR_1] = "VSR_1";
+      port_range_hints[goomf_VSR_1].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_VSR_1].LowerBound = 0.0;
+      port_range_hints[goomf_VSR_1].UpperBound = 1.0;
+
+      /* Parameters for VSR_2 */
+      port_descriptors[goomf_VSR_2] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_VSR_2] = "VSR_2";
+      port_range_hints[goomf_VSR_2].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_VSR_2].LowerBound = 0.0;
+      port_range_hints[goomf_VSR_2].UpperBound = 1.0;
+
+      /* Parameters for VSR_3 */
+      port_descriptors[goomf_VSR_3] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_VSR_3] = "VSR_3";
+      port_range_hints[goomf_VSR_3].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_VSR_3].LowerBound = 0.0;
+      port_range_hints[goomf_VSR_3].UpperBound = 1.0;
+
+      /* Parameters for VSR_4 */
+      port_descriptors[goomf_VSR_4] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_VSR_4] = "VSR_4";
+      port_range_hints[goomf_VSR_4].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_VSR_4].LowerBound = 0.0;
+      port_range_hints[goomf_VSR_4].UpperBound = 1.0;
+
+      /* Parameters for VSR_5 */
+      port_descriptors[goomf_VSR_5] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_VSR_5] = "VSR_5";
+      port_range_hints[goomf_VSR_5].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_VSR_5].LowerBound = 0.0;
+      port_range_hints[goomf_VSR_5].UpperBound = 1.0;
+
+      
+
+
 
       goomfLDescriptor->instantiate = instantiategoomf;
       goomfLDescriptor->connect_port = connectPortgoomf;

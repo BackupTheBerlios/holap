@@ -86,7 +86,18 @@ typedef struct
   LADSPA_Data *vol;
   LADSPA_Data *tune;
   LADSPA_Data *rmodulation;
-   
+  LADSPA_Data *portamento;
+  LADSPA_Data *wave[6];
+  LADSPA_Data *H[6];
+  LADSPA_Data *HF[6];
+  LADSPA_Data *Ovol[6];
+  LADSPA_Data *attack[6];
+  LADSPA_Data *decay[6];
+  LADSPA_Data *sustain[6];
+  LADSPA_Data *release[6];  
+  LADSPA_Data *pLFO[6];
+  LADSPA_Data *aLFO[6];
+  LADSPA_Data *vsr[6];   
 
   OperatorPar Op[6];
   char Name[36];
@@ -95,7 +106,6 @@ typedef struct
   float LFOpitch;
   float Master_Volume;
   int LFO_Wave;
-  float Portamento_Speed;
   
   freqVarios f[6];
   Menoscalculos h[192];

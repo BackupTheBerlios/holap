@@ -84,6 +84,77 @@ thread1 (void *arg)
 	  gui.D_Tune_c = 0;
 	}
 
+      if (gui.D_Portamento_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 4, gui.D_Portamento->value ());
+	  gui.D_Portamento_c = 0;
+	}
+
+      if (gui.D_Wave_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 5+gui.op, gui.D_Wave->value ());
+	  gui.D_Wave_c[gui.op] = 0;
+	}
+      if (gui.D_H_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 11+gui.op, gui.D_H->value ());
+	  gui.D_H_c[gui.op] = 0;
+	}
+      
+      if (gui.D_HF_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 17+gui.op, gui.D_HF->value ());
+	  gui.D_HF_c[gui.op] = 0;
+	}
+      
+      if (gui.D_OVol_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 23+gui.op, gui.D_OVol->value ());
+	  gui.D_OVol_c[gui.op] = 0;
+	}
+      
+      if (gui.D_Attack_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 29+gui.op, gui.D_Attack->value ());
+	  gui.D_Attack_c[gui.op] = 0;
+	}
+      
+      if (gui.D_Decay_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 35+gui.op, gui.D_Decay->value ());
+	  gui.D_Decay_c[gui.op] = 0;
+	}
+      
+      if (gui.D_Sustain_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 41+gui.op, gui.D_Sustain->value ());
+	  gui.D_Sustain_c[gui.op] = 0;
+	}
+
+      if (gui.D_Release_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 47+gui.op, gui.D_Release->value ());
+	  gui.D_Release_c[gui.op] = 0;
+	}
+      
+      if (gui.D_pLFO_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 53+gui.op, gui.D_pLFO->value ());
+	  gui.D_pLFO_c[gui.op] = 0;
+	}
+      
+      if (gui.D_aLFO_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 59+gui.op, gui.D_aLFO->value ());
+	  gui.D_aLFO_c[gui.op] = 0;
+	}
+
+      if (gui.D_VSR_c[gui.op])
+	{
+	  lo_send (m_host, osc_control_path, "if", 41+gui.op, gui.D_VSR->value ());
+	  gui.D_VSR_c[gui.op] = 0;
+	}
+
 
 
     }
