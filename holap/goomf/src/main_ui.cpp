@@ -117,7 +117,7 @@ thread1 (void *arg)
 	{
 	  lo_send (m_host, osc_control_path, "if", 29+gui.op, gui.D_Attack->value ());
 	  gui.D_Attack_c[gui.op] = 0;
-	}
+       	}
       
       if (gui.D_Decay_c[gui.op])
 	{
@@ -178,7 +178,44 @@ update_widgets (int port, float value)
     case 3:
       gui.D_Tune->value (value);
       break;
-    }
+    case 4:
+      gui.D_Portamento->value (value);
+      break;
+    case 5:
+      gui.D_Wave->value(value);
+      break;  
+    case 6:
+      gui.D_H->value(value);
+      break;  
+    case 7:
+      gui.D_HF->value(value);
+      break;  
+    case 8:
+      gui.D_OVol->value(value);
+      break;  
+    case 9:
+      gui.D_Attack->value(value);
+      break;  
+    case 10:
+      gui.D_Decay->value(value);
+      break;  
+    case 11:
+      gui.D_Sustain->value(value);
+      break;  
+    case 12:
+      gui.D_Release->value(value);
+      break;  
+    case 13:
+      gui.D_pLFO->value(value);
+      break;  
+    case 14:
+      gui.D_aLFO->value(value);
+      break;  
+    case 15:
+      gui.D_VSR->value(value);
+      break;  
+
+ }
 
 
 }
@@ -328,9 +365,41 @@ control_handler (const char *path, const char *types, lo_arg ** argv,
 
   const int port = argv[0]->i;
   const float value = argv[1]->f;
+
+
+if (port < 5)
   update_widgets (port, value);
-
-
+  else
+  {
+   gui.op = ((port+1)%6);
+   switch(gui.op)
+   {
+     case 0:
+        gui.OP1->setonly();
+        break;
+     case 1:
+        gui.OP2->setonly();
+        break;
+     case 2:
+        gui.OP3->setonly();
+        break;
+     case 3:
+        gui.OP4->setonly();
+        break;
+     case 4:
+        gui.OP5->setonly();
+        break;
+     case 5:
+        gui.OP6->setonly();
+        break;
+   }
+  
+  
+  update_widgets(((port+1)/6)+4,value);
+  printf("pp es %d Actualizando %d con valor %f\n",(port+1)%6,((port+1)/6)+5,value);
+  
+  }
+  
   return 0;
 }
 

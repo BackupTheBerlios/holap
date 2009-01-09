@@ -50,14 +50,14 @@ New (goomf_synth_t * s)
 
   for (i = 0; i < 6; i++)
     {
-      s->Op[i].harmonic = 3;
+      s->Op[i].harmonic = 0;
       s->Op[i].harmonic_fine = 0.0;
       s->Op[i].volumen = 0.0;
       s->Op[i].wave = 1;
-      s->Op[i].attack = .01;
-      s->Op[i].decay = .2;
-      s->Op[i].sustain = .8;
-      s->Op[i].release = .15;
+      s->Op[i].attack = .001;
+      s->Op[i].decay = .001;
+      s->Op[i].sustain = .5;
+      s->Op[i].release = .001;
       s->Op[i].pLFO = 0.0;
       s->Op[i].aLFO = 0.0;
       s->Op[i].vsr = 0.0;

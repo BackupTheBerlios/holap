@@ -757,14 +757,14 @@ goomf_init()
       port_range_hints[goomf_WAVE_5].UpperBound = 9.0;
 
       /* Parameters for H_0 */
-      port_descriptors[goomf_HF_0] =
+      port_descriptors[goomf_H_0] =
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-      port_names[goomf_HF_0] = "H_0";
-      port_range_hints[goomf_HF_0].HintDescriptor =
+      port_names[goomf_H_0] = "H_0";
+      port_range_hints[goomf_H_0].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[goomf_HF_0].LowerBound = 0.0;
-      port_range_hints[goomf_HF_0].UpperBound = 21.0;
+      port_range_hints[goomf_H_0].LowerBound = 0.0;
+      port_range_hints[goomf_H_0].UpperBound = 21.0;
 
 
       /* Parameters for H_1 */
@@ -933,7 +933,7 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Vol_5] = "Vol_5";
       port_range_hints[goomf_Vol_5].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Vol_5].LowerBound = 0.0;
       port_range_hints[goomf_Vol_5].UpperBound = 1.0;
@@ -994,7 +994,7 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Attack_5] = "Attack_5";
       port_range_hints[goomf_Attack_5].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Attack_5].LowerBound = 0.001;
       port_range_hints[goomf_Attack_5].UpperBound = 1.0;
@@ -1005,7 +1005,7 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Decay_0] = "Decay_0";
       port_range_hints[goomf_Decay_0].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_0].LowerBound = 0.001;
       port_range_hints[goomf_Decay_0].UpperBound = 1.0;
@@ -1015,7 +1015,7 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Decay_1] = "Decay_1";
       port_range_hints[goomf_Decay_1].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_1].LowerBound = 0.001;
       port_range_hints[goomf_Decay_1].UpperBound = 1.0;
@@ -1025,7 +1025,7 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Decay_2] = "Decay_2";
       port_range_hints[goomf_Decay_2].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_2].LowerBound = 0.001;
       port_range_hints[goomf_Decay_2].UpperBound = 1.0;
@@ -1035,7 +1035,7 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Decay_3] = "Decay_3";
       port_range_hints[goomf_Decay_3].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_3].LowerBound = 0.001;
       port_range_hints[goomf_Decay_3].UpperBound = 1.0;
@@ -1045,7 +1045,7 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Decay_4] = "Decay_4";
       port_range_hints[goomf_Decay_4].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_4].LowerBound = 0.001;
       port_range_hints[goomf_Decay_4].UpperBound = 1.0;
@@ -1055,7 +1055,7 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Decay_5] = "Decay_5";
       port_range_hints[goomf_Decay_5].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE |
+	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_5].LowerBound = 0.001;
       port_range_hints[goomf_Decay_5].UpperBound = 1.0;
@@ -1418,3 +1418,4 @@ goomf_fini()
       free (goomfDDescriptor);
     }
 }
+

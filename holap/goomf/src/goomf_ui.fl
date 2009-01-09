@@ -191,8 +191,7 @@ class goomf_ui {open
   }
   decl {char uBankFilename[255];} {public
   }
-  Function {goomf_ui()} {open
-  } {
+  Function {goomf_ui()} {} {
     code {fl_open_display();
 Fl::visual(FL_DOUBLE|FL_RGB);
 fl_register_images();
@@ -202,13 +201,12 @@ ready=1;
 OP1->value(1);
 ui_win->show();
 void * v=MT;
-Fl::add_timeout(1.0 * 0.04,tick,v);} {selected
-    }
+Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
   Function {make_window()} {} {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;} open
-      xywh {1557 90 495 405} type Double color 147 visible
+      callback {Pexitprogram=1;}
+      xywh {1543 76 495 405} type Double color 147 hide
     } {
       Fl_Box setBankFile {
         label Default
@@ -265,7 +263,7 @@ ready=1;}
       Fl_Dial D_Portamento {
         label Portamento
         callback {D_Portamento_c=1;}
-        xywh {185 70 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum -1 step 0.01
+        xywh {185 70 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01
         code0 {strcpy(o->theformat,"%1.2f");}
         class Rueda
       }
@@ -275,84 +273,84 @@ ready=1;}
         xywh {255 105 120 20} box PLASTIC_DOWN_BOX down_box FLAT_BOX color 31 selection_color 147 labelsize 11 labelcolor 5 align 1 when 1 textsize 9
       } {}
       Fl_Group {} {
-        label {Operator Parameters}
+        label {Operator Parameters} open
         xywh {10 175 480 210} box THIN_DOWN_FRAME color 147 labelsize 11 labelcolor 5
       } {
         Fl_Dial D_Wave {
           label Wave
           callback {D_Wave_c[op]=1;}
-          xywh {30 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
-          code0 {strcpy(o->theformat,"%1.2f");}
+          xywh {30 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 1 maximum 9 step 1 value 1
+          code0 {strcpy(o->theformat,"%1.0f");}
           class Rueda
         }
         Fl_Dial D_H {
           label Harmonic
           callback {D_H_c[op]=1;}
-          xywh {95 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
-          code0 {strcpy(o->theformat,"%1.2f");}
+          xywh {95 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 maximum 21 step 1
+          code0 {strcpy(o->theformat,"%2.0f");}
           class Rueda
         }
         Fl_Dial D_HF {
           label {H.Fine}
           callback {D_HF_c[op]=1;}
-          xywh {160 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
+          xywh {160 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum -0.5 maximum 0.5 step 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
         }
         Fl_Dial D_OVol {
           label Volume
           callback {D_OVol_c[op]=1;}
-          xywh {225 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
+          xywh {225 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
         }
         Fl_Dial D_VSR {
           label VSR
           callback {D_VSR_c[op]=1;}
-          xywh {290 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
+          xywh {290 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
         }
         Fl_Dial D_pLFO {
           label pLFO
           callback {D_pLFO_c[op]=1;}
-          xywh {350 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
+          xywh {350 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
         }
         Fl_Dial D_aLFO {
           label aLFO
           callback {D_aLFO_c[op]=1;}
-          xywh {410 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
+          xywh {410 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
         }
         Fl_Dial D_Attack {
           label Attack
-          callback {D_Attack_c[op]=1;}
-          xywh {30 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
-          code0 {strcpy(o->theformat,"%1.2f");}
+          callback {D_Attack_c[op]=1;} selected
+          xywh {30 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.001 step 0.001 value 0.001
+          code0 {strcpy(o->theformat,"%1.3f");}
           class Rueda
         }
         Fl_Dial D_Decay {
           label Decay
           callback {D_Decay_c[op]=1;}
-          xywh {95 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
-          code0 {strcpy(o->theformat,"%1.2f");}
+          xywh {95 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.001 step 0.001 value 0.001
+          code0 {strcpy(o->theformat,"%1.3f");}
           class Rueda
         }
         Fl_Dial D_Sustain {
           label Sustain
           callback {D_Sustain_c[op]=1;}
-          xywh {160 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
+          xywh {160 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 0.5
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
         }
         Fl_Dial D_Release {
           label Release
           callback {D_Release_c[op]=1;}
-          xywh {225 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01 value 1
-          code0 {strcpy(o->theformat,"%1.2f");}
+          xywh {225 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.001 step 0.001 value 0.001
+          code0 {strcpy(o->theformat,"%1.3f");}
           class Rueda
         }
       }
