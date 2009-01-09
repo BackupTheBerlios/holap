@@ -70,10 +70,8 @@ New (goomf_synth_t * s)
   s->pitch = 0;
   s->pedal = 0;
   s->master_volume = 0.70;
-  s->detune = 0;
   s->scaling = 0;
   bzero (s->Name, sizeof (s->Name));
-  s->nombre = s->Name;
 
 }
 

@@ -116,10 +116,11 @@ void
 update_patches (const char *filename)
 {
 
+  return;
+
   int i, j;
   FILE *fn;
   char buf[2048];
-  float Data_Version;
   char Name[64];
 
   if ((fn = fopen (filename, "r")) == NULL)
@@ -153,8 +154,11 @@ osc_build_path (char *base_path, const char *method)
 static void
 osc_error (int num, const char *msg, const char *path)
 {
+
   printf (" error: liblo server error %d in path \"%s\": %s\n",
 	  num, (path ? path : "(null)"), msg);
+
+
 }
 
 
@@ -273,7 +277,7 @@ program_handler (const char *path, const char *types, lo_arg ** argv,
 
   bank = argv[0]->i;
   program = argv[1]->i;
-  gui.PresetSelect->value (program - 1);
+  gui.PresetSelect->value (program);
   
 
 
@@ -312,13 +316,10 @@ main (int argc, char **argv)
   char *label = argv[3];
   char *temp;
 
-
   pthread_create (&thr1, NULL, thread1, NULL);
-
+  
   gui.ui_win->copy_label (argv[3]);
   gui.ui_win->show ();
-
-
 
   osc_server = 0;
   m_host = lo_address_new (host, port);
@@ -348,12 +349,16 @@ main (int argc, char **argv)
   lo_server_add_method (osc_server, osc_show_path, "", show_handler, NULL);
   lo_server_add_method (osc_server, NULL, NULL, debug_handler, NULL);
 
+   
+
 
   temp = lo_server_get_url (osc_server);
 
   myurl = osc_build_path (temp, (strlen (path) > 1 ? path + 1 : path));
 
   gui.d_osc_label->copy_label (myurl);
+
+  
 
   lo_send (m_host, osc_update_path, "s", myurl);
 
@@ -478,4 +483,5 @@ read_stdin (void)
       fflush (stdout);
     }
 }
+
 

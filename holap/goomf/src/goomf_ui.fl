@@ -153,7 +153,8 @@ return i;} {}
   }
 } 
 
-class goomf_ui {} {
+class goomf_ui {open
+} {
   decl {int ready;} {public
   }
   decl {int op;} {public
@@ -184,27 +185,30 @@ class goomf_ui {} {
   }
   decl {int D_Sustain_c[6];} {public
   }
-  decl {int D_Release_c[6];} {selected public
+  decl {int D_Release_c[6];} {public
   }
   decl {int Pexitprogram;} {public
   }
   decl {char uBankFilename[255];} {public
   }
-  Function {goomf_ui()} {} {
+  Function {goomf_ui()} {open
+  } {
     code {fl_open_display();
 Fl::visual(FL_DOUBLE|FL_RGB);
 fl_register_images();
 make_window();
-ui_win->xclass("horgand-dssi");
+ui_win->xclass("goomf");
 ready=1;
+OP1->value(1);
 ui_win->show();
 void * v=MT;
-Fl::add_timeout(1.0 * 0.04,tick,v);} {}
+Fl::add_timeout(1.0 * 0.04,tick,v);} {selected
+    }
   }
   Function {make_window()} {} {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;}
-      xywh {1571 104 495 405} type Double color 147 visible
+      callback {Pexitprogram=1;} open
+      xywh {1557 90 495 405} type Double color 147 visible
     } {
       Fl_Box setBankFile {
         label Default
@@ -242,7 +246,7 @@ ready=1;}
         xywh {350 41 145 29} labelfont 1 labelsize 21 labelcolor 7
       }
       Fl_Box MT {
-        xywh {85 243 120 16} labelsize 11
+        xywh {355 129 20 16} labelsize 11
       }
       Fl_Dial D_Vol {
         label Volume
@@ -271,7 +275,7 @@ ready=1;}
         xywh {255 105 120 20} box PLASTIC_DOWN_BOX down_box FLAT_BOX color 31 selection_color 147 labelsize 11 labelcolor 5 align 1 when 1 textsize 9
       } {}
       Fl_Group {} {
-        label {Operator Parameters} open
+        label {Operator Parameters}
         xywh {10 175 480 210} box THIN_DOWN_FRAME color 147 labelsize 11 labelcolor 5
       } {
         Fl_Dial D_Wave {
@@ -358,32 +362,32 @@ ready=1;}
       } {
         Fl_Button OP1 {
           label 1
-          callback {op=1;}
+          callback {op=0;}
           xywh {395 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
         }
         Fl_Button OP2 {
           label 2
-          callback {op=2;}
+          callback {op=1;}
           xywh {395 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
         }
         Fl_Button OP3 {
           label 3
-          callback {op=3;}
+          callback {op=2;}
           xywh {425 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
         }
         Fl_Button OP4 {
           label 4
-          callback {op=4;}
+          callback {op=3;}
           xywh {425 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
         }
         Fl_Button OP5 {
           label 5
-          callback {op=5;}
+          callback {op=4;}
           xywh {455 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
         }
         Fl_Button OP6 {
           label 6
-          callback {op=6;}
+          callback {op=5;}
           xywh {455 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3
         }
       }

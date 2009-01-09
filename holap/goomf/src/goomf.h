@@ -26,6 +26,7 @@
 #include <alsa/asoundlib.h>
 #include "../config.h"
 #include <ladspa.h>
+#define D_PI 6.283185
 #define F2I(x)  ( lrintf(x) )
 
 
@@ -84,19 +85,18 @@ typedef struct
   LADSPA_Data *output_r;
   LADSPA_Data *vol;
   LADSPA_Data *tune;
-  LADSPA_Data *modulation;
-  
+  LADSPA_Data *rmodulation;
+   
 
   OperatorPar Op[6];
   char Name[36];
-  float modulation;
   float Pitch_LFO_Speed;
   float Pitch_LFO_Delay;
   float LFOpitch;
   float Master_Volume;
   int LFO_Wave;
   float Portamento_Speed;
-
+  
   freqVarios f[6];
   Menoscalculos h[192];
   float lsin[6290];
@@ -113,6 +113,8 @@ typedef struct
   float velocity;
   float pitch;
   float env_time;
+  float scaling;
+  float modulation; 
   int note;
   int gate;
   float Envelope_Volume;
@@ -134,11 +136,11 @@ long int lrintf (float x);
 float NFsin (goomf_synth_t * s, int i, float x);
 void Alg1s (goomf_synth_t * s, int nframes);
 float Jenvelope (goomf_synth_t * s, int op, int gate, float t);
-float Get_Partial (goomf_synth_t * s, int note);
+float Get_Partial (goomf_synth_t * s);
 float Pitch_LFO (goomf_synth_t * s, float t);
 void Calc_LFO_Frequency (goomf_synth_t * s);
-float pitch_Operator (goomf_synth_t * s, int i, int note);
-float pitch_Operator2 (goomf_synth_t * s, int i, int note);
+float pitch_Operator (goomf_synth_t * s, int i);
+float pitch_Operator2 (goomf_synth_t * s, int i);
 float Get_Keyb_Level_Scaling (goomf_synth_t * s, int nota);
 void New (goomf_synth_t * s);
 void New_Bank (goomf_synth_t * s);

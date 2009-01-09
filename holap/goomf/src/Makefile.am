@@ -7,9 +7,10 @@ plugindir = $(libdir)/dssi
 plugin_LTLIBRARIES = goomf.la
 
 
-horgand_fltk_SOURCES = main_ui.cpp \
+goomf_fltk_SOURCES = main_ui.cpp \
 	main_ui.h \
 	goomf_ui.cxx \
+	goomf_ui.h \
 	goomf.h 
 
 
@@ -22,7 +23,7 @@ goomf_fltk_CFLAGS = "-D_THREAD_SAFE -D_REENTRANT"
 
 goomf_la_SOURCES = goomf.c \
         synth.c \
-	syntvarios.c \
+	synthvarios.c \
 	synthfileio.c \
         goomf.h 
 

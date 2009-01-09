@@ -32,13 +32,6 @@
 #define goomf_OUTPUT_R 1
 #define goomf_VOLUME 2
 #define goomf_MASTERTUNE 3
-#define goomf_MODULATION 4
-#define goomf_REVERB 5
-#define goomf_CHORUS 6
-#define goomf_ROTARY 7
-#define goomf_DELAY 8
-
-
 
 #define STEP_SIZE 64
 
@@ -102,22 +95,8 @@ connectPortgoomf (LADSPA_Handle instance, unsigned long port,
     case goomf_MASTERTUNE:
       plugin->tune = data;
       break;
-    case goomf_MODULATION:
-      plugin->modulation = data;
-      break;
-    case goomf_REVERB:
-      plugin->E_Reverb_On = data;
-      break;  
-    case goomf_CHORUS:
-      plugin->E_Chorus_On = data;
-      break;
-    case goomf_ROTARY:
-      plugin->E_Rotary_On = data;
-      break;
-    case goomf_DELAY:
-      plugin->E_Delay_On = data;
-      break;      
     }
+
 }
 
 
@@ -170,9 +149,9 @@ goomf_select_program (LADSPA_Handle handle, unsigned long bank,
   if (bank || program > 32)
     return;
 
-  pthread_mutex_lock (&synth->mutex);
-  Put_Combi_t (synth, program);
-  pthread_mutex_unlock (&synth->mutex);
+  //pthread_mutex_lock (&synth->mutex);
+  //Put_Combi_t (synth, program);
+  //pthread_mutex_unlock (&synth->mutex);
 
 
 }
@@ -191,14 +170,12 @@ instantiategoomf (const LADSPA_Descriptor * descriptor,
 
   synth->SAMPLE_RATE = (unsigned int) s_rate;
   init_vars (synth);
-  synth->PERIOD = 128;
-  Put_Period (synth);
   Adjust_Audio (synth);
-  sprintf (synth->BankFilename, "%s/Default.horeb", DATADIR);
+  sprintf (synth->BankFilename, "%s/Default.goomf", DATADIR);
   pthread_mutex_init (&synth->mutex, NULL);
-  pthread_mutex_lock (&synth->mutex);
-  loadbank (synth, synth->BankFilename);
-  pthread_mutex_unlock (&synth->mutex);
+//  pthread_mutex_lock (&synth->mutex);
+//  loadbank (synth, synth->BankFilename);
+//  pthread_mutex_unlock (&synth->mutex);
 
   return (LADSPA_Handle) synth;
 }
@@ -240,7 +217,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
   unsigned long event_pos = 0;
   unsigned long pos;
   unsigned long count;
-  int i, l1, j;
+  int i,j;
 
 
   for (pos = 0, event_pos = 0; pos < sample_count; pos += STEP_SIZE)
@@ -298,7 +275,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 			  synth->note= events[event_pos].data.note.note;
 			  synth->velocity = events[event_pos].data.note.velocity / 126.0;
 			  if (synth->scaling)
-			    synth->velocity=Get_Keyb_Level_Scaling (synth);
+			    synth->velocity=Get_Keyb_Level_Scaling (synth,synth->note);
 			  if (synth->velocity> 1.0)
 			    synth->velocity= 1.0;
 			  synth->env_time = 0;
@@ -335,7 +312,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 
 
 
-      Alg1s (synth, count);
+      // Alg1s (synth, count);
 
       for (i = 0; i < count; i += 2)
 	{
@@ -358,8 +335,6 @@ getControllergoomf (LADSPA_Handle instance, unsigned long port)
     {
     case goomf_VOLUME:
       return DSSI_CC (7);
-    case goomf_MODULATION:
-      return DSSI_CC (1);  
 
 
     }
@@ -390,7 +365,7 @@ goomf_init()
       goomfLDescriptor->Name = "goomf";
       goomfLDescriptor->Maker = "Josep Andreu <holborn@telefonica.net>";
       goomfLDescriptor->Copyright = "GNU General Public License version 2";
-      goomfLDescriptor->PortCount = 9;
+      goomfLDescriptor->PortCount = 4;
 
 
       port_descriptors = (LADSPA_PortDescriptor *)
@@ -439,17 +414,6 @@ goomf_init()
 	LADSPA_HINT_DEFAULT_MIDDLE;
       port_range_hints[goomf_MASTERTUNE].LowerBound = -1.0;
       port_range_hints[goomf_MASTERTUNE].UpperBound = 1.0;
-
-      /* Parameters for Modulation */
-      port_descriptors[goomf_MODULATION] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-      port_names[goomf_MODULATION] = "Modulation";
-      port_range_hints[goomf_MODULATION].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MAXIMUM |
-	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[goomf_MODULATION].LowerBound = 0.0;
-      port_range_hints[goomf_MODULATION].UpperBound = 1.0;
-      
 
       goomfLDescriptor->instantiate = instantiategoomf;
       goomfLDescriptor->connect_port = connectPortgoomf;

@@ -30,6 +30,8 @@ void
 init_vars (goomf_synth_t * s)
 {
 
+   int i;
+
   //Init de vars
   s->Master_Volume = 0.70;
 
@@ -239,7 +241,7 @@ Adjust_Audio (goomf_synth_t * s)
 float
 Get_Keyb_Level_Scaling (goomf_synth_t * s, int nota)
 {
-  return (1.5 * s->velocity[nota] * sin ((120 - s->note[nota]) / 120.0));
+  return (1.5 * s->velocity* sin ((120 - nota) / 120.0));
 };
 
 
@@ -250,16 +252,16 @@ Get_Keyb_Level_Scaling (goomf_synth_t * s, int nota)
 float
 pitch_Operator (goomf_synth_t * s, int i)
 {
-  return (s->lasfreq[s->Operator[i].harmonic] +
-	  s->Operator[i].harmonic_fine);
+  return (s->lasfreq[s->Op[i].harmonic] +
+	  s->Op[i].harmonic_fine);
 }
 
 
 float
 pitch_Operator2 (goomf_synth_t * s, int i)
 {
-  return (s->lasfreq[s->Operator[i].harmonic] -
-	  s->Operator[i].harmonic_fine);
+  return (s->lasfreq[s->Op[i].harmonic] -
+	  s->Op[i].harmonic_fine);
 }
 
 
@@ -289,7 +291,7 @@ Jenvelope (goomf_synth_t * s, int op, int gate, float t)
       if (t > s->Op[op].attack)
 	return (1.0 - (1.0 - s->Op[op].sustain) * (t - s->Op[op].attack) * (1.0 / s->Op[op].decay ));
 
-      return (t * s->u_attack);
+      return (t * (1.0 / s->Op[op].attack));
     }
   else
     {
@@ -353,13 +355,13 @@ Pitch_LFO (goomf_synth_t * s, float t)
 // Return Played Note Frequency
 
 float
-Get_Partial (goomf_synth_t * s, int nota)
+Get_Partial (goomf_synth_t * s)
 {
   int l;
   float partial = 0;
   float freq_note = 0;
 
-  l = s->note[nota] + 12;
+  l = s->note+12;
   freq_note =
     (s->pitch >
      0) ? s->h[l].f2 + (s->h[l].f3 - s->h[l].f2) * s->pitch : s->h[l].f2 +
@@ -377,8 +379,7 @@ void
 Calc_LFO_Frequency (goomf_synth_t * s)
 {
 
-   float modulation = *(s->modulation);
-   s->LFO_Frequency =  modulation * s->LFOpitch * s->D_PI_to_SAMPLE_RATE;
+   s->LFO_Frequency =  s->modulation * s->LFOpitch * s->D_PI_to_SAMPLE_RATE;
 
 };
 
@@ -425,17 +426,18 @@ void
 Alg1s (goomf_synth_t * s, int nframes)
 {
 
-  int l2, i;
+  int i;
   int l1;
   float sound, sound2;
   float Env_Vol = 0.0f;
   float mEnv_Vol = 0.0f;
   float LFO_Volume = 0.0f;
+  float m_partial;
 
   memset (s->buf, 0, sizeof(float) * 8192);
 
 
-	  m_partial = Get_Partial (s);
+	  m_partial = Get_Partial(s);
 
 	  for (l1 = 0; l1 < nframes; l1 += 2)
 	    {
@@ -450,29 +452,28 @@ Alg1s (goomf_synth_t * s, int nframes)
 
                  //L
                  
-                      Env_Vol = velocity*Op[i].volumen*Jenvelope(s,i,s->gate,s->env_time)*s->LFO_Volume*Op[i].aLFO;
-                      Envelope_Volume = Env_vol;
+                      Env_Vol = s->velocity*s->Op[i].volumen*Jenvelope(s,i,s->gate,s->env_time)*s->LFO_Volume*s->Op[i].aLFO;
 
-		      s->f[i].dphi = Get_Partial(s) * (pitch_Operator(s,i)+s->LFO_Volume*Op[i].pLFO);
+		      s->f[i].dphi = m_partial * (pitch_Operator(s,i)+s->LFO_Volume*s->Op[i].pLFO);
 		      if (s->f[i].dphi > D_PI) s->f[i].dphi -= D_PI;
 		      s->f[i].phi += s->f[i].dphi;
 		      if (s->f[i].phi > D_PI) s->f[i].phi -= D_PI;
 
-                      mEnv_Vol = velocity*Op[i+1].volumen*Jenvelope(s,i+1,s->gate,s->env_time)*s->LFO_Volume*Op[i+1].aLFO;
+                      mEnv_Vol = s->velocity*s->Op[i+1].volumen*Jenvelope(s,i+1,s->gate,s->env_time)*s->LFO_Volume*s->Op[i+1].aLFO;
 
-		      s->f[i+1].dphi = Get_Partial(s) * (pitch_Operator(s,i+1)+s->LFO_Volume*Op[i+1].pLFO);
+		      s->f[i+1].dphi = m_partial * (pitch_Operator(s,i+1)+s->LFO_Volume*s->Op[i+1].pLFO);
 		      if (s->f[i+1].dphi > D_PI) s->f[i+1].dphi -= D_PI;
 		      s->f[i+1].phi += s->f[i+1].dphi;
 		      if (s->f[i+1].phi > D_PI) s->f[i+1].phi -= D_PI;
                       
                   //R 
 
-		      s->f[i].dphi2 = Get_Partial(s) * (pitch_Operator2(s,i)+s->LFO_Volume*Op[i].pLFO);
+		      s->f[i].dphi2 = m_partial * (pitch_Operator2(s,i)+s->LFO_Volume*s->Op[i].pLFO);
 		      if (s->f[i].dphi2 > D_PI)	s->f[i].dphi2 -= D_PI;
 		      s->f[i].phi2 += s->f[i].dphi2;
 		      if (s->f[i].phi2 > D_PI) s->f[i].phi2 -= D_PI;
 
-		      s->f[i+1].dphi2 = Get_Partial(s) * (pitch_Operator2(s,i+1)+s->LFO_Volume*Op[i+1].pLFO);
+		      s->f[i+1].dphi2 = m_partial * (pitch_Operator2(s,i+1)+s->LFO_Volume*s->Op[i+1].pLFO);
 		      if (s->f[i+1].dphi2 > D_PI) s->f[i+1].dphi2 -= D_PI;
 		      s->f[i+1].phi2 += s->f[i+1].dphi2;
 		      if (s->f[i+1].phi2 > D_PI) s->f[i+1].phi2 -= D_PI;
