@@ -124,8 +124,10 @@ typedef struct
   float tsin[6290];
   float ssin[6290];
   float usin[6290];
-  float buf[8192];
+  float bufl[8192];
+  float bufr[8192];
   unsigned int SAMPLE_RATE;
+  float Envelope_Volume[6];
   float velocity;
   float pitch;
   float env_time;
@@ -133,7 +135,6 @@ typedef struct
   float modulation; 
   int note;
   int gate;
-  float Envelope_Volume;
   float lasfreq[22];
   int pedal;
   float LFO_Volume;

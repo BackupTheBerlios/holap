@@ -107,8 +107,7 @@ fl_font(FL_HELVETICA, 11);
 
 fl_color(active_r() ? labelcolor() : fl_inactive(labelcolor()));
 
-fl_draw(buf, ox, oy+ww,ww,hh-ww,FL_ALIGN_CLIP);} {selected
-    }
+fl_draw(buf, ox, oy+ww,ww,hh-ww,FL_ALIGN_CLIP);} {}
   }
   Function {handle(int  event)} {return_type int
   } {
@@ -149,7 +148,8 @@ return i;} {}
   }
 } 
 
-class goomf_ui {} {
+class goomf_ui {open
+} {
   decl {int ready;} {public
   }
   decl {int op;} {public
@@ -203,7 +203,7 @@ Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   Function {make_window()} {open
   } {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;}
+      callback {Pexitprogram=1;} open
       xywh {1536 69 495 405} type Double color 147 hide
     } {
       Fl_Box setBankFile {
@@ -271,7 +271,7 @@ ready=1;}
         xywh {255 105 120 20} box PLASTIC_DOWN_BOX down_box FLAT_BOX color 31 selection_color 147 labelfont 1 labelsize 11 labelcolor 5 align 1 when 1 textsize 9
       } {}
       Fl_Group {} {
-        label {Operator Parameters}
+        label {Operator Parameters} open
         xywh {10 175 480 210} box THIN_DOWN_FRAME color 147 labelfont 1 labelsize 11 labelcolor 5
       } {
         Fl_Dial D_Wave {
@@ -290,9 +290,9 @@ ready=1;}
         }
         Fl_Dial D_HF {
           label {H.Fine}
-          callback {D_HF_c[op]=1;}
-          xywh {160 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum -0.5 maximum 0.5 step 0.01
-          code0 {strcpy(o->theformat,"%1.2f");}
+          callback {D_HF_c[op]=1;} selected
+          xywh {160 200 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum -0.005 maximum 0.005 step 0.0001
+          code0 {strcpy(o->theformat,"%1.4f");}
           class Rueda
         }
         Fl_Dial D_OVol {
