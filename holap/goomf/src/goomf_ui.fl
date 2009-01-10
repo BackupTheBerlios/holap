@@ -326,14 +326,14 @@ ready=1;}
         Fl_Dial D_Attack {
           label Attack
           callback {D_Attack_c[op]=1;}
-          xywh {30 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.01 maximum 2 step 0.01 value 0.01
+          xywh {30 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.01 step 0.01 value 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
         }
         Fl_Dial D_Decay {
           label Decay
           callback {D_Decay_c[op]=1;}
-          xywh {95 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.01 maximum 2 step 0.01 value 0.01
+          xywh {95 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.01 step 0.01 value 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
         }
@@ -347,7 +347,7 @@ ready=1;}
         Fl_Dial D_Release {
           label Release
           callback {D_Release_c[op]=1;} selected
-          xywh {225 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.01 maximum 3 step 0.01 value 0.01
+          xywh {225 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.01 step 0.01 value 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
         }

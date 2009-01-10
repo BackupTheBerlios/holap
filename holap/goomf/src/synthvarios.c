@@ -70,7 +70,6 @@ New (goomf_synth_t * s)
 
   s->modulation = .99;
   s->pitch = 0;
-  s->pedal = 0;
   s->scaling = 0;
   bzero (s->Name, sizeof (s->Name));
 

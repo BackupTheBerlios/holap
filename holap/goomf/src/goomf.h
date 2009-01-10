@@ -84,7 +84,6 @@ typedef struct
   lo_server osc_server;
   lo_address m_host;
   char *osc_configure_path;
-  char *osc_actualiza_path;
   char *osc_control_path;       
 
   LADSPA_Data *output_l;
@@ -136,7 +135,6 @@ typedef struct
   int note;
   int gate;
   float lasfreq[22];
-  int pedal;
   float LFO_Volume;
   float LFO_Frequency;
   float increment;
@@ -151,7 +149,7 @@ long int lrintf (float x);
 
 float NFsin (goomf_synth_t * s, int i, float x);
 void Alg1s (goomf_synth_t * s, int nframes);
-float Jenvelope (goomf_synth_t * s, int op, int gate, float t);
+float Jenvelope (goomf_synth_t * s, int op);
 float Get_Partial (goomf_synth_t * s);
 float Pitch_LFO (goomf_synth_t * s, float t);
 void Calc_LFO_Frequency (goomf_synth_t * s);

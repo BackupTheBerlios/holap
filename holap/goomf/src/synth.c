@@ -34,6 +34,8 @@ init_vars (goomf_synth_t * s)
 
   //Init de vars
   s->Master_Volume = 0.70;
+  s->gate = 0;
+  s->env_time = 0.0f;
 
 // FM Operator frequencys
 
@@ -65,7 +67,6 @@ init_vars (goomf_synth_t * s)
 
   s->tune = 0;
   s->pitch = 0.0f;
-  s->pedal = 0;
 
 
 // Init Bank
@@ -73,9 +74,7 @@ init_vars (goomf_synth_t * s)
   New_Bank (s);
 
 
-  // Init gated notes
-
-  // Init frequency Notes 
+// Init frequency Notes 
 
 
   for (i = 1; i <= 192; i++)
@@ -86,7 +85,7 @@ init_vars (goomf_synth_t * s)
     }
 
 
-  // Allocate memory for calculated sins
+// Allocate memory for calculated sins
 
   size_t sizesin = (size_t) (D_PI * 1000) + 2;
 
@@ -233,7 +232,7 @@ void
 Adjust_Audio (goomf_synth_t * s)
 {
 
-  s->increment = .25 / s->SAMPLE_RATE;
+  s->increment = 1.0 / s->SAMPLE_RATE;
   s->D_PI_to_SAMPLE_RATE = D_PI / s->SAMPLE_RATE;
 
 }
@@ -272,26 +271,27 @@ pitch_Operator2 (goomf_synth_t * s, int i)
 
 
 float
-Jenvelope (goomf_synth_t * s, int op, int gate, float t)
+Jenvelope (goomf_synth_t * s, int op)
 {
 
-  float attack  = (float) *(s->attack[op]);
-  float decay   = (float) *(s->decay[op]);
-  float sustain = (float) *(s->sustain[op]);
-  float release = (float) *(s->release[op]);
+  LADSPA_Data attack  =  *(s->attack[op]);
+  LADSPA_Data decay   =  *(s->decay[op]);
+  LADSPA_Data sustain =  *(s->sustain[op]);
+  LADSPA_Data release =  *(s->release[op]);
+  float t = s->env_time;
 
-  if (gate)
+
+  if (s->gate)
     {
-      if (t > attack + decay )	return (s->Envelope_Volume[op] = sustain);
-      if (t > attack) return (s->Envelope_Volume[op] = 1.0 - (1.0 - sustain) * (t - attack) / decay );
-      return (s->Envelope_Volume[op] = t / attack);
+      if (t > attack + decay )	return (sustain);
+      if (t > attack) return (1.0 - (1.0 - sustain) * (t - attack) / decay );
+      return (t / attack);
     }
   else
     {
       if (t > release) return (s->Envelope_Volume[op]=0);
       return (s->Envelope_Volume[op] * (1.0 - t / release));
     }    
-
      
 };
 
@@ -419,8 +419,8 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      // LFO_Volume = Pitch_LFO(s,s->env_time);
               s->LFO_Volume = 1.0;
 
-	      for (i = 0; i < 6; i++)
-		{
+	      for (i = 0; i< 6; i++) 
+		 {
 
                  //L
                  
@@ -429,9 +429,9 @@ Alg1s (goomf_synth_t * s, int nframes)
                       pLFO = (float) *(s->pLFO[i]);
                       wave = (int) *(s->wave[i]);
 
-                      s->Envelope_Volume[i]=Jenvelope(s,i,s->gate,s->env_time);                 
-                      Env_Vol = s->velocity*volumen*s->Envelope_Volume[i]*aLFO;
-                      
+                       
+                      s->Envelope_Volume[i]=Jenvelope(s,i);                 
+                      Env_Vol = s->velocity*volumen*s->Envelope_Volume[i];
                        
 		      s->f[i].dphi = m_partial * (pitch_Operator(s,i)+pLFO);
 		      if (s->f[i].dphi > D_PI) s->f[i].dphi -= D_PI;
@@ -448,15 +448,15 @@ Alg1s (goomf_synth_t * s, int nframes)
 
 	      sound += Env_Vol * NFsin (s, wave, s->f[i].phi);
 	      sound2 += Env_Vol * NFsin (s,wave, s->f[i].phi2);
-
-		}
-
+                   } 
+	
 	      s->bufl[l1] += sound;
 	      s->bufr[l1] += sound2;
 	      s->env_time += s->increment;
+	      
 	    }
 
-
+               
 
 
 
