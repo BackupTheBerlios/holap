@@ -160,7 +160,6 @@ float pitch_Operator2 (goomf_synth_t * s, int i);
 float Get_Keyb_Level_Scaling (goomf_synth_t * s, int nota);
 void New (goomf_synth_t * s);
 void New_Bank (goomf_synth_t * s);
-void panic (goomf_synth_t * s);
 int loadbank (goomf_synth_t * s, const char *filename);
 void Put_Combi_t (goomf_synth_t * s, int i);
 void init_vars (goomf_synth_t * s);

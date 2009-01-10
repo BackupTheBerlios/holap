@@ -233,7 +233,7 @@ void
 Adjust_Audio (goomf_synth_t * s)
 {
 
-  s->increment = 1.0 / s->SAMPLE_RATE;
+  s->increment = .25 / s->SAMPLE_RATE;
   s->D_PI_to_SAMPLE_RATE = D_PI / s->SAMPLE_RATE;
 
 }
@@ -271,13 +271,6 @@ pitch_Operator2 (goomf_synth_t * s, int i)
 // Turn Off all the sound
 
 
-void
-panic (goomf_synth_t * s)
-{
-};
-
-
-
 float
 Jenvelope (goomf_synth_t * s, int op, int gate, float t)
 {
@@ -290,8 +283,8 @@ Jenvelope (goomf_synth_t * s, int op, int gate, float t)
   if (gate)
     {
       if (t > attack + decay )	return (s->Envelope_Volume[op] = sustain);
-      if (t > attack) return (s->Envelope_Volume[op] = 1.0 - (1.0 - sustain) * (t - attack * (1.0 /decay )));
-      return (s->Envelope_Volume[op] = t * (1.0 / attack));
+      if (t > attack) return (s->Envelope_Volume[op] = 1.0 - (1.0 - sustain) * (t - attack) / decay );
+      return (s->Envelope_Volume[op] = t / attack);
     }
   else
     {
@@ -363,7 +356,8 @@ float
 NFsin (goomf_synth_t * s, int i, float x)
 {
 
-
+  if (x > D_PI ) x -= D_PI;
+  
   long int k = F2I (x * 1000.0);
 
   if (i == 1)
@@ -403,11 +397,9 @@ Alg1s (goomf_synth_t * s, int nframes)
   int l1;
   float sound, sound2;
   float Env_Vol = 0.0f;
-  float mEnv_Vol = 0.0f;
   float m_partial;
   float volumen;
   float wave;
-  float wave1;
   float aLFO;
   float pLFO;
 
@@ -427,7 +419,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      // LFO_Volume = Pitch_LFO(s,s->env_time);
               s->LFO_Volume = 1.0;
 
-	      for (i = 0; i < 6; i +=2)
+	      for (i = 0; i < 6; i++)
 		{
 
                  //L
@@ -436,49 +428,26 @@ Alg1s (goomf_synth_t * s, int nframes)
                       aLFO = (float) *(s->aLFO[i]) + 1.0;
                       pLFO = (float) *(s->pLFO[i]);
                       wave = (int) *(s->wave[i]);
-                      wave1 = (int) *(s->wave[i+1]);
 
                       s->Envelope_Volume[i]=Jenvelope(s,i,s->gate,s->env_time);                 
-                 
-                      Env_Vol = s->velocity*volumen*s->Envelope_Volume[i]*s->LFO_Volume*aLFO;
+                      Env_Vol = s->velocity*volumen*s->Envelope_Volume[i]*aLFO;
                       
                        
-		      s->f[i].dphi = m_partial * (pitch_Operator(s,i)+s->LFO_Volume*pLFO);
+		      s->f[i].dphi = m_partial * (pitch_Operator(s,i)+pLFO);
 		      if (s->f[i].dphi > D_PI) s->f[i].dphi -= D_PI;
 		      s->f[i].phi += s->f[i].dphi;
 		      if (s->f[i].phi > D_PI) s->f[i].phi -= D_PI;
                       
-                      volumen = (float) *(s->Ovol[i+1]);
-                      aLFO = (float) *(s->aLFO[i+1]) + 1.0;
-                      pLFO = (float) *(s->pLFO[i+1]);
-
-                      s->Envelope_Volume[i+1]=Jenvelope(s,i+1,s->gate,s->env_time);
-                      mEnv_Vol = s->velocity*volumen*s->Envelope_Volume[i+1]*s->LFO_Volume*aLFO;
-
-		      s->f[i+1].dphi = m_partial * (pitch_Operator(s,i+1)+s->LFO_Volume*pLFO);
-		      if (s->f[i+1].dphi > D_PI) s->f[i+1].dphi -= D_PI;
-		      s->f[i+1].phi += s->f[i+1].dphi;
-		      if (s->f[i+1].phi > D_PI) s->f[i+1].phi -= D_PI;
-                      
                   //R 
-                      pLFO = (float) *(s->pLFO[i]); 
 
-		      s->f[i].dphi2 = m_partial * (pitch_Operator2(s,i)+s->LFO_Volume*pLFO);
+		      s->f[i].dphi2 = m_partial * (pitch_Operator2(s,i)+pLFO);
 		      if (s->f[i].dphi2 > D_PI)	s->f[i].dphi2 -= D_PI;
 		      s->f[i].phi2 += s->f[i].dphi2;
 		      if (s->f[i].phi2 > D_PI) s->f[i].phi2 -= D_PI;
 
-                      pLFO = (float) *(s->pLFO[i+1]);
 
-		      s->f[i+1].dphi2 = m_partial * (pitch_Operator2(s,i+1)+s->LFO_Volume*pLFO);
-		      if (s->f[i+1].dphi2 > D_PI) s->f[i+1].dphi2 -= D_PI;
-		      s->f[i+1].phi2 += s->f[i+1].dphi2;
-		      if (s->f[i+1].phi2 > D_PI) s->f[i+1].phi2 -= D_PI;
-
-                
-
-	      sound += Env_Vol * NFsin (s, wave, s->f[i].phi + mEnv_Vol * NFsin(s,wave1,s->f[i+1].phi));
-	      sound2 += Env_Vol * NFsin (s,wave, s->f[i].phi2 + mEnv_Vol * NFsin(s,wave1,s->f[i+1].phi2));
+	      sound += Env_Vol * NFsin (s, wave, s->f[i].phi);
+	      sound2 += Env_Vol * NFsin (s,wave, s->f[i].phi2);
 
 		}
 
