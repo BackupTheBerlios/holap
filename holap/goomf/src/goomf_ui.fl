@@ -87,7 +87,7 @@ hh = h();
   paso = (int) (val * 47);
 
 
-if (damage())
+if (damage()&FL_DAMAGE_ALL)
 {
 draw_box(box(), ox, oy, ww, hh, color());
 }
@@ -144,12 +144,12 @@ switch (event)
  i = Fl_Dial::handle(event);
  
 
-return i;} {}
+return i;} {selected
+    }
   }
 } 
 
-class goomf_ui {open
-} {
+class goomf_ui {} {
   decl {int ready;} {public
   }
   decl {int op;} {public
@@ -200,8 +200,7 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     Fl_Window ui_win {
       callback {Pexitprogram=1;}
       xywh {1536 69 495 405} type Double color 147 hide
@@ -346,7 +345,7 @@ ready=1;}
         }
         Fl_Dial D_Release {
           label Release
-          callback {D_Release_c[op]=1;} selected
+          callback {D_Release_c[op]=1;}
           xywh {225 295 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.01 step 0.01 value 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
@@ -358,38 +357,56 @@ ready=1;}
       } {
         Fl_Button OP1 {
           label 1
-          callback {op=0;
-cop=1;}
+          callback {if (o->value())
+{
+op=0;
+cop=1;
+}}
           xywh {395 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP2 {
           label 2
-          callback {op=1;
-cop=1;}
+          callback {if (o->value())
+{
+op=1;
+cop=1;
+}}
           xywh {395 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP3 {
           label 3
-          callback {op=2;
-cop=1;}
+          callback {if (o->value())
+{
+op=2;
+cop=1;
+}}
           xywh {425 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP4 {
           label 4
-          callback {op=3;
-cop=1;}
+          callback {if (o->value())
+{
+op=3;
+cop=1;
+}}
           xywh {425 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP5 {
           label 5
-          callback {op=4;
-cop=1;}
+          callback {if (o->value())
+{
+op=4;
+cop=1;
+}}
           xywh {455 140 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
         Fl_Button OP6 {
           label 6
-          callback {op=5;
-cop=1;}
+          callback {if (o->value())
+{
+op=5;
+cop=1;
+}}
           xywh {455 115 25 20} type Radio box PLASTIC_UP_BOX color 48 selection_color 3 when 1
         }
       }

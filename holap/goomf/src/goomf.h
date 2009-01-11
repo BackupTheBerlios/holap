@@ -127,9 +127,11 @@ typedef struct
   float bufr[8192];
   unsigned int SAMPLE_RATE;
   float Envelope_Volume[6];
+  float Env_Vol[6];
   float velocity;
   float pitch;
   float env_time;
+  float renv_time;
   float scaling;
   float modulation; 
   int note;
