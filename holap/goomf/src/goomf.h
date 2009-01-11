@@ -135,6 +135,10 @@ typedef struct
   float scaling;
   float modulation; 
   int note;
+  int lastnote;
+  float apartial;
+  float lpartial;
+  float ppartial;
   int gate;
   float lasfreq[22];
   float LFO_Volume;
@@ -152,6 +156,7 @@ long int lrintf (float x);
 float NFsin (goomf_synth_t * s, int i, float x);
 void Alg1s (goomf_synth_t * s, int nframes);
 float Jenvelope (goomf_synth_t * s, int op);
+void new_note ( goomf_synth_t * s);
 float Get_Partial (goomf_synth_t * s);
 float Pitch_LFO (goomf_synth_t * s, float t);
 void Calc_LFO_Frequency (goomf_synth_t * s);

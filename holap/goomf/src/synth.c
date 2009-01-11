@@ -328,17 +328,29 @@ Get_Partial (goomf_synth_t * s)
   int l;
   float partial = 0;
   float freq_note = 0;
+  float portdir;
+  LADSPA_Data Portamento = *(s->portamento);
 
+  if (s->note != s->lastnote)
+  {
+  s->lpartial = s->apartial; 
+  s->lastnote = s->note; 
   l = s->note;
-  freq_note =
-    (s->pitch >
-     0) ? s->h[l].f2 + (s->h[l].f3 - s->h[l].f2) * s->pitch : s->h[l].f2 +
-    (s->h[l].f2 - s->h[l].f1) * s->pitch;
+  freq_note =  (s->pitch > 0) ? s->h[l].f2 + (s->h[l].f3 - s->h[l].f2) * s->pitch : 
+  s->h[l].f2 + (s->h[l].f2 - s->h[l].f1) * s->pitch;
   partial = (1.0 + *(s->tune) / 16.0) * freq_note * s->D_PI_to_SAMPLE_RATE;
-  if (partial > D_PI)
-    partial = fmodf (partial, D_PI);
-  return (partial);
+  if (partial > D_PI) partial = fmodf (partial, D_PI);
+  s->apartial= partial;
+  }
 
+ if (s->lpartial < s->apartial ) portdir=1.0; else portdir = -1.0;
+
+ s->ppartial += portdir*s->increment*Portamento*200.0;
+
+ if ((portdir == 1.0) && (s->ppartial >= s->apartial)) s->ppartial = s->apartial; 
+ if ((portdir == -1.0) && (s->ppartial <= s->apartial)) s->ppartial = s->apartial;
+
+ if (Portamento > 0)  return(s->ppartial); else return(s->apartial); 
 
 };
 
@@ -385,6 +397,19 @@ NFsin (goomf_synth_t * s, int i, float x)
 }
 
 
+void
+new_note(goomf_synth_t * s)
+{
+  int i;
+  for (i=0; i<6; i++)
+  {
+   s->f[i].phi=0;
+   s->f[i].phi2=0;
+  }
+   
+}
+
+
 // Main Audio thread
 
 void
@@ -419,14 +444,13 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      for (i = 0; i< 1; i++) 
 		 {
 
-                 //L
+                 
                  
                       volumen = *(s->Ovol[i]);
                       aLFO = (float) *(s->aLFO[i]) + 1.0;
                       pLFO = (float) *(s->pLFO[i]);
                       wave = (int) *(s->wave[i]);
 
-                  
                       if (s->gate)
                       {
                       s->Envelope_Volume[i]=Jenvelope(s,i);           
@@ -434,7 +458,9 @@ Alg1s (goomf_synth_t * s, int nframes)
                       }
                       else
                       s->Env_Vol[i] = Jenvelope(s,i);
-
+                 
+                  //L
+		 
 		      s->f[i].dphi = m_partial * (pitch_Operator(s,i)+pLFO);
 		      if (s->f[i].dphi > D_PI) s->f[i].dphi -= D_PI;
 		      s->f[i].phi += s->f[i].dphi;
