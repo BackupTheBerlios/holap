@@ -139,7 +139,6 @@ calcula_mag (exciter_t * s)
 		  if (nota == s->harmonic_flist[k])
 		    {
 		      s->Rmag[k] +=  0.05;	// A ver que hacemos con los pares/impares
-                      printf("%d %f\n",k,s->Rmag[k]);                       
 		    }
 		}
 	    }

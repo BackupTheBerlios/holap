@@ -148,7 +148,8 @@ typedef struct
   float tsin[6290];
   float ssin[6290];
   float usin[6290];
-  float buf[8192];
+  float bufl[8192];
+  float bufr[8192];
   float history[131200];
   float cldelay[8192];
   float crdelay[8192];

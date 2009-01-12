@@ -40,8 +40,6 @@
 
 
 
-#define STEP_SIZE 64
-
 static LADSPA_Descriptor *horgandLDescriptor = NULL;
 static DSSI_Descriptor *horgandDDescriptor = NULL;
 
@@ -240,15 +238,11 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
   unsigned long event_pos = 0;
   unsigned long pos;
   unsigned long count;
-  int i, l1, j;
+  int i, l1;
 
-
-  for (pos = 0, event_pos = 0; pos < sample_count; pos += STEP_SIZE)
-    {
 
       while (event_pos < event_count)
 	{
-
 	  switch (events[event_pos].type)
 	    {
 	    case SND_SEQ_EVENT_PITCHBEND:
@@ -367,21 +361,15 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 	  event_pos++;
 	}
 
-      count = (sample_count - pos) > STEP_SIZE ? STEP_SIZE :
-	sample_count - pos;
+      Alg1s (synth, sample_count);
 
-
-
-      Alg1s (synth, count);
-
-      for (i = 0; i < count; i += 2)
+      for (i = 0; i < sample_count; i ++)
 	{
-	  j = pos + i;
-	  outputl[j] = synth->buf[i] * vol;
-	  outputr[j] = synth->buf[i + 1] * vol;
+	  outputl[i] = synth->bufl[i] * vol;
+	  outputr[i] = synth->bufr[i] * vol;
 
 	}
-    }
+    
 
 }
 

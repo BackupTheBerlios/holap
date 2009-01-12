@@ -11,7 +11,7 @@ exciter_fltk_SOURCES = main_ui.cpp \
 	exciter_ui.cxx \
 	exciter_ui.h 
 
-exciter_fltk_LDADD = -lfltk -lfltk_images -lpthread
+exciter_fltk_LDADD = -lfltk -lfltk_images -lpthread 
 
 exciter_fltk_CXXFLAGS = "-I/usr/include/freetype2 -D_THREAD_SAFE -D_REENTRANT"
  

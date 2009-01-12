@@ -232,7 +232,7 @@ void
 Adjust_Audio (goomf_synth_t * s)
 {
 
-  s->increment = .5 / s->SAMPLE_RATE;
+  s->increment = 1.0 / s->SAMPLE_RATE;
   s->D_PI_to_SAMPLE_RATE = D_PI / s->SAMPLE_RATE;
 
 }
@@ -252,22 +252,24 @@ Get_Keyb_Level_Scaling (goomf_synth_t * s, int nota)
 float
 pitch_Operator (goomf_synth_t * s, int i)
 {
+  int H = (int) *(s->H[i]);
+  float HF = (float) *(s->HF[i]);
+  
 
-  return (s->lasfreq[(int)*(s->H[i])]+ *(s->HF[i]));
+  return (s->lasfreq[H] + HF);
 }
 
 
 float
 pitch_Operator2 (goomf_synth_t * s, int i)
 {
-  return (s->lasfreq[(int)*(s->H[i])] - *(s->HF[i]));
+  int H = (int) *(s->H[i]);
+  float HF = (float) *(s->HF[i]);
+
+
+  return (s->lasfreq[H] - HF);
 }
 
-
-
-
-
-// Turn Off all the sound
 
 
 float
@@ -345,7 +347,7 @@ Get_Partial (goomf_synth_t * s)
 
  if (s->lpartial < s->apartial ) portdir=1.0; else portdir = -1.0;
 
- s->ppartial += portdir*s->increment*Portamento*200.0;
+ s->ppartial += portdir*s->increment*Portamento*1000.0;
 
  if ((portdir == 1.0) && (s->ppartial >= s->apartial)) s->ppartial = s->apartial; 
  if ((portdir == -1.0) && (s->ppartial <= s->apartial)) s->ppartial = s->apartial;
@@ -441,7 +443,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      // LFO_Volume = Pitch_LFO(s,s->env_time);
               s->LFO_Volume = 1.0;
 
-	      for (i = 0; i< 1; i++) 
+	      for (i = 0; i< 6; i++) 
 		 {
 
                  
@@ -474,14 +476,14 @@ Alg1s (goomf_synth_t * s, int nframes)
 		      if (s->f[i].phi2 > D_PI) s->f[i].phi2 -= D_PI;
 
 
-	      sound += s->Env_Vol[i] * sin(s->f[i].phi);
-	      sound2 += s->Env_Vol[i] * sin(s->f[i].phi2);
+	      sound += s->Env_Vol[i] * NFsin(s,wave,s->f[i].phi);
+	      sound2 += s->Env_Vol[i] * NFsin(s,wave,s->f[i].phi2);
                    } 
 	
 	      s->bufl[l1] += sound;
 	      s->bufr[l1] += sound2;
 	      s->env_time += s->increment;
-	      s->renv_time += (s->increment * .001);
+	      s->renv_time += (s->increment);
 	      
 	    }
 

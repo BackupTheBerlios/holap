@@ -603,11 +603,14 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	      if (events[event_pos].data.note.velocity != 0)
 		{
 		          synth->note= events[event_pos].data.note.note;
-       			  synth->velocity = (float) (events[event_pos].data.note.velocity / 126.0);
+		          if (!synth->gate)
+       			  {
+       			  //synth->velocity = (float) (events[event_pos].data.note.velocity / 126.0);
+			  synth->velocity=1.0;
 			  //if (synth->scaling) synth->velocity=Get_Keyb_Level_Scaling (synth,synth->note);
 			  //if (synth->velocity > 1.0) synth->velocity = 1.0;
-                          synth->velocity = 1.0;
-                          if(!synth->gate) synth->env_time = 0.0f; 
+                          synth->env_time = 0.0f; 
+         		  }
          		  synth->gate=1;
 			  break;
 		}
@@ -616,7 +619,6 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
                    if (events[event_pos].data.note.note == synth->note)
                         {
                           synth->gate = 0;
-                          synth->env_time = 0.0f;
                           synth->renv_time = 0.0f;
 			}  
 		}
@@ -626,7 +628,6 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
                    if ((int) events[event_pos].data.note.note == synth->note)
                         {
                           synth->gate = 0;
-                          synth->env_time = 0.0f;
                           synth->renv_time = 0.0f;
 			}  
 

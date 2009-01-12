@@ -34,9 +34,9 @@ Alienwah_Init(ZAlienwah_t * s)
 
   s->k=127;
   s->oldclfol.a = 0.0;
-  s->oldclfol.b = 0.8;
+  s->oldclfol.b = 0.0;
   s->oldclfor.a = 0.0;
-  s->oldclfor.b = 0.8;
+  s->oldclfor.b = 0.0;
 };
 
 

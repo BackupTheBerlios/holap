@@ -272,8 +272,8 @@ init_vars (horgand_synth_t * s)
   memset (s->history, 0, sizeof (float) * 131200);
   memset (s->cldelay, 0, sizeof (float) * 8192);
   memset (s->crdelay, 0, sizeof (float) * 8192);
-  memset (s->buf, 0, s->PERIOD4);
-
+  memset (s->bufl, 0, sizeof(float) * 8192);
+  memset (s->bufr, 0, sizeof(float) * 8192);
 
 };
 
@@ -345,8 +345,9 @@ panic (horgand_synth_t * s)
       s->env_time[i] = 0.0f;
       s->gate[i] = 0;
     }
-  Clean_Buffer_Effects (s);
-  memset (s->f, 0, sizeof s->f);
+
+   Clean_Buffer_Effects (s);
+   memset (s->f, 0, sizeof s->f);
 };
 
 
@@ -482,7 +483,7 @@ Get_Partial (horgand_synth_t * s, int nota)
   float partial = 0;
   float freq_note = 0;
 
-  l = s->note[nota] + s->transpose + s->a[0].organ_transpose + 12;
+  l = s->note[nota] + s->transpose + s->a[0].organ_transpose;
   freq_note =
     (s->pitch >
      0) ? s->h[l].f2 + (s->h[l].f3 - s->h[l].f2) * s->pitch : s->h[l].f2 +
@@ -503,7 +504,7 @@ Calc_LFO_Frequency (horgand_synth_t * s)
    float modulation = *(s->modulation);
 
   s->LFO_Frequency =
-    modulation * s->a[0].LFOpitch * s->D_PI_to_SAMPLE_RATE;
+    modulation * s->a[0].LFOpitch * s->D_PI_to_SAMPLE_RATE*.5;
 
 };
 
@@ -559,11 +560,10 @@ Alg1s (horgand_synth_t * s, int nframes)
   float Click_Env = 0.0f;
   float m_partial;
 
-  
-
-
-  memset (s->buf, 0, s->PERIOD4);
-
+  memset (s->bufl, 0, sizeof(float) * 8192);
+  memset (s->bufr, 0, sizeof(float) * 8192);
+    
+ 
   for (l2 = 0; l2 < POLY; l2++)
     {
 
@@ -574,7 +574,7 @@ Alg1s (horgand_synth_t * s, int nframes)
 	  for (i = 1; i <= 10; i++)
 	    volume_Operator (s, i, l2);
 
-	  for (l1 = 0; l1 < nframes; l1 += 2)
+	  for (l1 = 0; l1 < nframes; l1++)
 	    {
 
 	      sound = 0.0f;
@@ -610,8 +610,8 @@ Alg1s (horgand_synth_t * s, int nframes)
 			s->a[0].Click_Vol2 * Click_TVol * NFsin (s, 3,
 								 s->dcphi2
 								 [l2]);
-		      s->buf[l1] += Am_Click;
-		      s->buf[l1 + 1] += Am_Click;
+		      s->bufl[l1] += Am_Click;
+		      s->bufr[l1] += Am_Click;
 		    }
 		}
 	      for (i = 1; i <= 10; i++)
@@ -645,8 +645,8 @@ Alg1s (horgand_synth_t * s, int nframes)
 		    }
 		}
 
-	      s->buf[l1] += sound * s->organ_master;
-	      s->buf[l1 + 1] += sound2 * s->organ_master;
+	      s->bufl[l1] += sound * s->organ_master;
+	      s->bufr[l1] += sound2 * s->organ_master;
 	      s->env_time[l2] += s->increment;
 	    }
 
@@ -671,6 +671,7 @@ Alg1s (horgand_synth_t * s, int nframes)
   if (s->a[0].E_Reverb_On)
     Effect_Reverb (s, nframes);
   Write_Buffer_Effects (s, nframes);
+
 
 };
 
