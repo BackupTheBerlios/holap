@@ -297,7 +297,7 @@ Pitch_LFO (goomf_synth_t * s, float t)
 
   float x, out;
   LADSPA_Data LFO_Delay = *(s->LFO_Delay);
-  LADSPA_Data LFO_Frequency = *(s->LFO_Frequency);
+  LADSPA_Data LFO_Frequency = *(s->LFO_Frequency)*8.0;
   int LFO_Wave = *(s->LFO_Wave);
 
 
@@ -306,7 +306,7 @@ Pitch_LFO (goomf_synth_t * s, float t)
 
   x = fmodf (LFO_Frequency * t, 1.0);
 
-  out = NFsin (s, LFO_Wave, x * D_PI) * LFO_Frequency;
+  out = NFsin (s, LFO_Wave, x * D_PI);
 
   return (out);
 
@@ -404,14 +404,13 @@ Alg1s (goomf_synth_t * s, int nframes)
   float m_partial;
   LADSPA_Data volumen;
   float wave;
-  float aLFO;
   float pLFO;
   float LFO;
 
   memset (s->bufl, 0, sizeof(float) * 8192);
   memset (s->bufr, 0, sizeof(float) * 8192);
-
-
+  
+  LADSPA_Data LFO_Volume = *(s->LFO_Volume); 
 
 	  m_partial = Get_Partial(s);
         
@@ -421,7 +420,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      sound = 0.0f;
 	      sound2 = 0.0f;
 
-	      LFO = Pitch_LFO(s,s->env_time);
+	      LFO = Pitch_LFO(s,s->env_time)*LFO_Volume*s->modulation;
               
 
 	      for (i = 0; i< 6; i++) 
@@ -430,7 +429,6 @@ Alg1s (goomf_synth_t * s, int nframes)
                  
                  
                       volumen = *(s->Ovol[i]);
-                      aLFO = (float) *(s->aLFO[i])*LFO;
                       pLFO = (float) *(s->pLFO[i])*LFO;
                       wave = (int) *(s->wave[i]);
 

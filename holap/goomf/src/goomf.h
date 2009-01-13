@@ -105,8 +105,6 @@ typedef struct
   LADSPA_Data *sustain[6];
   LADSPA_Data *release[6];  
   LADSPA_Data *pLFO[6];
-  LADSPA_Data *aLFO[6];
-  LADSPA_Data *vsr[6];   
 
   OperatorPar Op[6];
   char Name[36];
@@ -155,7 +153,6 @@ void Alg1s (goomf_synth_t * s, int nframes);
 float Jenvelope (goomf_synth_t * s, int op);
 float Get_Partial (goomf_synth_t * s);
 float Pitch_LFO (goomf_synth_t * s, float t);
-void Calc_LFO_Frequency (goomf_synth_t * s);
 float pitch_Operator (goomf_synth_t * s, int i);
 float pitch_Operator2 (goomf_synth_t * s, int i);
 void New (goomf_synth_t * s);

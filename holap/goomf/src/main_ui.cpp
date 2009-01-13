@@ -92,73 +92,79 @@ thread1 (void *arg)
 	  lo_send (m_host, osc_control_path, "if", 4, gui.D_Portamento->value ());
 	  gui.D_Portamento_c = 0;
 	}
-
+      if (gui.D_LFO_Volume_c)
+        {
+           lo_send (m_host, osc_control_path, "if", 5, gui.D_LFO_Volume->value ());
+           gui.D_LFO_Volume_c = 0;
+        }   
+      if (gui.D_LFO_Frequency_c)
+        {
+           lo_send (m_host, osc_control_path, "if", 6, gui.D_LFO_Frequency->value ());
+           gui.D_LFO_Frequency_c = 0;
+        }   
+      if (gui.D_LFO_Delay_c)
+        {
+           lo_send (m_host, osc_control_path, "if", 7, gui.D_LFO_Delay->value ());
+           gui.D_LFO_Delay_c = 0;
+        }   
+      if (gui.D_LFO_Wave_c)
+        {
+           lo_send (m_host, osc_control_path, "if", 8, gui.D_LFO_Wave->value ());
+           gui.D_LFO_Wave_c = 0;
+        }   
       if (gui.D_Wave_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 5+gui.op, gui.D_Wave->value ());
+	  lo_send (m_host, osc_control_path, "if", 9+gui.op, gui.D_Wave->value ());
 	  gui.D_Wave_c[gui.op] = 0;
 	}
       if (gui.D_H_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 11+gui.op, gui.D_H->value ());
+	  lo_send (m_host, osc_control_path, "if", 15+gui.op, gui.D_H->value ());
 	  gui.D_H_c[gui.op] = 0;
 	}
       
       if (gui.D_HF_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 17+gui.op, gui.D_HF->value ());
+	  lo_send (m_host, osc_control_path, "if", 21+gui.op, gui.D_HF->value ());
 	  gui.D_HF_c[gui.op] = 0;
 	}
       
       if (gui.D_OVol_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 23+gui.op, gui.D_OVol->value ());
+	  lo_send (m_host, osc_control_path, "if", 27+gui.op, gui.D_OVol->value ());
 	  gui.D_OVol_c[gui.op] = 0;
 	}
       
       if (gui.D_Attack_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 29+gui.op, gui.D_Attack->value ());
+	  lo_send (m_host, osc_control_path, "if", 33+gui.op, gui.D_Attack->value ());
 	  gui.D_Attack_c[gui.op] = 0;
        	}
       
       if (gui.D_Decay_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 35+gui.op, gui.D_Decay->value ());
+	  lo_send (m_host, osc_control_path, "if", 39+gui.op, gui.D_Decay->value ());
 	  gui.D_Decay_c[gui.op] = 0;
 	}
       
       if (gui.D_Sustain_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 41+gui.op, gui.D_Sustain->value ());
+	  lo_send (m_host, osc_control_path, "if", 45+gui.op, gui.D_Sustain->value ());
 	  gui.D_Sustain_c[gui.op] = 0;
 	}
 
       if (gui.D_Release_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 47+gui.op, gui.D_Release->value ());
+	  lo_send (m_host, osc_control_path, "if", 51+gui.op, gui.D_Release->value ());
 	  gui.D_Release_c[gui.op] = 0;
 	}
       
       if (gui.D_pLFO_c[gui.op])
 	{
-	  lo_send (m_host, osc_control_path, "if", 53+gui.op, gui.D_pLFO->value ());
+	  lo_send (m_host, osc_control_path, "if", 57+gui.op, gui.D_pLFO->value ());
 	  gui.D_pLFO_c[gui.op] = 0;
 	}
       
-      if (gui.D_aLFO_c[gui.op])
-	{
-	  lo_send (m_host, osc_control_path, "if", 59+gui.op, gui.D_aLFO->value ());
-	  gui.D_aLFO_c[gui.op] = 0;
-	}
-
-      if (gui.D_VSR_c[gui.op])
-	{
-	  lo_send (m_host, osc_control_path, "if", 65+gui.op, gui.D_VSR->value ());
-	  gui.D_VSR_c[gui.op] = 0;
-	}
-
-
         Fl::wait();
     }
 
@@ -185,37 +191,43 @@ update_widgets (int port, float value)
       gui.D_Portamento->value (value);
       break;
     case 5:
+      gui.D_LFO_Volume->value(value);
+      break;
+    case 6:
+      gui.D_LFO_Frequency->value(value);
+      break;
+    case 7:
+      gui.D_LFO_Delay->value(value);
+      break;
+    case 8:
+      gui.D_LFO_Wave->value(value);
+      break;
+    case 9:
       gui.D_Wave->value(value);
       break;  
-    case 6:
+    case 10:
       gui.D_H->value(value);
       break;  
-    case 7:
+    case 11:
       gui.D_HF->value(value);
       break;  
-    case 8:
+    case 12:
       gui.D_OVol->value(value);
       break;  
-    case 9:
+    case 13:
       gui.D_Attack->value(value);
       break;  
-    case 10:
+    case 14:
       gui.D_Decay->value(value);
       break;  
-    case 11:
+    case 15:
       gui.D_Sustain->value(value);
       break;  
-    case 12:
+    case 16:
       gui.D_Release->value(value);
       break;  
-    case 13:
+    case 17:
       gui.D_pLFO->value(value);
-      break;  
-    case 14:
-      gui.D_aLFO->value(value);
-      break;  
-    case 15:
-      gui.D_VSR->value(value);
       break;  
 
  }
@@ -370,8 +382,8 @@ control_handler (const char *path, const char *types, lo_arg ** argv,
   const float value = argv[1]->f;
 
 
-if (port < 5)  update_widgets (port, value);
-  else  update_widgets(((port+1)/6)+4,value);
+if (port < 9)  update_widgets (port, value);
+  else  update_widgets(((port+3)/6)+7,value);
   
   return 0;
 }
@@ -421,6 +433,10 @@ main (int argc, char **argv)
   gui.D_Vol_c = 0;
   gui.D_Tune_c = 0;
   gui.D_Portamento_c  = 0;
+  gui.D_LFO_Volume_c = 0;
+  gui.D_LFO_Frequency_c = 0;
+  gui.D_LFO_Delay_c = 0;
+  gui.D_LFO_Wave_c = 0;
   gui.cop = 0;
   for (i=0; i<6; i++)
   {
@@ -428,9 +444,7 @@ main (int argc, char **argv)
     gui.D_H_c[i]=0;
     gui.D_HF_c[i]=0;
     gui.D_OVol_c[i]=0;
-    gui.D_VSR_c[i]=0;
     gui.D_pLFO_c[i]=0;
-    gui.D_aLFO_c[i]=0;
     gui.D_Attack_c[i]=0;
     gui.D_Decay_c[i]=0;
     gui.D_Sustain_c[i]=0;

@@ -80,7 +80,7 @@ Put_Combi_t (goomf_synth_t * s, int i)
 {
   // s->a[0] = s->Banco[i];  PASAR Banco a Local
 
-  Calc_LFO_Frequency (s);
+  // Calc_LFO_Frequency (s);
 
 };
 
