@@ -36,7 +36,8 @@ init_vars (goomf_synth_t * s)
   s->Master_Volume = 0.70;
   s->gate = 0;
   s->env_time = 0.0f;
-
+  s->renv_time = 0.0f;
+ 
 // FM Operator frequencys
 
   s->lasfreq[0] = 0.5;
@@ -237,16 +238,6 @@ Adjust_Audio (goomf_synth_t * s)
 
 }
 
-// Keyboard Level Scaling
-float
-Get_Keyb_Level_Scaling (goomf_synth_t * s, int nota)
-{
-  return (1.5 * s->velocity* sin ((120 - nota) / 120.0));
-};
-
-
-
-
 // Returns the FM Operator Pitch (Frequency + LFO)
 
 float
@@ -254,8 +245,6 @@ pitch_Operator (goomf_synth_t * s, int i)
 {
   int H = (int) *(s->H[i]);
   float HF = (float) *(s->HF[i]);
-  
-
   return (s->lasfreq[H] + HF);
 }
 
@@ -265,8 +254,6 @@ pitch_Operator2 (goomf_synth_t * s, int i)
 {
   int H = (int) *(s->H[i]);
   float HF = (float) *(s->HF[i]);
-
-
   return (s->lasfreq[H] - HF);
 }
 
@@ -287,14 +274,22 @@ Jenvelope (goomf_synth_t * s, int op)
     {
       if (t > attack + decay )	return (sustain);
       if (t > attack) return (1.0 - (1.0 - sustain) * (t - attack) / decay );
-      return (t / attack);
+      if ((t /attack) < s->Envelope_Volume[op]) return s->Envelope_Volume[op]; 
+      else return (t /attack);
+      
     }
   else
     {
       if (r < release )
+      {
+      s->Envelope_Volume[op] = 1.0 - r / release;
       return (s->Env_Vol[op] * (1.0 - r / release));
+      }
       else
+      {
+      s->Envelope_Volume[op] = 0.0f;
       return (0.0f);
+      }
     }    
      
 };
@@ -456,7 +451,7 @@ Alg1s (goomf_synth_t * s, int nframes)
                       if (s->gate)
                       {
                       s->Envelope_Volume[i]=Jenvelope(s,i);           
-                      s->Env_Vol[i] = s->velocity*volumen*s->Envelope_Volume[i];
+                      s->Env_Vol[i] = volumen*s->Envelope_Volume[i];
                       }
                       else
                       s->Env_Vol[i] = Jenvelope(s,i);
@@ -483,7 +478,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      s->bufl[l1] += sound;
 	      s->bufr[l1] += sound2;
 	      s->env_time += s->increment;
-	      s->renv_time += (s->increment);
+	      s->renv_time += (s->increment*.0001);
 	      
 	    }
 
