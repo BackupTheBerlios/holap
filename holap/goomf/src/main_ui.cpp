@@ -71,6 +71,7 @@ thread1 (void *arg)
 
       if (gui.cop)
         {
+          bzero(tmpchar,sizeof(tmpchar));
           sprintf(tmpchar,"%d",gui.op);
           lo_send(m_host,osc_configure_path, "ss","op",tmpchar);
           gui.cop=0;

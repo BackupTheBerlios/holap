@@ -743,10 +743,10 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_LFO_WAVE] = "LFO Wave";
       port_range_hints[goomf_LFO_WAVE].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[goomf_LFO_WAVE].LowerBound = 0.0;
-      port_range_hints[goomf_LFO_WAVE].UpperBound = 1.0;
+      port_range_hints[goomf_LFO_WAVE].LowerBound = 1.0;
+      port_range_hints[goomf_LFO_WAVE].UpperBound = 9.0;
       
 
       /* Parameters for Wave_0 */

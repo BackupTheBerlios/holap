@@ -204,9 +204,10 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {} {
+  Function {make_window()} {open
+  } {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;} selected
+      callback {Pexitprogram=1;} open
       xywh {101 57 495 460} type Double color 147 hide
     } {
       Fl_Box setBankFile {
@@ -274,7 +275,7 @@ ready=1;}
         xywh {10 435 120 20} box PLASTIC_DOWN_BOX down_box FLAT_BOX color 31 selection_color 147 labelfont 1 labelsize 11 labelcolor 5 align 1 when 1 textsize 9
       } {}
       Fl_Group {} {
-        label {Operator Parameters} open
+        label {Operator Parameters}
         xywh {10 175 480 210} box THIN_DOWN_FRAME color 147 labelfont 1 labelsize 11 labelcolor 5
       } {
         Fl_Dial D_Wave {
@@ -346,7 +347,7 @@ ready=1;}
         } {
           Fl_Button OP1 {
             label 1
-            callback {if (o->value())
+            callback {if ((int) o->value()==1)
 {
 op=0;
 cop=1;
@@ -355,7 +356,7 @@ cop=1;
           }
           Fl_Button OP2 {
             label 2
-            callback {if (o->value())
+            callback {if ((int)o->value()==1)
 {
 op=1;
 cop=1;
@@ -364,7 +365,7 @@ cop=1;
           }
           Fl_Button OP3 {
             label 3
-            callback {if (o->value())
+            callback {if ((int)o->value()==1)
 {
 op=2;
 cop=1;
@@ -373,7 +374,7 @@ cop=1;
           }
           Fl_Button OP4 {
             label 4
-            callback {if (o->value())
+            callback {if ((int)o->value()==1)
 {
 op=3;
 cop=1;
@@ -382,7 +383,7 @@ cop=1;
           }
           Fl_Button OP5 {
             label 5
-            callback {if (o->value())
+            callback {if ((int)o->value()==1)
 {
 op=4;
 cop=1;
@@ -391,7 +392,7 @@ cop=1;
           }
           Fl_Button OP6 {
             label 6
-            callback {if (o->value())
+            callback {if ((int)o->value()==1)
 {
 op=5;
 cop=1;
@@ -427,8 +428,8 @@ cop=1;
         }
         Fl_Dial D_LFO_Wave {
           label Wave
-          callback {D_LFO_Wave_c=1;}
-          xywh {425 75 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01
+          callback {D_LFO_Wave_c=1;} selected
+          xywh {425 75 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 1 maximum 9 step 1 value 1
           code0 {strcpy(o->theformat,"%1.0f");}
           class Rueda
         }
