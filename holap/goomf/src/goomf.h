@@ -92,6 +92,10 @@ typedef struct
   LADSPA_Data *tune;
   LADSPA_Data *rmodulation;
   LADSPA_Data *portamento;
+  LADSPA_Data *LFO_Volume;
+  LADSPA_Data *LFO_Frequency; 
+  LADSPA_Data *LFO_Delay;
+  LADSPA_Data *LFO_Wave;
   LADSPA_Data *wave[6];
   LADSPA_Data *H[6];
   LADSPA_Data *HF[6];
@@ -106,11 +110,7 @@ typedef struct
 
   OperatorPar Op[6];
   char Name[36];
-  float Pitch_LFO_Speed;
-  float Pitch_LFO_Delay;
-  float LFOpitch;
   float Master_Volume;
-  int LFO_Wave;
   
   freqVarios f[6];
   Menoscalculos h[192];
@@ -140,8 +140,6 @@ typedef struct
   float ppartial;
   int gate;
   float lasfreq[22];
-  float LFO_Volume;
-  float LFO_Frequency;
   float increment;
   float D_PI_to_SAMPLE_RATE;
   int preset;

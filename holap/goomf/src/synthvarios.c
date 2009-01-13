@@ -63,10 +63,10 @@ New (goomf_synth_t * s)
       s->Op[i].vsr = 0.0;
     }
 
-  s->Pitch_LFO_Speed = 0;
-  s->Pitch_LFO_Delay = 0;
+  s->LFO_Frequency = 0;
+  s->LFO_Delay = 0;
   s->LFO_Wave = 1;
-  s->LFOpitch = 0;
+  s->LFO_Volume = 0;
 
   s->modulation = .99;
   s->pitch = 0;

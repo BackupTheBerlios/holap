@@ -35,72 +35,76 @@
 #define goomf_VOLUME 2
 #define goomf_MASTERTUNE 3
 #define goomf_PORTAMENTO 4
-#define goomf_WAVE_0 5
-#define goomf_WAVE_1 6
-#define goomf_WAVE_2 7
-#define goomf_WAVE_3 8
-#define goomf_WAVE_4 9
-#define goomf_WAVE_5 10
-#define goomf_H_0 11
-#define goomf_H_1 12
-#define goomf_H_2 13
-#define goomf_H_3 14
-#define goomf_H_4 15
-#define goomf_H_5 16
-#define goomf_HF_0 17
-#define goomf_HF_1 18
-#define goomf_HF_2 19
-#define goomf_HF_3 20
-#define goomf_HF_4 21
-#define goomf_HF_5 22
-#define goomf_Vol_0 23
-#define goomf_Vol_1 24
-#define goomf_Vol_2 25
-#define goomf_Vol_3 26
-#define goomf_Vol_4 27
-#define goomf_Vol_5 28
-#define goomf_Attack_0 29
-#define goomf_Attack_1 30
-#define goomf_Attack_2 31
-#define goomf_Attack_3 32
-#define goomf_Attack_4 33
-#define goomf_Attack_5 34
-#define goomf_Decay_0 35
-#define goomf_Decay_1 36
-#define goomf_Decay_2 37
-#define goomf_Decay_3 38
-#define goomf_Decay_4 39
-#define goomf_Decay_5 40
-#define goomf_Sustain_0 41
-#define goomf_Sustain_1 42
-#define goomf_Sustain_2 43
-#define goomf_Sustain_3 44
-#define goomf_Sustain_4 45
-#define goomf_Sustain_5 46
-#define goomf_Release_0 47
-#define goomf_Release_1 48
-#define goomf_Release_2 49
-#define goomf_Release_3 50
-#define goomf_Release_4 51
-#define goomf_Release_5 52
-#define goomf_pLFO_0 53
-#define goomf_pLFO_1 54
-#define goomf_pLFO_2 55
-#define goomf_pLFO_3 56
-#define goomf_pLFO_4 57
-#define goomf_pLFO_5 58
-#define goomf_aLFO_0 59
-#define goomf_aLFO_1 60
-#define goomf_aLFO_2 61
-#define goomf_aLFO_3 62
-#define goomf_aLFO_4 63
-#define goomf_aLFO_5 64
-#define goomf_VSR_0 65
-#define goomf_VSR_1 66
-#define goomf_VSR_2 67
-#define goomf_VSR_3 68
-#define goomf_VSR_4 69
-#define goomf_VSR_5 70
+#define goomf_LFO_VOLUME 5
+#define goomf_LFO_FREQUENCY 6
+#define goomf_LFO_DELAY 7
+#define goomf_LFO_WAVE 8
+#define goomf_WAVE_0 9
+#define goomf_WAVE_1 10
+#define goomf_WAVE_2 11
+#define goomf_WAVE_3 12
+#define goomf_WAVE_4 13
+#define goomf_WAVE_5 150
+#define goomf_H_0 15
+#define goomf_H_1 16
+#define goomf_H_2 17
+#define goomf_H_3 18
+#define goomf_H_4 19
+#define goomf_H_5 20
+#define goomf_HF_0 21
+#define goomf_HF_1 22
+#define goomf_HF_2 23
+#define goomf_HF_3 24
+#define goomf_HF_4 25
+#define goomf_HF_5 26
+#define goomf_Vol_0 27
+#define goomf_Vol_1 28
+#define goomf_Vol_2 29
+#define goomf_Vol_3 30
+#define goomf_Vol_4 31
+#define goomf_Vol_5 32
+#define goomf_Attack_0 33
+#define goomf_Attack_1 34
+#define goomf_Attack_2 35
+#define goomf_Attack_3 36
+#define goomf_Attack_4 37
+#define goomf_Attack_5 38
+#define goomf_Decay_0 39
+#define goomf_Decay_1 40
+#define goomf_Decay_2 41
+#define goomf_Decay_3 42
+#define goomf_Decay_4 43
+#define goomf_Decay_5 44
+#define goomf_Sustain_0 45
+#define goomf_Sustain_1 46
+#define goomf_Sustain_2 47
+#define goomf_Sustain_3 48
+#define goomf_Sustain_4 49
+#define goomf_Sustain_5 50
+#define goomf_Release_0 51
+#define goomf_Release_1 52
+#define goomf_Release_2 53
+#define goomf_Release_3 54
+#define goomf_Release_4 55
+#define goomf_Release_5 56
+#define goomf_pLFO_0 57
+#define goomf_pLFO_1 58
+#define goomf_pLFO_2 59
+#define goomf_pLFO_3 60
+#define goomf_pLFO_4 61
+#define goomf_pLFO_5 62
+#define goomf_aLFO_0 63
+#define goomf_aLFO_1 64
+#define goomf_aLFO_2 65
+#define goomf_aLFO_3 66
+#define goomf_aLFO_4 67
+#define goomf_aLFO_5 68
+#define goomf_VSR_0 69
+#define goomf_VSR_1 70
+#define goomf_VSR_2 71
+#define goomf_VSR_3 72
+#define goomf_VSR_4 73
+#define goomf_VSR_5 74
 
 
 
@@ -166,6 +170,18 @@ connectPortgoomf (LADSPA_Handle instance, unsigned long port,
       break;
     case goomf_PORTAMENTO:
       plugin->portamento = data;
+      break;
+    case goomf_LFO_VOLUME:
+      plugin->LFO_Volume = data;
+      break;
+    case goomf_LFO_FREQUENCY:
+      plugin->LFO_Frequency = data;
+      break;
+    case goomf_LFO_DELAY:
+      plugin->LFO_Delay = data;
+      break;
+    case goomf_LFO_WAVE:
+      plugin->LFO_Wave = data;
       break;
     case goomf_WAVE_0:
       plugin->wave[0] = data;
@@ -683,7 +699,7 @@ goomf_init()
       goomfLDescriptor->Name = "goomf";
       goomfLDescriptor->Maker = "Josep Andreu <holborn@telefonica.net>";
       goomfLDescriptor->Copyright = "GNU General Public License version 2";
-      goomfLDescriptor->PortCount = 71;
+      goomfLDescriptor->PortCount = 75;
 
 
       port_descriptors = (LADSPA_PortDescriptor *)
@@ -718,7 +734,7 @@ goomf_init()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_VOLUME] = "Volume";
       port_range_hints[goomf_VOLUME].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MAXIMUM |
+	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_VOLUME].LowerBound = 0.0;
       port_range_hints[goomf_VOLUME].UpperBound = 1.0;
@@ -742,6 +758,48 @@ goomf_init()
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_PORTAMENTO].LowerBound = 0.0;
       port_range_hints[goomf_PORTAMENTO].UpperBound = 1.0;
+      
+      /* Parameters for LFO Volume */
+      port_descriptors[goomf_LFO_VOLUME] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_LFO_VOLUME] = "LFO Volume";
+      port_range_hints[goomf_LFO_VOLUME].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_LFO_VOLUME].LowerBound = 0.0;
+      port_range_hints[goomf_LFO_VOLUME].UpperBound = 1.0;
+
+      
+      /* Parameters for LFO Frequency */
+      port_descriptors[goomf_LFO_FREQUENCY] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_LFO_FREQUENCY] = "LFO Frequency";
+      port_range_hints[goomf_LFO_FREQUENCY].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_LFO_FREQUENCY].LowerBound = 0.0;
+      port_range_hints[goomf_LFO_FREQUENCY].UpperBound = 1.0;
+      
+      /* Parameters for LFO Delay */
+      port_descriptors[goomf_LFO_DELAY] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_LFO_DELAY] = "LFO Delay";
+      port_range_hints[goomf_LFO_DELAY].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_LFO_DELAY].LowerBound = 0.0;
+      port_range_hints[goomf_LFO_DELAY].UpperBound = 1.0;
+      
+      /* Parameters for LFO Wave */
+      port_descriptors[goomf_LFO_WAVE] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_LFO_WAVE] = "LFO Wave";
+      port_range_hints[goomf_LFO_WAVE].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_LFO_WAVE].LowerBound = 0.0;
+      port_range_hints[goomf_LFO_WAVE].UpperBound = 1.0;
+      
 
       /* Parameters for Wave_0 */
       port_descriptors[goomf_WAVE_0] =

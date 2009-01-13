@@ -267,6 +267,7 @@ Jenvelope (goomf_synth_t * s, int op)
   LADSPA_Data decay   =  *(s->decay[op]);
   LADSPA_Data sustain =  *(s->sustain[op]);
   LADSPA_Data release =  *(s->release[op]);
+  LADSPA_Data volume = *(s->Ovol[op]);
   float t = s->env_time;
   float r = s->renv_time;
 
@@ -274,22 +275,13 @@ Jenvelope (goomf_synth_t * s, int op)
     {
       if (t > attack + decay )	return (sustain);
       if (t > attack) return (1.0 - (1.0 - sustain) * (t - attack) / decay );
-      if ((t /attack) < s->Envelope_Volume[op]) return s->Envelope_Volume[op]; 
-      else return (t /attack);
-      
+      if (s->Env_Vol[op] > (t / attack * volume) ) return (s->Env_Vol[op] / volume ); else return ( t / attack);
+          
     }
   else
     {
-      if (r < release )
-      {
-      s->Envelope_Volume[op] = 1.0 - r / release;
-      return (s->Env_Vol[op] * (1.0 - r / release));
-      }
-      else
-      {
-      s->Envelope_Volume[op] = 0.0f;
-      return (0.0f);
-      }
+      if (r < release ) return (s->Env_Vol[op] * (1.0 - r / release));
+      else return (0.0f);
     }    
      
 };
@@ -304,13 +296,17 @@ Pitch_LFO (goomf_synth_t * s, float t)
 {
 
   float x, out;
+  LADSPA_Data LFO_Delay = *(s->LFO_Delay);
+  LADSPA_Data LFO_Frequency = *(s->LFO_Frequency);
+  int LFO_Wave = *(s->LFO_Wave);
 
-  if (t * 20 < s->Pitch_LFO_Delay)
+
+  if (t * 20 < LFO_Delay)
   return (0.0f);
 
-  x = fmodf (s->Pitch_LFO_Speed * t, 1.0);
+  x = fmodf (LFO_Frequency * t, 1.0);
 
-  out = NFsin (s, s->LFO_Wave, x * D_PI) * s->LFO_Frequency;
+  out = NFsin (s, LFO_Wave, x * D_PI) * LFO_Frequency;
 
   return (out);
 
@@ -328,7 +324,7 @@ Get_Partial (goomf_synth_t * s)
   float portdir;
   LADSPA_Data Portamento = *(s->portamento);
 
-  if (s->note != s->lastnote)
+  if ((s->note != s->lastnote) || (s->pitch != 0 ))
   {
   s->lpartial = s->apartial; 
   s->lastnote = s->note; 
@@ -350,17 +346,6 @@ Get_Partial (goomf_synth_t * s)
  if (Portamento > 0)  return(s->ppartial); else return(s->apartial); 
 
 };
-
-
-void
-Calc_LFO_Frequency (goomf_synth_t * s)
-{
-
-   s->LFO_Frequency =  s->modulation * s->LFOpitch * s->D_PI_to_SAMPLE_RATE;
-
-};
-
-
 
 
 float
@@ -421,6 +406,7 @@ Alg1s (goomf_synth_t * s, int nframes)
   float wave;
   float aLFO;
   float pLFO;
+  float LFO;
 
   memset (s->bufl, 0, sizeof(float) * 8192);
   memset (s->bufr, 0, sizeof(float) * 8192);
@@ -435,8 +421,8 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      sound = 0.0f;
 	      sound2 = 0.0f;
 
-	      // LFO_Volume = Pitch_LFO(s,s->env_time);
-              s->LFO_Volume = 1.0;
+	      LFO = Pitch_LFO(s,s->env_time);
+              
 
 	      for (i = 0; i< 6; i++) 
 		 {
@@ -444,8 +430,8 @@ Alg1s (goomf_synth_t * s, int nframes)
                  
                  
                       volumen = *(s->Ovol[i]);
-                      aLFO = (float) *(s->aLFO[i]) + 1.0;
-                      pLFO = (float) *(s->pLFO[i]);
+                      aLFO = (float) *(s->aLFO[i])*LFO;
+                      pLFO = (float) *(s->pLFO[i])*LFO;
                       wave = (int) *(s->wave[i]);
 
                       if (s->gate)
