@@ -42,33 +42,25 @@ typedef struct
 
 typedef struct
 {
-  int wave;
-  int harmonic;
-  float harmonic_fine;
-  float volumen;
-  float attack;
-  float decay;
-  float sustain;
-  float release;
-  float pLFO;
-  float aLFO;
-  float vsr;
-} OperatorPar;
+  char Name[64];
+  LADSPA_Data *master_volume;
+  LADSPA_Data *tune;
+  LADSPA_Data *rmodulation;
+  LADSPA_Data *portamento;
+  LADSPA_Data *LFO_Volume;
+  LADSPA_Data *LFO_Frequency; 
+  LADSPA_Data *LFO_Delay;
+  LADSPA_Data *LFO_Wave;
+  LADSPA_Data *wave[6];
+  LADSPA_Data *H[6];
+  LADSPA_Data *HF[6];
+  LADSPA_Data *Ovol[6];
+  LADSPA_Data *attack[6];
+  LADSPA_Data *decay[6];
+  LADSPA_Data *sustain[6];
+  LADSPA_Data *release[6];  
+  LADSPA_Data *pLFO[6];
 
-
-typedef struct
-{
-
-  OperatorPar Op[6];
-  char Name[36];
-  float modulation;
-  float Pitch_LFO_Speed;
-  float Pitch_LFO_Delay;
-  float LFOpitch;
-  float Master_Volume;
-  int LFO_Wave;
-  float Portamento_Speed;
-  
 } Todolo;
 
 
@@ -105,11 +97,7 @@ typedef struct
   LADSPA_Data *sustain[6];
   LADSPA_Data *release[6];  
   LADSPA_Data *pLFO[6];
-
-  OperatorPar Op[6];
-  char Name[36];
-  float Master_Volume;
-  
+  char Name[64];
   freqVarios f[6];
   Menoscalculos h[192];
   float lsin[6290];
@@ -129,8 +117,7 @@ typedef struct
   float pitch;
   float env_time;
   float renv_time;
-  float scaling;
-  float modulation; 
+  float modulation;
   int note;
   int lastnote;
   float apartial;
@@ -142,7 +129,7 @@ typedef struct
   float D_PI_to_SAMPLE_RATE;
   int preset;
   char BankFilename[128];
-  Todolo Banco[32];
+  Todolo Banco[128];
 
 } goomf_synth_t;
 

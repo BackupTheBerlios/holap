@@ -31,13 +31,19 @@ loadbank (goomf_synth_t * s, const char *filename)
 {
 
   FILE *fn;
-
+  int i,j;
 
   if ((fn = fopen (filename, "r")) == NULL)
     {
       fprintf (stderr, "File not found\n");
       return 1;
     }
+
+
+
+
+
+
 
   fclose (fn);
   return 0;

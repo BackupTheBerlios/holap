@@ -33,7 +33,6 @@ init_vars (goomf_synth_t * s)
    int i;
 
   //Init de vars
-  s->Master_Volume = 0.70;
   s->gate = 0;
   s->env_time = 0.0f;
   s->renv_time = 0.0f;
