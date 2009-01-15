@@ -173,8 +173,8 @@ init_vars (goomf_synth_t * s)
 
       s->psin[i] = sinf (x_sin + sinf (2.0 * x_sin));
       s->qsin[i] = sinf (s->nsin[i] + s->lsin[i] + s->psin[i]);
-      s->rsin[i] = sinf (s->lsin[i] + sinf (s->msin[i]));
-      s->tsin[i] = sinf (s->lsin[i]);
+      s->rsin[i] = sinf (s->msin[i] + sinf (s->msin[i]));
+      s->tsin[i] = sinf (s->msin[i] + sinf (s->nsin[i]));
 
       s->ssin[i] =
 	(s->lsin[i] + s->nsin[i] + s->msin[i] + s->psin[i] + s->qsin[i] +
@@ -301,13 +301,13 @@ Pitch_LFO (goomf_synth_t * s, float t)
   int LFO_Wave = *(s->LFO_Wave);
 
 
-  if (t * 20 < LFO_Delay)
+  if (t  < LFO_Delay)
   return (0.0f);
 
-  x = fmodf (LFO_Frequency * t, 1.0);
-
-  out = NFsin (s, LFO_Wave, x * D_PI);
-
+  x = fmodf (LFO_Frequency * t, 1.0) * D_PI;
+ //  if ( x > D_PI) x = fmodf(x,D_PI);
+ 
+  out = NFsin (s, LFO_Wave, x);
   return (out);
 
 }
@@ -352,7 +352,11 @@ float
 NFsin (goomf_synth_t * s, int i, float x)
 {
 
+  if (x > D_PI) x = fmodf(x,D_PI);
+
   long int k = F2I (x * 1000.0);
+
+
 
   if (i == 1)
     return (s->lsin[k]);
@@ -410,7 +414,7 @@ Alg1s (goomf_synth_t * s, int nframes)
   memset (s->bufl, 0, sizeof(float) * 8192);
   memset (s->bufr, 0, sizeof(float) * 8192);
   
-  LADSPA_Data LFO_Volume = *(s->LFO_Volume); 
+  LADSPA_Data LFO_Volume = *(s->LFO_Volume) * .5; 
 
 	  m_partial = Get_Partial(s);
         
@@ -430,6 +434,7 @@ Alg1s (goomf_synth_t * s, int nframes)
                  
                       volumen = *(s->Ovol[i]);
                       pLFO = (float) *(s->pLFO[i])*LFO;
+                      
                       wave = (int) *(s->wave[i]);
 
                       if (s->gate)
@@ -445,7 +450,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 		      s->f[i].dphi = m_partial * (pitch_Operator(s,i)+pLFO);
 		      if (s->f[i].dphi > D_PI) s->f[i].dphi -= D_PI;
 		      s->f[i].phi += s->f[i].dphi;
-		      if (s->f[i].phi > D_PI) s->f[i].phi -= D_PI;
+		      if (s->f[i].phi > D_PI) s->f[i].phi -=D_PI;
                       
                   //R 
 

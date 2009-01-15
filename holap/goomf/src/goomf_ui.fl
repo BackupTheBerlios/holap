@@ -142,14 +142,15 @@ switch (event)
 
 
  i = Fl_Dial::handle(event);
+ redraw();
  
-
-return i;} {}
+ 
+return i;} {selected
+    }
   }
 } 
 
-class goomf_ui {open
-} {
+class goomf_ui {} {
   decl {int ready;} {public
   }
   decl {int op;} {public
@@ -204,8 +205,7 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     Fl_Window ui_win {
       callback {Pexitprogram=1;} open
       xywh {101 57 495 460} type Double color 147 hide
@@ -428,7 +428,7 @@ cop=1;
         }
         Fl_Dial D_LFO_Wave {
           label Wave
-          callback {D_LFO_Wave_c=1;} selected
+          callback {D_LFO_Wave_c=1;}
           xywh {425 75 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 1 maximum 9 step 1 value 1
           code0 {strcpy(o->theformat,"%1.0f");}
           class Rueda
