@@ -341,8 +341,16 @@ connectPortgoomf (LADSPA_Handle instance, unsigned long port,
 char *
 goomfConfigure (LADSPA_Handle instance, const char *key, const char *value)
 {
-  int i = 0;
+  int i;
+  char *temp;
   goomf_synth_t *synth = (goomf_synth_t *) instance;
+
+   if (!strcmp (key, "names"))
+       {
+        temp=value;         
+        for(i=0;i<80;i++) sprintf(synth->Banco[i].Name,"%s",strsep(&temp,","));
+        return NULL;
+       }
 
   return strdup ("error: unrecognized configure key");
 }

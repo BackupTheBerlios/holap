@@ -48,6 +48,7 @@ thread1 (void *arg)
           Put_Loaded_Bank ();
 	  break;
 	case 2:
+          gui.PresetSelect->redraw();
 	  gui.Pname->value (Banco[(int) gui.PresetSelect->value ()].Name);
 	  Put_Combi (gui.PresetSelect->value ());
 	  Send_Values ();
@@ -330,12 +331,11 @@ configure_handler (const char *path, const char *types, lo_arg ** argv,
   const char *key = (const char *) &argv[0]->s;
   const char *value = (const char *) &argv[1]->s;
 
-  if (!strcmp (key, "load"))
-    {
-      // A ver que hacemos aqui :-)
 
-    }
-  return 0;
+
+
+
+
 }
 
 int
@@ -421,13 +421,7 @@ program_handler (const char *path, const char *types, lo_arg ** argv,
   program = argv[1]->i;
   
   gui.PresetSelect->value (program);
-  gui.Pname->value(Banco[program].Name);
-  Put_Combi (program);
-  Send_Values ();
-  Update_Main_Widgets ();
-  Update_Operator_Widgets (gui.op);
-  gui.Pname->redraw();
-
+  gui.ready = 2;
 
   printf
     ("osc_program_handler: received program change, bank %d, program %d\n",
@@ -475,9 +469,6 @@ main (int argc, char **argv)
 
   New();
   New_Bank();
-  sprintf (gui.uBankFilename, "%s/Default.goomf", DATADIR);
-  loadbank(gui.uBankFilename);
-   
   char *url = argv[1];
   char *host = lo_url_get_hostname (url);
   char *port = lo_url_get_port (url);
@@ -485,8 +476,11 @@ main (int argc, char **argv)
   char *label = argv[3];
   char *temp;
 
+
+  sprintf (gui.uBankFilename, "%s/Default.goomf", DATADIR);
+  loadbank(gui.uBankFilename);
+
   pthread_create (&thr1, NULL, thread1, NULL);
-   
   gui.ui_win->copy_label (argv[3]);
   gui.ui_win->show ();
 
@@ -528,6 +522,7 @@ main (int argc, char **argv)
   gui.d_osc_label->copy_label (myurl);
 
   lo_send (m_host, osc_update_path, "s", myurl);
+  Send_laristra();
 
   lo_fd = lo_server_get_socket_fd (osc_server);
 
@@ -880,6 +875,7 @@ loadbank (const char *filename)
     }
 
   fclose (fn);
+  Haz_laristra();
   return 0;
 };
 
@@ -1095,3 +1091,27 @@ Put_Loaded_Bank ()
     }
 
 }
+
+void
+Haz_laristra()
+{
+   
+  int i;
+  bzero(laristra, sizeof(laristra));
+  for(i=0; i<80; i++)
+  {
+   if (i==0) sprintf(laristra,"%s",Banco[i].Name);
+   else
+   sprintf(laristra,"%s,%s",laristra,Banco[i].Name);  
+  }
+
+
+}
+
+
+void
+Send_laristra()
+{
+ lo_send (m_host, osc_configure_path, "ss", "names", laristra);
+}
+

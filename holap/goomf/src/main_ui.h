@@ -76,7 +76,7 @@ char BankFilename[128];
 
 Todolo Banco[80];
 
-
+char laristra[5300];
 
 goomf_ui gui;
 char elpath[256];
@@ -108,5 +108,6 @@ void Send_Values ();
 void preset_to_bank (int j);
 void make_window_banks();
 void Put_Loaded_Bank();
-
+void Haz_laristra();
+void Send_laristra();
 #endif
