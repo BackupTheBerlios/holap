@@ -26,7 +26,6 @@
 #include <dssi.h>
 #include <ladspa.h>
 #include <pthread.h>
-#include <lo/lo.h>
 #include "goomf.h"
 
 
@@ -99,7 +98,7 @@ static LADSPA_Descriptor *goomfLDescriptor = NULL;
 static DSSI_Descriptor *goomfDDescriptor = NULL;
 
 static void rungoomf (LADSPA_Handle instance, unsigned long sample_count,
-			snd_seq_event_t * events, unsigned long EventCount);
+		      snd_seq_event_t * events, unsigned long EventCount);
 
 
 static void cleanupgoomf (LADSPA_Handle instance);
@@ -138,7 +137,7 @@ cleanupgoomf (LADSPA_Handle instance)
 
 static void
 connectPortgoomf (LADSPA_Handle instance, unsigned long port,
-		    LADSPA_Data * data)
+		  LADSPA_Data * data)
 {
   goomf_synth_t *plugin = (goomf_synth_t *) instance;
   switch (port)
@@ -332,62 +331,11 @@ connectPortgoomf (LADSPA_Handle instance, unsigned long port,
     case goomf_pLFO_5:
       plugin->pLFO[5] = data;
       break;
-    
-      
+
+
     }
 
 }
-
-
-static char *
-osc_build_path (char *base_path, const char *method)
-{
-  char buffer[256];
-  char *full_path;
-
-  snprintf (buffer, 256, "%s%s", base_path, method);
-  if (!(full_path = strdup (buffer)))
-    {
-      printf ("out of memory!\n");
-      exit (1);
-    }
-  return strdup (buffer);
-}
-
-static void
-osc_error (int num, const char *msg, const char *path)
-{
-  printf (" error: liblo server error %d in path \"%s\": %s\n",
-          num, (path ? path : "(null)"), msg);
-}
-
-
-static void
-create_osc (LADSPA_Handle instance, const char *value)
-{
-
-  goomf_synth_t *s = (goomf_synth_t *) instance;
-
-  char *temp;
-  char *host = lo_url_get_hostname (value);
-  char *port = lo_url_get_port (value);
-  char *path = lo_url_get_path (value);
-
-  s->osc_server = 0;
-  s->m_host = lo_address_new (host, port);
-  s->osc_configure_path = osc_build_path (path, "/configure");
-  s->osc_control_path = osc_build_path (path, "/control");
-  s->osc_server = lo_server_new (NULL, osc_error);
-  lo_server_add_method (s->osc_server, s->osc_configure_path, "ss", NULL, NULL);
-  lo_server_add_method (s->osc_server, s->osc_control_path, "if", NULL, NULL);
-  lo_server_add_method (s->osc_server, s->osc_control_path, "if", NULL, NULL);
-
-  temp = lo_server_get_url (s->osc_server);
-
-  return;
-
-}
-
 
 
 char *
@@ -395,42 +343,6 @@ goomfConfigure (LADSPA_Handle instance, const char *key, const char *value)
 {
   int i = 0;
   goomf_synth_t *synth = (goomf_synth_t *) instance;
-
-  if (!strcmp (key, "load"))
-    {
-      pthread_mutex_lock (&synth->mutex);
-      i = loadbank (synth, value);
-      pthread_mutex_unlock (&synth->mutex);
-      if (i)
-	return strdup ("Error loading file");
-      else
-	return NULL;
-    }
-
-  if (!strcmp (key, "url"))
-    {
-      create_osc (instance, value);
-      return NULL;
-    }
-
-  if (!strcmp (key, "op"))
-    {
-
-     sscanf(value,"%d",&i); 
-
-     lo_send(synth->m_host,synth->osc_control_path, "if",9+i,(float) *(synth->wave[i]));
-     lo_send(synth->m_host,synth->osc_control_path, "if",15+i,(float) *(synth->H[i]));
-     lo_send(synth->m_host,synth->osc_control_path, "if",21+i,(float) *(synth->HF[i]));
-     lo_send(synth->m_host,synth->osc_control_path, "if",27+i,(float) *(synth->Ovol[i]));
-     lo_send(synth->m_host,synth->osc_control_path, "if",33+i,(float) *(synth->attack[i]));
-     lo_send(synth->m_host,synth->osc_control_path, "if",39+i,(float) *(synth->decay[i]));
-     lo_send(synth->m_host,synth->osc_control_path, "if",45+i,(float) *(synth->sustain[i]));
-     lo_send(synth->m_host,synth->osc_control_path, "if",51+i,(float) *(synth->release[i]));
-     lo_send(synth->m_host,synth->osc_control_path, "if",57+i,(float) *(synth->pLFO[i]));
-     
-     return NULL;   
-    }
-
 
   return strdup ("error: unrecognized configure key");
 }
@@ -442,11 +354,11 @@ goomf_get_program (LADSPA_Handle handle, unsigned long index)
   static DSSI_Program_Descriptor pd;
   goomf_synth_t *synth = (goomf_synth_t *) handle;
 
-  if (index < 32)
+  if (index < 128)
     {
       pd.Bank = 0;
-      pd.Program = index + 1;
-      pd.Name = synth->Banco[index + 1].Name;
+      pd.Program = index;
+      pd.Name = synth->Banco[index].Name;
       return &pd;
     }
   return NULL;
@@ -454,18 +366,13 @@ goomf_get_program (LADSPA_Handle handle, unsigned long index)
 
 void
 goomf_select_program (LADSPA_Handle handle, unsigned long bank,
-			unsigned long program)
+		      unsigned long program)
 {
 
-
-
   goomf_synth_t *synth = (goomf_synth_t *) handle;
-  if (bank || program > 32)
+  if (bank || program > 80)
     return;
 
-  //pthread_mutex_lock (&synth->mutex);
-  //Put_Combi_t (synth, program);
-  //pthread_mutex_unlock (&synth->mutex);
 
 
 }
@@ -475,21 +382,15 @@ goomf_select_program (LADSPA_Handle handle, unsigned long bank,
 
 
 static LADSPA_Handle
-instantiategoomf (const LADSPA_Descriptor * descriptor,
-		    unsigned long s_rate)
+instantiategoomf (const LADSPA_Descriptor * descriptor, unsigned long s_rate)
 {
 
-  goomf_synth_t *synth =
-    (goomf_synth_t *) calloc (1, sizeof (goomf_synth_t));
+  goomf_synth_t *synth = (goomf_synth_t *) calloc (1, sizeof (goomf_synth_t));
 
   synth->SAMPLE_RATE = (unsigned int) s_rate;
   init_vars (synth);
   Adjust_Audio (synth);
-  sprintf (synth->BankFilename, "%s/Default.goomf", DATADIR);
   pthread_mutex_init (&synth->mutex, NULL);
-//  pthread_mutex_lock (&synth->mutex);
-//  loadbank (synth, synth->BankFilename);
-//  pthread_mutex_unlock (&synth->mutex);
 
   return (LADSPA_Handle) synth;
 }
@@ -516,7 +417,7 @@ rungoomfWrapper (LADSPA_Handle instance, unsigned long sample_count)
 
 static void
 rungoomf (LADSPA_Handle instance, unsigned long sample_count,
-	    snd_seq_event_t * events, unsigned long event_count)
+	  snd_seq_event_t * events, unsigned long event_count)
 {
   goomf_synth_t *synth = (goomf_synth_t *) instance;
   LADSPA_Data *const outputl = synth->output_l;
@@ -524,86 +425,87 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
   LADSPA_Data vol = *(synth->master_volume);
 
   unsigned long event_pos = 0;
-  int i,j;
+  int i, j;
 
 
 
-      while (event_pos < event_count)
+  while (event_pos < event_count)
+    {
+
+      switch (events[event_pos].type)
 	{
+	case SND_SEQ_EVENT_PITCHBEND:
+	  synth->pitch =
+	    (float) events[event_pos].data.control.value / 8192.0;
+	  break;
 
-	  switch (events[event_pos].type)
+	case SND_SEQ_EVENT_PGMCHANGE:
+
+	  if (events[event_pos].data.control.value < 33)
+	    synth->preset = events[event_pos].data.control.value;
+	  break;
+
+
+	case SND_SEQ_EVENT_CONTROLLER:
+
+	  if (events[event_pos].data.control.param == 1)
 	    {
-	    case SND_SEQ_EVENT_PITCHBEND:
-	      synth->pitch =
-		(float) events[event_pos].data.control.value / 8192.0;
-	      break;
-
-	    case SND_SEQ_EVENT_PGMCHANGE:
-
-	       if (events[event_pos].data.control.value < 33)
-		synth->preset = events[event_pos].data.control.value;
-	      break;
-
-
-	    case SND_SEQ_EVENT_CONTROLLER:
-
-	      if (events[event_pos].data.control.param == 1)
-		{
-		  synth->modulation =(float)
-         	    events[event_pos].data.control.value / 128;
-		  break;
-		}
-
-	      if (events[event_pos].data.control.param == 7)
-		{
-		  *(synth->master_volume) = 
-		    (LADSPA_Data) events[event_pos].data.control.value / 128.0;
-		  break;
-		}
-	      break;
-
-	    case SND_SEQ_EVENT_NOTEON:
-
-	      if (events[event_pos].data.note.velocity != 0)
-		{
-		          synth->note= events[event_pos].data.note.note;
-		          if (!synth->gate) synth->env_time = 0.0f; 
-               		  synth->gate=1;
-			  break;
-		}
-	      else
-		{
-                   if (events[event_pos].data.note.note == synth->note)
-                        {
-                          synth->gate = 0;
-                          synth->renv_time = 0.0f;
-			}  
-		}
-	      break;
-
-	    case SND_SEQ_EVENT_NOTEOFF:
-                   if ((int) events[event_pos].data.note.note == synth->note)
-                        {
-                          synth->gate = 0;
-                          synth->renv_time = 0.0f;
-			}  
-
+	      synth->modulation = (float)
+		events[event_pos].data.control.value / 128;
 	      break;
 	    }
 
-	  event_pos++;
+	  if (events[event_pos].data.control.param == 7)
+	    {
+	      *(synth->master_volume) =
+		(LADSPA_Data) events[event_pos].data.control.value / 128.0;
+	      break;
+	    }
+	  break;
+
+	case SND_SEQ_EVENT_NOTEON:
+
+	  if (events[event_pos].data.note.velocity != 0)
+	    {
+	      synth->note = events[event_pos].data.note.note;
+	      if (!synth->gate)
+		synth->env_time = 0.0f;
+	      synth->gate = 1;
+	      break;
+	    }
+	  else
+	    {
+	      if (events[event_pos].data.note.note == synth->note)
+		{
+		  synth->gate = 0;
+		  synth->renv_time = 0.0f;
+		}
+	    }
+	  break;
+
+	case SND_SEQ_EVENT_NOTEOFF:
+	  if ((int) events[event_pos].data.note.note == synth->note)
+	    {
+	      synth->gate = 0;
+	      synth->renv_time = 0.0f;
+	    }
+
+	  break;
 	}
 
+      event_pos++;
+    }
 
-      Alg1s (synth, sample_count);
 
-      for (i = 0; i < sample_count; i++)
-	{
-	  outputl[i] = synth->bufl[i]*vol;
-	  outputr[i] = synth->bufr[i]*vol;
+  Alg1s (synth, sample_count);
 
-	}
-    
+  for (i = 0; i < sample_count; i++)
+    {
+      outputl[i] = synth->bufl[i] * vol;
+      outputr[i] = synth->bufr[i] * vol;
+
+    }
+
 
 }
 
@@ -627,8 +529,7 @@ getControllergoomf (LADSPA_Handle instance, unsigned long port)
   return -1;
 }
 
-void __attribute__((constructor))
-goomf_init()
+void __attribute__ ((constructor)) goomf_init ()
 {
 
 
@@ -651,8 +552,7 @@ goomf_init()
 
 
       port_descriptors = (LADSPA_PortDescriptor *)
-	calloc (goomfLDescriptor->PortCount, sizeof
-		(LADSPA_PortDescriptor));
+	calloc (goomfLDescriptor->PortCount, sizeof (LADSPA_PortDescriptor));
       goomfLDescriptor->PortDescriptors =
 	(const LADSPA_PortDescriptor *) port_descriptors;
 
@@ -706,7 +606,7 @@ goomf_init()
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_PORTAMENTO].LowerBound = 0.0;
       port_range_hints[goomf_PORTAMENTO].UpperBound = 1.0;
-      
+
       /* Parameters for LFO Volume */
       port_descriptors[goomf_LFO_VOLUME] =
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -717,7 +617,7 @@ goomf_init()
       port_range_hints[goomf_LFO_VOLUME].LowerBound = 0.0;
       port_range_hints[goomf_LFO_VOLUME].UpperBound = 1.0;
 
-      
+
       /* Parameters for LFO Frequency */
       port_descriptors[goomf_LFO_FREQUENCY] =
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -727,7 +627,7 @@ goomf_init()
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_LFO_FREQUENCY].LowerBound = 0.0;
       port_range_hints[goomf_LFO_FREQUENCY].UpperBound = 1.0;
-      
+
       /* Parameters for LFO Delay */
       port_descriptors[goomf_LFO_DELAY] =
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -737,7 +637,7 @@ goomf_init()
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_LFO_DELAY].LowerBound = 0.0;
       port_range_hints[goomf_LFO_DELAY].UpperBound = 1.0;
-      
+
       /* Parameters for LFO Wave */
       port_descriptors[goomf_LFO_WAVE] =
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -747,7 +647,7 @@ goomf_init()
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_LFO_WAVE].LowerBound = 1.0;
       port_range_hints[goomf_LFO_WAVE].UpperBound = 9.0;
-      
+
 
       /* Parameters for Wave_0 */
       port_descriptors[goomf_WAVE_0] =
@@ -810,8 +710,7 @@ goomf_init()
       port_range_hints[goomf_WAVE_5].UpperBound = 9.0;
 
       /* Parameters for H_0 */
-      port_descriptors[goomf_H_0] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_H_0] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_H_0] = "H_0";
       port_range_hints[goomf_H_0].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
@@ -821,8 +720,7 @@ goomf_init()
 
 
       /* Parameters for H_1 */
-      port_descriptors[goomf_H_1] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_H_1] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_H_1] = "H_1";
       port_range_hints[goomf_H_1].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
@@ -831,8 +729,7 @@ goomf_init()
       port_range_hints[goomf_H_1].UpperBound = 21.0;
 
       /* Parameters for H_2 */
-      port_descriptors[goomf_H_2] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_H_2] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_H_2] = "H_2";
       port_range_hints[goomf_H_2].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
@@ -841,8 +738,7 @@ goomf_init()
       port_range_hints[goomf_H_2].UpperBound = 21.0;
 
       /* Parameters for H_3 */
-      port_descriptors[goomf_H_3] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_H_3] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_H_3] = "H_3";
       port_range_hints[goomf_H_3].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
@@ -851,8 +747,7 @@ goomf_init()
       port_range_hints[goomf_H_3].UpperBound = 21.0;
 
       /* Parameters for H_4 */
-      port_descriptors[goomf_H_4] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_H_4] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_H_4] = "H_4";
       port_range_hints[goomf_H_4].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
@@ -861,8 +756,7 @@ goomf_init()
       port_range_hints[goomf_H_4].UpperBound = 21.0;
 
       /* Parameters for H_5 */
-      port_descriptors[goomf_H_5] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_H_5] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_H_5] = "H_5";
       port_range_hints[goomf_H_5].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
@@ -872,8 +766,7 @@ goomf_init()
 
 
       /* Parameters for HF_0 */
-      port_descriptors[goomf_HF_0] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_HF_0] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_HF_0] = "HF_0";
       port_range_hints[goomf_HF_0].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
@@ -882,8 +775,7 @@ goomf_init()
       port_range_hints[goomf_HF_0].UpperBound = 0.005;
 
       /* Parameters for HF_1 */
-      port_descriptors[goomf_HF_1] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_HF_1] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_HF_1] = "HF_1";
       port_range_hints[goomf_HF_1].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
@@ -892,8 +784,7 @@ goomf_init()
       port_range_hints[goomf_HF_1].UpperBound = 0.005;
 
       /* Parameters for HF_2 */
-      port_descriptors[goomf_HF_2] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_HF_2] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_HF_2] = "HF_2";
       port_range_hints[goomf_HF_2].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
@@ -902,8 +793,7 @@ goomf_init()
       port_range_hints[goomf_HF_2].UpperBound = 0.005;
 
       /* Parameters for HF_3 */
-      port_descriptors[goomf_HF_3] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_HF_3] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_HF_3] = "HF_3";
       port_range_hints[goomf_HF_3].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
@@ -912,8 +802,7 @@ goomf_init()
       port_range_hints[goomf_HF_3].UpperBound = 0.005;
 
       /* Parameters for HF_4 */
-      port_descriptors[goomf_HF_4] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_HF_4] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_HF_4] = "HF_4";
       port_range_hints[goomf_HF_4].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
@@ -922,8 +811,7 @@ goomf_init()
       port_range_hints[goomf_HF_4].UpperBound = 0.005;
 
       /* Parameters for HF_5 */
-      port_descriptors[goomf_HF_5] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_HF_5] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_HF_5] = "HF_5";
       port_range_hints[goomf_HF_5].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
@@ -932,8 +820,7 @@ goomf_init()
       port_range_hints[goomf_HF_5].UpperBound = 0.005;
 
       /* Parameters for Vol_0 */
-      port_descriptors[goomf_Vol_0] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_Vol_0] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Vol_0] = "Vol_0";
       port_range_hints[goomf_Vol_0].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM |
@@ -942,8 +829,7 @@ goomf_init()
       port_range_hints[goomf_Vol_0].UpperBound = 1.0;
 
       /* Parameters for Vol_1 */
-      port_descriptors[goomf_Vol_1] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_Vol_1] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Vol_1] = "Vol_1";
       port_range_hints[goomf_Vol_1].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM |
@@ -952,8 +838,7 @@ goomf_init()
       port_range_hints[goomf_Vol_1].UpperBound = 1.0;
 
       /* Parameters for Vol_2 */
-      port_descriptors[goomf_Vol_2] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_Vol_2] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Vol_2] = "Vol_2";
       port_range_hints[goomf_Vol_2].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM |
@@ -962,8 +847,7 @@ goomf_init()
       port_range_hints[goomf_Vol_2].UpperBound = 1.0;
 
       /* Parameters for Vol_3 */
-      port_descriptors[goomf_Vol_3] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_Vol_3] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Vol_3] = "Vol_3";
       port_range_hints[goomf_Vol_3].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM |
@@ -972,8 +856,7 @@ goomf_init()
       port_range_hints[goomf_Vol_3].UpperBound = 1.0;
 
       /* Parameters for Vol_4 */
-      port_descriptors[goomf_Vol_4] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_Vol_4] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Vol_4] = "Vol_4";
       port_range_hints[goomf_Vol_4].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM |
@@ -982,8 +865,7 @@ goomf_init()
       port_range_hints[goomf_Vol_4].UpperBound = 1.0;
 
       /* Parameters for Vol_5 */
-      port_descriptors[goomf_Vol_5] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_descriptors[goomf_Vol_5] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_Vol_5] = "Vol_5";
       port_range_hints[goomf_Vol_5].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MINIMUM |
@@ -1235,7 +1117,7 @@ goomf_init()
       port_range_hints[goomf_Release_5].LowerBound = 0.01;
       port_range_hints[goomf_Release_5].UpperBound = 1.0;
 
-      
+
 
       /* Parameters for pLFO_0 */
       port_descriptors[goomf_pLFO_0] =
@@ -1329,8 +1211,7 @@ goomf_init()
 }
 
 
-void __attribute__ ((destructor))
-goomf_fini()
+void __attribute__ ((destructor)) goomf_fini ()
 {
   if (goomfLDescriptor)
     {
@@ -1344,4 +1225,3 @@ goomf_fini()
       free (goomfDDescriptor);
     }
 }
-

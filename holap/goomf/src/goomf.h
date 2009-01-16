@@ -25,7 +25,6 @@
 #define DXEMU_H
 #include <alsa/asoundlib.h>
 #include "../config.h"
-#include <lo/lo.h>
 #include <ladspa.h>
 #define D_PI 6.283185
 #define F2I(x)  ( lrintf(x) )
@@ -42,41 +41,19 @@ typedef struct
 
 typedef struct
 {
-  char Name[64];
-  LADSPA_Data *master_volume;
-  LADSPA_Data *tune;
-  LADSPA_Data *rmodulation;
-  LADSPA_Data *portamento;
-  LADSPA_Data *LFO_Volume;
-  LADSPA_Data *LFO_Frequency; 
-  LADSPA_Data *LFO_Delay;
-  LADSPA_Data *LFO_Wave;
-  LADSPA_Data *wave[6];
-  LADSPA_Data *H[6];
-  LADSPA_Data *HF[6];
-  LADSPA_Data *Ovol[6];
-  LADSPA_Data *attack[6];
-  LADSPA_Data *decay[6];
-  LADSPA_Data *sustain[6];
-  LADSPA_Data *release[6];  
-  LADSPA_Data *pLFO[6];
-
-} Todolo;
-
-
-typedef struct
-{
   float f1, f2, f3;
 } Menoscalculos;
 
 
 typedef struct
 {
+  char Name[64];
+} Todolo;
+  
+
+typedef struct
+{
   pthread_mutex_t mutex;
-  lo_server osc_server;
-  lo_address m_host;
-  char *osc_configure_path;
-  char *osc_control_path;       
 
   LADSPA_Data *output_l;
   LADSPA_Data *output_r;
@@ -85,7 +62,7 @@ typedef struct
   LADSPA_Data *rmodulation;
   LADSPA_Data *portamento;
   LADSPA_Data *LFO_Volume;
-  LADSPA_Data *LFO_Frequency; 
+  LADSPA_Data *LFO_Frequency;
   LADSPA_Data *LFO_Delay;
   LADSPA_Data *LFO_Wave;
   LADSPA_Data *wave[6];
@@ -95,7 +72,7 @@ typedef struct
   LADSPA_Data *attack[6];
   LADSPA_Data *decay[6];
   LADSPA_Data *sustain[6];
-  LADSPA_Data *release[6];  
+  LADSPA_Data *release[6];
   LADSPA_Data *pLFO[6];
   char Name[64];
   freqVarios f[6];
@@ -128,8 +105,7 @@ typedef struct
   float increment;
   float D_PI_to_SAMPLE_RATE;
   int preset;
-  char BankFilename[128];
-  Todolo Banco[128];
+  Todolo Banco[80];
 
 } goomf_synth_t;
 
@@ -142,13 +118,8 @@ float Get_Partial (goomf_synth_t * s);
 float Pitch_LFO (goomf_synth_t * s, float t);
 float pitch_Operator (goomf_synth_t * s, int i);
 float pitch_Operator2 (goomf_synth_t * s, int i);
-void New (goomf_synth_t * s);
-void New_Bank (goomf_synth_t * s);
-int loadbank (goomf_synth_t * s, const char *filename);
-void Put_Combi_t (goomf_synth_t * s, int i);
 void init_vars (goomf_synth_t * s);
 
 
 
 #endif
-

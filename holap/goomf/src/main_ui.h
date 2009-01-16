@@ -29,14 +29,57 @@
 #include "../config.h"
 
 
-void read_stdin (void);
-void update_widgets (int port, float value);
-void update_patches (const char *filename);
+
+typedef struct
+{
+  char Name[64];
+  float master_volume;
+  float tune;
+  float modulation;
+  float portamento;
+  float LFO_Volume;
+  float LFO_Frequency;
+  float LFO_Delay;
+  int LFO_Wave;
+  int wave[6];
+  int H[6];
+  float HF[6];
+  float Ovol[6];
+  float attack[6];
+  float decay[6];
+  float sustain[6];
+  float release[6];
+  float pLFO[6];
+
+} Todolo;
+
+char Name[64];
+float master_volume;
+float tune;
+float modulation;
+float portamento;
+float LFO_Volume;
+float LFO_Frequency;
+float LFO_Delay;
+int LFO_Wave;
+int wave[6];
+int H[6];
+float HF[6];
+float Ovol[6];
+float attack[6];
+float decay[6];
+float sustain[6];
+float release[6];
+float pLFO[6];
+char BankFilename[128];
+
+
+Todolo Banco[80];
+
 
 
 goomf_ui gui;
 char elpath[256];
-char tmpchar[4];
 lo_server osc_server;
 lo_address m_host;
 char *osc_configure_path;
@@ -52,5 +95,18 @@ char *myurl;
 int funcion;
 pthread_mutex_t mutex;
 
-#endif
+void read_stdin (void);
+void update_widgets (int port, float value);
+void New();
+void New_Bank ();
+int loadbank (const char *filename);
+int savebank (const char *filename);
+void Put_Combi (int i);
+void Update_Operator_Widgets (int op);
+void Update_Main_Widgets ();
+void Send_Values ();
+void preset_to_bank (int j);
+void make_window_banks();
+void Put_Loaded_Bank();
 
+#endif

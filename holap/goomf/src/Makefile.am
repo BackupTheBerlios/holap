@@ -23,8 +23,6 @@ goomf_fltk_CFLAGS = "-D_THREAD_SAFE -D_REENTRANT"
 
 goomf_la_SOURCES = goomf.c \
         synth.c \
-	synthvarios.c \
-	synthfileio.c \
         goomf.h 
 
 goomf_la_LIBADD = -lm -lpthread

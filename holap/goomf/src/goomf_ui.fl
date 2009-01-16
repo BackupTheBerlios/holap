@@ -145,12 +145,12 @@ switch (event)
  redraw();
  
  
-return i;} {selected
-    }
+return i;} {}
   }
 } 
 
-class goomf_ui {} {
+class goomf_ui {open
+} {
   decl {int ready;} {public
   }
   decl {int op;} {public
@@ -193,6 +193,10 @@ class goomf_ui {} {
   }
   decl {char uBankFilename[255];} {public
   }
+  decl {int made;} {public
+  }
+  decl {int modified;} {public
+  }
   Function {goomf_ui()} {} {
     code {fl_open_display();
 Fl::visual(FL_DOUBLE|FL_RGB);
@@ -205,33 +209,24 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {} {
+  Function {make_window()} {open
+  } {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;} open
-      xywh {101 57 495 460} type Double color 147 hide
+      callback {Pexitprogram=1;}
+      xywh {1550 83 495 460} type Double color 147 hide
     } {
       Fl_Box setBankFile {
         label Default
         xywh {0 389 495 21} labelsize 9 labelcolor 3
       }
       Fl_Menu_Bar {} {
-        xywh {0 0 500 25} labelsize 18 textsize 18
+        xywh {0 0 500 25} color 147 labelsize 18 labelcolor 7 textsize 18
       } {
-        Submenu {} {
-          label {&File} open
-          xywh {0 0 86 26}
-        } {
-          MenuItem {} {
-            label {Load Bank}
-            callback {char *filename;
-filename=fl_file_chooser("Browse:","(*.horeb)",DATADIR,0);
-if (filename==NULL) return;
-filename=fl_filename_setext(filename,".horeb");
-setBankFile->copy_label(filename);
-strcpy(uBankFilename,filename);
-ready=1;}
-            xywh {0 0 45 26}
-          }
+        MenuItem {} {
+          label {&Bank}
+          callback {BankWindow->show();
+if(!made) ready = 5;} selected
+          xywh {0 0 36 21} shortcut 0x62 labelcolor 7
         }
       }
       Fl_Box d_osc_label {
@@ -239,11 +234,11 @@ ready=1;}
       }
       Fl_Box {} {
         label {<c>2009 by Josep Andreu}
-        xywh {340 438 145 22} labelsize 9 labelcolor 7
+        xywh {350 438 145 22} labelsize 9 labelcolor 7
       }
       Fl_Box {} {
         label GooMF
-        xywh {340 416 145 29} labelfont 1 labelsize 21 labelcolor 7
+        xywh {350 416 145 29} labelfont 1 labelsize 21 labelcolor 7
       }
       Fl_Box MT {
         xywh {355 129 20 16} labelsize 11
@@ -269,14 +264,9 @@ ready=1;}
         code0 {strcpy(o->theformat,"%1.2f");}
         class Rueda
       }
-      Fl_Choice PresetSelect {
-        label Preset
-        callback {ready=2;}
-        xywh {10 435 120 20} box PLASTIC_DOWN_BOX down_box FLAT_BOX color 31 selection_color 147 labelfont 1 labelsize 11 labelcolor 5 align 1 when 1 textsize 9
-      } {}
       Fl_Group {} {
         label {Operator Parameters}
-        xywh {10 175 480 210} box THIN_DOWN_FRAME color 147 labelfont 1 labelsize 11 labelcolor 5
+        xywh {10 175 480 210} box THIN_DOWN_FRAME color 147 labelfont 1 labelcolor 5
       } {
         Fl_Dial D_Wave {
           label Wave
@@ -342,8 +332,8 @@ ready=1;}
           class Rueda
         }
         Fl_Group {} {
-          label {Operator Selector}
-          xywh {360 235 105 65} box THIN_DOWN_FRAME color 147 labelfont 1 labelsize 11 labelcolor 5
+          label Selector
+          xywh {360 235 105 65} box THIN_DOWN_FRAME color 147 labelfont 1 labelcolor 5
         } {
           Fl_Button OP1 {
             label 1
@@ -402,8 +392,8 @@ cop=1;
         }
       }
       Fl_Group LFO {
-        label LFO open
-        xywh {225 55 265 100} box DOWN_FRAME labelfont 1 labelsize 11 labelcolor 5
+        label LFO
+        xywh {225 55 265 100} box DOWN_FRAME labelfont 1 labelcolor 5
       } {
         Fl_Dial D_LFO_Frequency {
           label Frequency
@@ -434,6 +424,63 @@ cop=1;
           class Rueda
         }
       }
+      Fl_Counter PresetSelect {
+        label Preset
+        callback {ready = 2;}
+        xywh {10 436 70 20} type Simple selection_color 0 labelfont 1 labelcolor 5 align 1 minimum 0 maximum 40 step 1 textfont 1 textsize 18 textcolor 5
+      }
+      Fl_Input Pname {
+        xywh {90 415 255 40} box PLASTIC_UP_BOX color 6 labelcolor 7 textfont 1 textsize 22 textcolor 5
+      }
+    }
+    Fl_Window BankWindow {
+      callback {o->hide();}
+      xywh {1407 163 800 600} type Double color 147 selection_color 7 hide resizable size_range {640 480 3200 2400}
+    } {
+      Fl_Menu_Bar MenuB {open
+        xywh {0 0 800 20} down_box DOWN_BOX color 147 selection_color 7 labelcolor 7 textcolor 7
+      } {
+        Submenu ArchivoB {
+          label {&File}
+          xywh {10 10 100 20} labelcolor 7
+        } {
+          MenuItem NewB {
+            label New
+            callback {ready=4;}
+            xywh {0 0 45 26} divider
+          }
+          MenuItem Load_Bank {
+            label {Load Bank}
+            callback {char *filename;
+filename=fl_file_chooser("Browse:","(*.goomf)",DATADIR,0);
+if (filename==NULL) return;
+filename=fl_filename_setext(filename,".goomf");
+setBankFile->copy_label(filename);
+strcpy(uBankFilename,filename);
+ready=1;}
+            xywh {10 10 45 26}
+          }
+          MenuItem Save_Bank {
+            label {Save Bank}
+            callback {char *filename;
+filename=fl_file_chooser("Browse:","(*.goomf)","",0);
+if (filename==NULL) return;
+filename=fl_filename_setext(filename,".goomf");
+setBankFile->copy_label(filename);
+strcpy(uBankFilename,filename);
+ready=3;}
+            xywh {10 10 45 26} divider
+          }
+          MenuItem salirB {
+            label Close
+            callback {BankWindow->do_callback();}
+            xywh {12 12 36 21} labelcolor 7
+          }
+        }
+      }
+      Fl_Group ob {
+        xywh {0 20 800 580} labelsize 18
+      } {}
     }
   }
   Function {tick(void* v)} {return_type {static void}

@@ -30,13 +30,13 @@ void
 init_vars (goomf_synth_t * s)
 {
 
-   int i;
+  int i;
 
   //Init de vars
   s->gate = 0;
   s->env_time = 0.0f;
   s->renv_time = 0.0f;
- 
+
 // FM Operator frequencys
 
   s->lasfreq[0] = 0.5;
@@ -61,9 +61,6 @@ init_vars (goomf_synth_t * s)
   s->lasfreq[19] = 13.0;
   s->lasfreq[20] = 14.0;
   s->lasfreq[21] = 16.0;
-
-  New (s);
-
 
   s->tune = 0;
   s->pitch = 0.0f;
@@ -219,9 +216,9 @@ init_vars (goomf_synth_t * s)
 // Init Buffers
 
 
-  memset (s->bufl, 0, sizeof(float)* 8192 );
-  memset (s->bufr, 0, sizeof(float)* 8192 );
-  
+  memset (s->bufl, 0, sizeof (float) * 8192);
+  memset (s->bufr, 0, sizeof (float) * 8192);
+
 
 };
 
@@ -262,27 +259,34 @@ float
 Jenvelope (goomf_synth_t * s, int op)
 {
 
-  LADSPA_Data attack  =  *(s->attack[op]);
-  LADSPA_Data decay   =  *(s->decay[op]);
-  LADSPA_Data sustain =  *(s->sustain[op]);
-  LADSPA_Data release =  *(s->release[op]);
+  LADSPA_Data attack = *(s->attack[op]);
+  LADSPA_Data decay = *(s->decay[op]);
+  LADSPA_Data sustain = *(s->sustain[op]);
+  LADSPA_Data release = *(s->release[op]);
   LADSPA_Data volume = *(s->Ovol[op]);
   float t = s->env_time;
   float r = s->renv_time;
 
   if (s->gate)
     {
-      if (t > attack + decay )	return (sustain);
-      if (t > attack) return (1.0 - (1.0 - sustain) * (t - attack) / decay );
-      if (s->Env_Vol[op] > (t / attack * volume) ) return (s->Env_Vol[op] / volume ); else return ( t / attack);
-          
+      if (t > attack + decay)
+	return (sustain);
+      if (t > attack)
+	return (1.0 - (1.0 - sustain) * (t - attack) / decay);
+      if (s->Env_Vol[op] > (t / attack * volume))
+	return (s->Env_Vol[op] / volume);
+      else
+	return (t / attack);
+
     }
   else
     {
-      if (r < release ) return (s->Env_Vol[op] * (1.0 - r / release));
-      else return (0.0f);
-    }    
-     
+      if (r < release)
+	return (s->Env_Vol[op] * (1.0 - r / release));
+      else
+	return (0.0f);
+    }
+
 };
 
 
@@ -296,16 +300,16 @@ Pitch_LFO (goomf_synth_t * s, float t)
 
   float x, out;
   LADSPA_Data LFO_Delay = *(s->LFO_Delay);
-  LADSPA_Data LFO_Frequency = *(s->LFO_Frequency)*8.0;
+  LADSPA_Data LFO_Frequency = *(s->LFO_Frequency) * 8.0;
   int LFO_Wave = *(s->LFO_Wave);
 
 
-  if (t  < LFO_Delay)
-  return (0.0f);
+  if (t < LFO_Delay)
+    return (0.0f);
 
   x = fmodf (LFO_Frequency * t, 1.0) * D_PI;
- //  if ( x > D_PI) x = fmodf(x,D_PI);
- 
+  //  if ( x > D_PI) x = fmodf(x,D_PI);
+
   out = NFsin (s, LFO_Wave, x);
   return (out);
 
@@ -323,26 +327,38 @@ Get_Partial (goomf_synth_t * s)
   float portdir;
   LADSPA_Data Portamento = *(s->portamento);
 
-  if ((s->note != s->lastnote) || (s->pitch != 0 ))
-  {
-  s->lpartial = s->apartial; 
-  s->lastnote = s->note; 
-  l = s->note;
-  freq_note =  (s->pitch > 0) ? s->h[l].f2 + (s->h[l].f3 - s->h[l].f2) * s->pitch : 
-  s->h[l].f2 + (s->h[l].f2 - s->h[l].f1) * s->pitch;
-  partial = (1.0 + *(s->tune) / 16.0) * freq_note * s->D_PI_to_SAMPLE_RATE;
-  if (partial > D_PI) partial = fmodf (partial, D_PI);
-  s->apartial= partial;
-  }
+  if ((s->note != s->lastnote) || (s->pitch != 0))
+    {
+      s->lpartial = s->apartial;
+      s->lastnote = s->note;
+      l = s->note;
+      freq_note =
+	(s->pitch >
+	 0) ? s->h[l].f2 + (s->h[l].f3 - s->h[l].f2) * s->pitch : s->h[l].f2 +
+	(s->h[l].f2 - s->h[l].f1) * s->pitch;
+      partial =
+	(1.0 + *(s->tune) / 16.0) * freq_note * s->D_PI_to_SAMPLE_RATE;
+      if (partial > D_PI)
+	partial = fmodf (partial, D_PI);
+      s->apartial = partial;
+    }
 
- if (s->lpartial < s->apartial ) portdir=1.0; else portdir = -1.0;
+  if (s->lpartial < s->apartial)
+    portdir = 1.0;
+  else
+    portdir = -1.0;
 
- s->ppartial += portdir*s->increment*Portamento*1000.0;
+  s->ppartial += portdir * s->increment * Portamento * 1000.0;
 
- if ((portdir == 1.0) && (s->ppartial >= s->apartial)) s->ppartial = s->apartial; 
- if ((portdir == -1.0) && (s->ppartial <= s->apartial)) s->ppartial = s->apartial;
+  if ((portdir == 1.0) && (s->ppartial >= s->apartial))
+    s->ppartial = s->apartial;
+  if ((portdir == -1.0) && (s->ppartial <= s->apartial))
+    s->ppartial = s->apartial;
 
- if (Portamento > 0)  return(s->ppartial); else return(s->apartial); 
+  if (Portamento > 0)
+    return (s->ppartial);
+  else
+    return (s->apartial);
 
 };
 
@@ -351,7 +367,8 @@ float
 NFsin (goomf_synth_t * s, int i, float x)
 {
 
-  if (x > D_PI) x = fmodf(x,D_PI);
+  if (x > D_PI)
+    x = fmodf (x, D_PI);
 
   long int k = F2I (x * 1000.0);
 
@@ -383,15 +400,15 @@ NFsin (goomf_synth_t * s, int i, float x)
 
 
 void
-new_note(goomf_synth_t * s)
+new_note (goomf_synth_t * s)
 {
   int i;
-  for (i=0; i<6; i++)
-  {
-   s->f[i].phi=0;
-   s->f[i].phi2=0;
-  }
-   
+  for (i = 0; i < 6; i++)
+    {
+      s->f[i].phi = 0;
+      s->f[i].phi2 = 0;
+    }
+
 }
 
 
@@ -410,69 +427,72 @@ Alg1s (goomf_synth_t * s, int nframes)
   float pLFO;
   float LFO;
 
-  memset (s->bufl, 0, sizeof(float) * 8192);
-  memset (s->bufr, 0, sizeof(float) * 8192);
-  
-  LADSPA_Data LFO_Volume = *(s->LFO_Volume) * .5; 
+  memset (s->bufl, 0, sizeof (float) * 8192);
+  memset (s->bufr, 0, sizeof (float) * 8192);
 
-	  m_partial = Get_Partial(s);
-        
-	  for (l1 = 0; l1 < nframes; l1++)
+  LADSPA_Data LFO_Volume = *(s->LFO_Volume) * .5;
+
+  m_partial = Get_Partial (s);
+
+  for (l1 = 0; l1 < nframes; l1++)
+    {
+
+      sound = 0.0f;
+      sound2 = 0.0f;
+
+      LFO = Pitch_LFO (s, s->env_time) * LFO_Volume * s->modulation;
+
+
+      for (i = 0; i < 6; i++)
+	{
+
+
+
+	  volumen = *(s->Ovol[i]);
+	  pLFO = (float) *(s->pLFO[i]) * LFO;
+
+	  wave = (int) *(s->wave[i]);
+
+	  if (s->gate)
 	    {
-
-	      sound = 0.0f;
-	      sound2 = 0.0f;
-
-	      LFO = Pitch_LFO(s,s->env_time)*LFO_Volume*s->modulation;
-              
-
-	      for (i = 0; i< 6; i++) 
-		 {
-
-                 
-                 
-                      volumen = *(s->Ovol[i]);
-                      pLFO = (float) *(s->pLFO[i])*LFO;
-                      
-                      wave = (int) *(s->wave[i]);
-
-                      if (s->gate)
-                      {
-                      s->Envelope_Volume[i]=Jenvelope(s,i);           
-                      s->Env_Vol[i] = volumen*s->Envelope_Volume[i];
-                      }
-                      else
-                      s->Env_Vol[i] = Jenvelope(s,i);
-                 
-                  //L
-		 
-		      s->f[i].dphi = m_partial * (pitch_Operator(s,i)+pLFO);
-		      if (s->f[i].dphi > D_PI) s->f[i].dphi -= D_PI;
-		      s->f[i].phi += s->f[i].dphi;
-		      if (s->f[i].phi > D_PI) s->f[i].phi -=D_PI;
-                      
-                  //R 
-
-		      s->f[i].dphi2 = m_partial * (pitch_Operator2(s,i)+pLFO);
-		      if (s->f[i].dphi2 > D_PI)	s->f[i].dphi2 -= D_PI;
-		      s->f[i].phi2 += s->f[i].dphi2;
-		      if (s->f[i].phi2 > D_PI) s->f[i].phi2 -= D_PI;
-
-
-	      sound += s->Env_Vol[i] * NFsin(s,wave,s->f[i].phi);
-	      sound2 += s->Env_Vol[i] * NFsin(s,wave,s->f[i].phi2);
-                   } 
-	
-	      s->bufl[l1] += sound;
-	      s->bufr[l1] += sound2;
-	      s->env_time += s->increment;
-	      s->renv_time += (s->increment*.0001);
-	      
+	      s->Envelope_Volume[i] = Jenvelope (s, i);
+	      s->Env_Vol[i] = volumen * s->Envelope_Volume[i];
 	    }
+	  else
+	    s->Env_Vol[i] = Jenvelope (s, i);
 
-               
+	  //L
+
+	  s->f[i].dphi = m_partial * (pitch_Operator (s, i) + pLFO);
+	  if (s->f[i].dphi > D_PI)
+	    s->f[i].dphi -= D_PI;
+	  s->f[i].phi += s->f[i].dphi;
+	  if (s->f[i].phi > D_PI)
+	    s->f[i].phi -= D_PI;
+
+	  //R 
+
+	  s->f[i].dphi2 = m_partial * (pitch_Operator2 (s, i) + pLFO);
+	  if (s->f[i].dphi2 > D_PI)
+	    s->f[i].dphi2 -= D_PI;
+	  s->f[i].phi2 += s->f[i].dphi2;
+	  if (s->f[i].phi2 > D_PI)
+	    s->f[i].phi2 -= D_PI;
+
+
+	  sound += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi);
+	  sound2 += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi2);
+	}
+
+      s->bufl[l1] += sound;
+      s->bufr[l1] += sound2;
+      s->env_time += s->increment;
+      s->renv_time += (s->increment * .0001);
+
+    }
+
+
 
 
 
 };
-
