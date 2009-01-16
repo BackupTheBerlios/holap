@@ -66,11 +66,6 @@ init_vars (goomf_synth_t * s)
   s->pitch = 0.0f;
 
 
-// Init Bank
-
-  New_Bank (s);
-
-
 // Init frequency Notes 
 
 
