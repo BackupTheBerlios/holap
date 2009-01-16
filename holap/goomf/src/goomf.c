@@ -779,8 +779,8 @@ void __attribute__ ((constructor)) goomf_init ()
       port_range_hints[goomf_HF_0].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[goomf_HF_0].LowerBound = -0.005;
-      port_range_hints[goomf_HF_0].UpperBound = 0.005;
+      port_range_hints[goomf_HF_0].LowerBound = -0.02;
+      port_range_hints[goomf_HF_0].UpperBound = 0.02;
 
       /* Parameters for HF_1 */
       port_descriptors[goomf_HF_1] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -788,8 +788,8 @@ void __attribute__ ((constructor)) goomf_init ()
       port_range_hints[goomf_HF_1].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[goomf_HF_1].LowerBound = -0.005;
-      port_range_hints[goomf_HF_1].UpperBound = 0.005;
+      port_range_hints[goomf_HF_1].LowerBound = -0.02;
+      port_range_hints[goomf_HF_1].UpperBound = 0.02;
 
       /* Parameters for HF_2 */
       port_descriptors[goomf_HF_2] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -797,8 +797,8 @@ void __attribute__ ((constructor)) goomf_init ()
       port_range_hints[goomf_HF_2].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[goomf_HF_2].LowerBound = -0.005;
-      port_range_hints[goomf_HF_2].UpperBound = 0.005;
+      port_range_hints[goomf_HF_2].LowerBound = -0.02;
+      port_range_hints[goomf_HF_2].UpperBound = 0.02;
 
       /* Parameters for HF_3 */
       port_descriptors[goomf_HF_3] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -806,8 +806,8 @@ void __attribute__ ((constructor)) goomf_init ()
       port_range_hints[goomf_HF_3].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[goomf_HF_3].LowerBound = -0.005;
-      port_range_hints[goomf_HF_3].UpperBound = 0.005;
+      port_range_hints[goomf_HF_3].LowerBound = -0.02;
+      port_range_hints[goomf_HF_3].UpperBound = 0.02;
 
       /* Parameters for HF_4 */
       port_descriptors[goomf_HF_4] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -815,8 +815,8 @@ void __attribute__ ((constructor)) goomf_init ()
       port_range_hints[goomf_HF_4].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[goomf_HF_4].LowerBound = -0.005;
-      port_range_hints[goomf_HF_4].UpperBound = 0.005;
+      port_range_hints[goomf_HF_4].LowerBound = -0.02;
+      port_range_hints[goomf_HF_4].UpperBound = 0.02;
 
       /* Parameters for HF_5 */
       port_descriptors[goomf_HF_5] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -824,8 +824,8 @@ void __attribute__ ((constructor)) goomf_init ()
       port_range_hints[goomf_HF_5].HintDescriptor =
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[goomf_HF_5].LowerBound = -0.005;
-      port_range_hints[goomf_HF_5].UpperBound = 0.005;
+      port_range_hints[goomf_HF_5].LowerBound = -0.02;
+      port_range_hints[goomf_HF_5].UpperBound = 0.02;
 
       /* Parameters for Vol_0 */
       port_descriptors[goomf_Vol_0] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
