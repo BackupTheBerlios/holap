@@ -759,8 +759,7 @@ preset_to_bank (int j)
 {
   int i;
 
-  strcpy (Banco[j].Name,(char *) gui.Pname->value());
-
+  strcpy (Banco[j].Name,Name);
   Banco[j].master_volume = master_volume;
   Banco[j].tune = tune;
   Banco[j].portamento = portamento;
@@ -970,6 +969,7 @@ preset_click (Fl_Button * o, void *)
 	    return;
 	}
 
+      strcpy(Name,gui.Pname->value ());
       preset_to_bank (num);
       w->copy_label (gui.Pname->value ());
       Haz_laristra();

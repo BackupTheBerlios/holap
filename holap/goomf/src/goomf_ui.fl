@@ -149,7 +149,7 @@ return i;} {}
   }
 } 
 
-class goomf_ui {selected
+class goomf_ui {open
 } {
   decl {int ready;} {public
   }
@@ -207,8 +207,7 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     Fl_Window ui_win {
       callback {Pexitprogram=1;}
       xywh {1550 83 495 460} type Double color 147 hide
@@ -427,8 +426,8 @@ cop=1;
         callback {ready = 2;}
         xywh {10 436 70 20} type Simple selection_color 0 labelfont 1 labelcolor 5 align 1 minimum 0 maximum 40 step 1 textfont 1 textsize 18 textcolor 5
       }
-      Fl_Input Pname {
-        xywh {90 415 255 40} box PLASTIC_UP_BOX color 6 labelcolor 7 textfont 1 textsize 22 textcolor 5
+      Fl_Input Pname {selected
+        xywh {90 415 255 40} box PLASTIC_UP_BOX color 6 labelcolor 7 when 1 textfont 1 textsize 22 textcolor 5
       }
     }
     Fl_Window BankWindow {

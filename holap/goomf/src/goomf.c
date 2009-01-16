@@ -362,7 +362,7 @@ goomf_get_program (LADSPA_Handle handle, unsigned long index)
   static DSSI_Program_Descriptor pd;
   goomf_synth_t *synth = (goomf_synth_t *) handle;
 
-  if (index < 128)
+  if (index < 80)
     {
       pd.Bank = 0;
       pd.Program = index;
