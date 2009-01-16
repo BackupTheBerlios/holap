@@ -972,8 +972,8 @@ preset_click (Fl_Button * o, void *)
 
       preset_to_bank (num);
       w->copy_label (gui.Pname->value ());
-      gui.modified = 1;
-
+      Haz_laristra();
+      Send_laristra();
     }
 
 
@@ -982,7 +982,7 @@ preset_click (Fl_Button * o, void *)
     {
       gui.PresetSelect->value (num);
       Put_Combi (num);
-      gui.ready = 2; // Aqui hay que poner el sonido ...
+      gui.ready = 2;
     }
 
 }
@@ -1038,42 +1038,6 @@ make_window_banks ()
   gui.ob->end ();
 
   gui.made = 1;
-
-}
-
-void
-is_modified ()
-{
-
-  int ok;
-
-
-  if (gui.modified)
-    {
-
-      Fl_Widget *w = fl_message_icon ();
-      w->parent ()->copy_label ("goomf");
-
-
-      ok =
-	fl_choice ("Bank was modified, but not saved", "Discard", "Save",
-		   NULL);
-
-
-
-      switch (ok)
-
-	{
-	case 0:
-	  break;
-
-	case 1:
-
-	  break;
-
-	}
-
-    }
 
 }
 

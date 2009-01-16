@@ -149,7 +149,7 @@ return i;} {}
   }
 } 
 
-class goomf_ui {open
+class goomf_ui {selected
 } {
   decl {int ready;} {public
   }
@@ -195,8 +195,6 @@ class goomf_ui {open
   }
   decl {int made;} {public
   }
-  decl {int modified;} {public
-  }
   Function {goomf_ui()} {} {
     code {fl_open_display();
 Fl::visual(FL_DOUBLE|FL_RGB);
@@ -225,7 +223,7 @@ Fl::add_timeout(1.0 * 0.04,tick,v);} {}
         MenuItem {} {
           label {&Bank}
           callback {BankWindow->show();
-if(!made) ready = 5;} selected
+if(!made) ready = 5;}
           xywh {0 0 36 21} shortcut 0x62 labelcolor 7
         }
       }
