@@ -34,7 +34,6 @@ thread1 (void *arg)
   int i;
   while (gui.Pexitprogram == 0)
     {
-      
       switch (gui.ready)
 	{
 	case 1:
@@ -202,8 +201,6 @@ thread1 (void *arg)
 	}
 
           Fl::wait();
-          usleep(120000);                               
-
     }
 
   lo_send (m_host, osc_exiting_path, "");

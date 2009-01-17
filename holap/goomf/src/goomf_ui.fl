@@ -142,10 +142,11 @@ switch (event)
 
 
  i = Fl_Dial::handle(event);
- redraw();
+ //redraw();
  
  
-return i;} {}
+return i;} {selected
+    }
   }
 } 
 
@@ -207,10 +208,9 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;} open
+      callback {Pexitprogram=1;}
       xywh {1578 359 501 490} type Double color 147 hide
     } {
       Fl_Menu_Bar {} {
@@ -236,7 +236,7 @@ if(!made) ready = 5;}
         xywh {360 468 135 17} labelsize 9 labelcolor 7
       }
       Fl_Box {} {
-        label GooMF selected
+        label GooMF
         xywh {375 441 110 29} labelfont 1 labelsize 21 labelcolor 7
       }
       Fl_Box MT {
