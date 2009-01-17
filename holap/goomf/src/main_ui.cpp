@@ -391,11 +391,11 @@ control_handler (const char *path, const char *types, lo_arg ** argv,
   const float value = argv[1]->f;
 
 
-  if (port < 9)
+  if ((port < 9) || (port > 62))
     update_widgets (port, value);
   else
-    update_widgets (((port + 3) / 6) + 7, value);
-
+    if (port < 63) update_widgets (((port + 3) / 6) + 7, value);
+  
   return 0;
 }
 

@@ -478,7 +478,10 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	      synth->note = events[event_pos].data.note.note;
               synth->active = 1;
 	      if (!synth->gate)
+	      {
+	        synth->velocity = (float) events[event_pos].data.note.velocity / 126.0;  
 		synth->env_time = 0.0f;
+	      }
 	      synth->gate = 1;
 	      break;
 	    }

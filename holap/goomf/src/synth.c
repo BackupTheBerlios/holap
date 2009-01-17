@@ -268,8 +268,8 @@ Jenvelope (goomf_synth_t * s, int op)
 	return (sustain);
       if (t > attack)
 	return (1.0 - (1.0 - sustain) * (t - attack) / decay);
-      if (s->Env_Vol[op] > (t / attack * volume))
-	return (s->Env_Vol[op] / volume);
+      if (s->Env_Vol[op] > (t / attack * volume * s->velocity))
+	return (s->Env_Vol[op] / (volume * s->velocity));
       else
 	return (t / attack);
 
@@ -431,36 +431,38 @@ Alg1s (goomf_synth_t * s, int nframes)
       for (i = 0; i < 6; i++)
 	{
 	  volumen = *(s->Ovol[i]);
-	   pLFO = (float) *(s->pLFO[i]) * LFO;
-	   wave = (int) *(s->wave[i]);
+          if (volumen>0.0f)
+            { 
+	     pLFO = (float) *(s->pLFO[i]) * LFO;
+	     wave = (int) *(s->wave[i]);
 
-	   if (s->gate)
-	      {
-	      s->Envelope_Volume[i] = Jenvelope (s, i);
-	      s->Env_Vol[i] = volumen * s->Envelope_Volume[i];
-	      }
-	  else
-	      s->Env_Vol[i] = Jenvelope (s, i);
+	     if (s->gate)
+	        {
+	          s->Envelope_Volume[i] = Jenvelope (s, i);
+	          s->Env_Vol[i] = s->velocity * volumen * s->Envelope_Volume[i];
+	        }
+	     else
+	     s->Env_Vol[i] = Jenvelope (s, i);
 
-	  //L
-	  s->f[i].dphi = m_partial * (pitch_Operator (s, i) + pLFO);
-	  if (s->f[i].dphi > D_PI)
-	    s->f[i].dphi -= D_PI;
-	  s->f[i].phi += s->f[i].dphi;
-	  if (s->f[i].phi > D_PI)
-	    s->f[i].phi -= D_PI;
+	     //L
+	       s->f[i].dphi = m_partial * (pitch_Operator (s, i) + pLFO);
+	       if (s->f[i].dphi > D_PI)
+	       s->f[i].dphi -= D_PI;
+	       s->f[i].phi += s->f[i].dphi;
+	       if (s->f[i].phi > D_PI)
+	       s->f[i].phi -= D_PI;
 
-	  //R 
-	  s->f[i].dphi2 = m_partial * (pitch_Operator2 (s, i) + pLFO);
-	  if (s->f[i].dphi2 > D_PI)
-	    s->f[i].dphi2 -= D_PI;
-	  s->f[i].phi2 += s->f[i].dphi2;
-	  if (s->f[i].phi2 > D_PI)
-	    s->f[i].phi2 -= D_PI;
+	     //R 
+	       s->f[i].dphi2 = m_partial * (pitch_Operator2 (s, i) + pLFO);
+	       if (s->f[i].dphi2 > D_PI)
+	       s->f[i].dphi2 -= D_PI;
+	       s->f[i].phi2 += s->f[i].dphi2;
+	       if (s->f[i].phi2 > D_PI)
+	       s->f[i].phi2 -= D_PI;
 
 	  sound += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi);
 	  sound2 += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi2);
-
+             } 
 	  
 	}
 

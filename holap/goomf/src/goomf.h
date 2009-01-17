@@ -51,6 +51,39 @@ typedef struct
 } Todolo;
   
 
+  typedef struct 
+  {
+    float c1, c2;
+  } fstage; 
+  
+
+  typedef struct
+  { 
+  int order;			//the order of the filter (number of poles)
+  int type;			//The type of the filter (LPF1,HPF1,LPF2,HPF2...)
+  int stages;			//how many times the filter is applied (0->1,1->2,etc.)
+  int needsinterpolation, firsttime;
+  int abovenq;			//this is 1 if the frequency is above the nyquist
+  int oldabovenq;		//if the last time was above nyquist (used to see if it needs interpolation)
+
+  float outgain;
+  float freq;		//Frequency given in Hz
+  float q;			//Q factor (resonance or Q factor)
+  float gain;		//the gain of the filter (if are shelf/peak) filters
+  float c[3], d[3];		//coefficients
+  float oldc[3], oldd[3];	//old coefficients(used only if some filter paremeters changes very fast, and it needs interpolation)
+  float xd[3], yd[3];	//used if the filter is applied more times
+
+  fstage x[6];
+  fstage y[6];
+  fstage oldx[6];
+  fstage oldy[6];
+  float ismp[2048];
+
+} AnalogFilter;
+
+
+
 typedef struct
 {
   pthread_mutex_t mutex;
@@ -92,6 +125,7 @@ typedef struct
   float Envelope_Volume[6];
   float Env_Vol[6];
   float pitch;
+  float velocity; 
   float env_time;
   float renv_time;
   float modulation;
@@ -121,6 +155,19 @@ float pitch_Operator (goomf_synth_t * s, int i);
 float pitch_Operator2 (goomf_synth_t * s, int i);
 void init_vars (goomf_synth_t * s);
 
+
+void AnalogFilter_Init(goomf_synth_t * s, AnalogFilter *filter, unsigned char Ftype, float Ffreq, float Fq, unsigned char Fstages);
+void filterout (goomf_synth_t * s, AnalogFilter *filter, float * smp, unsigned long count);
+void setfreq (goomf_synth_t * s, AnalogFilter *filter, float frequency);
+void setfreq_and_q (goomf_synth_t * s, AnalogFilter *filter, float frequency, float q_);
+void setq (goomf_synth_t * s, AnalogFilter *filter, float q_);
+void settype (goomf_synth_t * s, AnalogFilter *filter, int type_);
+void setgain (goomf_synth_t * s, AnalogFilter *filter, float dBgain);
+void setstages (goomf_synth_t * s, AnalogFilter *filter, int stages_);
+void AnalogFilter_Cleanup (goomf_synth_t * s, AnalogFilter *filter);
+float H(goomf_synth_t * s, AnalogFilter *filter, float freq);	//Obtains the response for a given frequency
+void singlefilterout (goomf_synth_t * s, AnalogFilter *filter, float *smp, fstage *x, fstage *y, float *c, float *d, unsigned long count);
+void computefiltercoefs (goomf_synth_t * s, AnalogFilter *filter);
 
 
 #endif
