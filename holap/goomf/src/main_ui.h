@@ -93,7 +93,8 @@ char *osc_show_path;
 char *osc_update_path;
 char *myurl;
 int funcion;
-pthread_mutex_t mutex;
+
+pthread_t thr1;
 
 void read_stdin (void);
 void update_widgets (int port, float value);

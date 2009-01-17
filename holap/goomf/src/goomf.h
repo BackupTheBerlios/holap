@@ -105,6 +105,7 @@ typedef struct
   float increment;
   float D_PI_to_SAMPLE_RATE;
   int preset;
+  int active;
   Todolo Banco[80];
 
 } goomf_synth_t;

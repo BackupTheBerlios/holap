@@ -433,7 +433,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
   LADSPA_Data vol = *(synth->master_volume);
 
   unsigned long event_pos = 0;
-  int i, j;
+  int i;
 
 
 
@@ -476,6 +476,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	  if (events[event_pos].data.note.velocity != 0)
 	    {
 	      synth->note = events[event_pos].data.note.note;
+              synth->active = 1;
 	      if (!synth->gate)
 		synth->env_time = 0.0f;
 	      synth->gate = 1;
@@ -506,13 +507,12 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 
 
   Alg1s (synth, sample_count);
-
   for (i = 0; i < sample_count; i++)
     {
       outputl[i] = synth->bufl[i] * vol;
       outputr[i] = synth->bufr[i] * vol;
-
     }
+
 
 
 }
@@ -527,12 +527,7 @@ getControllergoomf (LADSPA_Handle instance, unsigned long port)
     {
     case goomf_VOLUME:
       return DSSI_CC (7);
-
-
     }
-
-
-
 
   return -1;
 }

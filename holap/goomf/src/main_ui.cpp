@@ -21,31 +21,25 @@
 
 */
 
-#include <dssi.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-#include <pthread.h>
-#include <lo/lo.h>
-#include <FL/fl_ask.H>
 #include "goomf_ui.h"
 #include "main_ui.h"
 
 
-pthread_t thr1;
+
 
 void *
 thread1 (void *arg)
 {
-
+  int i;
   while (gui.Pexitprogram == 0)
     {
+      
       switch (gui.ready)
 	{
 	case 1:
-	  loadbank (gui.uBankFilename);
-          Put_Loaded_Bank ();
+	  i=loadbank (gui.uBankFilename);
+          if(!i) Put_Loaded_Bank ();
 	  break;
 	case 2:
           gui.PresetSelect->redraw();
@@ -54,6 +48,7 @@ thread1 (void *arg)
 	  Send_Values ();
 	  Update_Main_Widgets ();
 	  Update_Operator_Widgets (gui.op);
+          gui.ui_win->redraw();
 	  break;
 	case 3:
 	  savebank (gui.uBankFilename);
@@ -206,7 +201,9 @@ thread1 (void *arg)
 	  gui.D_pLFO_c[gui.op] = 0;
 	}
 
-      Fl::wait ();
+          Fl::wait();
+          usleep(120000);                               
+
     }
 
   lo_send (m_host, osc_exiting_path, "");
@@ -512,17 +509,16 @@ main (int argc, char **argv)
   lo_server_add_method (osc_server, osc_show_path, "", show_handler, NULL);
   lo_server_add_method (osc_server, NULL, NULL, debug_handler, NULL);
 
-
-
-
   temp = lo_server_get_url (osc_server);
 
   myurl = osc_build_path (temp, (strlen (path) > 1 ? path + 1 : path));
 
-  gui.d_osc_label->copy_label (myurl);
-
   lo_send (m_host, osc_update_path, "s", myurl);
+
   Send_laristra();
+
+  gui.d_osc_label->copy_label (myurl);
+  gui.d_osc_label->redraw();
 
   lo_fd = lo_server_get_socket_fd (osc_server);
 
@@ -531,8 +527,6 @@ main (int argc, char **argv)
 
       do
 	{
-
-
 	  FD_ZERO (&rfds);
 	  FD_SET (lo_fd, &rfds);
 
@@ -540,7 +534,6 @@ main (int argc, char **argv)
 
 	  if (retval == -1)
 	    {
-
 	      printf ("select() error\n");
 	      exit (1);
 
@@ -551,14 +544,11 @@ main (int argc, char **argv)
 
 	      if (FD_ISSET (0, &rfds))
 		{
-
 		  read_stdin ();
 		}
 	      if (FD_ISSET (lo_fd, &rfds))
 		{
-
 		  lo_server_recv_noblock (osc_server, 0);
-
 		}
 	    }
 
@@ -572,9 +562,6 @@ main (int argc, char **argv)
 
       do
 	{
-
-
-
 	  FD_ZERO (&rfds);
 	  FD_SET (0, &rfds);
 	  tv.tv_sec = 0;
@@ -941,7 +928,7 @@ Send_Values ()
 }
 
 
-static void
+void
 preset_click (Fl_Button * o, void *)
 {
 
@@ -951,7 +938,6 @@ preset_click (Fl_Button * o, void *)
   long long kk = (long long) o->user_data ();
   int num = (int) kk;
   int tecla = Fl::event_key ();
-
 
   if (Fl::event_button () == 3)
     {

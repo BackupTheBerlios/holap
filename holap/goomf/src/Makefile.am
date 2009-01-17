@@ -10,12 +10,10 @@ plugin_LTLIBRARIES = goomf.la
 goomf_fltk_SOURCES = main_ui.cpp \
 	main_ui.h \
 	goomf_ui.cxx \
-	goomf_ui.h \
-	goomf.h 
+	goomf_ui.h 
 
 
-
-goomf_fltk_LDADD =  -lfltk -lfltk_images -lpthread
+goomf_fltk_LDADD =  -lfltk -lfltk_images 
 
 goomf_fltk_CXXFLAGS = "-I/usr/include/freetype2 -D_THREAD_SAFE -D_REENTRANT"
 
@@ -24,8 +22,6 @@ goomf_fltk_CFLAGS = "-D_THREAD_SAFE -D_REENTRANT"
 goomf_la_SOURCES = goomf.c \
         synth.c \
         goomf.h 
-
-goomf_la_LIBADD = -lm -lpthread
 
 goomf_la_LDFLAGS = -module -avoid-version 
 

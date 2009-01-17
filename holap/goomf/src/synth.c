@@ -279,7 +279,10 @@ Jenvelope (goomf_synth_t * s, int op)
       if (r < release)
 	return (s->Env_Vol[op] * (1.0 - r / release));
       else
+      {
 	return (0.0f);
+        s->active=0;
+      }
     }
 
 };
@@ -394,18 +397,6 @@ NFsin (goomf_synth_t * s, int i, float x)
 }
 
 
-void
-new_note (goomf_synth_t * s)
-{
-  int i;
-  for (i = 0; i < 6; i++)
-    {
-      s->f[i].phi = 0;
-      s->f[i].phi2 = 0;
-    }
-
-}
-
 
 // Main Audio thread
 
@@ -424,7 +415,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 
   memset (s->bufl, 0, sizeof (float) * 8192);
   memset (s->bufr, 0, sizeof (float) * 8192);
-
+  
   LADSPA_Data LFO_Volume = *(s->LFO_Volume) * .5;
 
   m_partial = Get_Partial (s);
@@ -434,30 +425,24 @@ Alg1s (goomf_synth_t * s, int nframes)
 
       sound = 0.0f;
       sound2 = 0.0f;
-
+      
       LFO = Pitch_LFO (s, s->env_time) * LFO_Volume * s->modulation;
-
 
       for (i = 0; i < 6; i++)
 	{
-
-
-
 	  volumen = *(s->Ovol[i]);
-	  pLFO = (float) *(s->pLFO[i]) * LFO;
+	   pLFO = (float) *(s->pLFO[i]) * LFO;
+	   wave = (int) *(s->wave[i]);
 
-	  wave = (int) *(s->wave[i]);
-
-	  if (s->gate)
-	    {
+	   if (s->gate)
+	      {
 	      s->Envelope_Volume[i] = Jenvelope (s, i);
 	      s->Env_Vol[i] = volumen * s->Envelope_Volume[i];
-	    }
+	      }
 	  else
-	    s->Env_Vol[i] = Jenvelope (s, i);
+	      s->Env_Vol[i] = Jenvelope (s, i);
 
 	  //L
-
 	  s->f[i].dphi = m_partial * (pitch_Operator (s, i) + pLFO);
 	  if (s->f[i].dphi > D_PI)
 	    s->f[i].dphi -= D_PI;
@@ -466,7 +451,6 @@ Alg1s (goomf_synth_t * s, int nframes)
 	    s->f[i].phi -= D_PI;
 
 	  //R 
-
 	  s->f[i].dphi2 = m_partial * (pitch_Operator2 (s, i) + pLFO);
 	  if (s->f[i].dphi2 > D_PI)
 	    s->f[i].dphi2 -= D_PI;
@@ -474,19 +458,19 @@ Alg1s (goomf_synth_t * s, int nframes)
 	  if (s->f[i].phi2 > D_PI)
 	    s->f[i].phi2 -= D_PI;
 
-
 	  sound += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi);
 	  sound2 += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi2);
+
+	  
 	}
 
       s->bufl[l1] += sound;
       s->bufr[l1] += sound2;
       s->env_time += s->increment;
       s->renv_time += (s->increment * .0001);
-
+        
+      
     }
-
-
 
 
 
