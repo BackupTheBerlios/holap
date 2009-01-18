@@ -36,7 +36,7 @@ init_vars (goomf_synth_t * s)
   s->gate = 0;
   s->env_time = 0.0f;
   s->renv_time = 0.0f;
-
+  s->lfol = 0.0f;
 // FM Operator frequencys
 
   s->lasfreq[0] = 0.5;
@@ -215,6 +215,10 @@ init_vars (goomf_synth_t * s)
   memset (s->bufr, 0, sizeof (float) * 8192);
 
 
+  AnalogFilter_Init(s,&s->Fl,0,21.0,1,0);
+  AnalogFilter_Init(s,&s->Fr,0,21.0,1,0);
+  
+
 };
 
 
@@ -282,10 +286,23 @@ Jenvelope (goomf_synth_t * s, int op)
       {
 	return (0.0f);
         s->active=0;
+        // clear_synth(s,op);
       }
     }
 
 };
+
+
+void
+clear_synth(goomf_synth_t * s, int op )
+{
+
+      s->f[op].dphi=0.0f;
+      s->f[op].dphi2=0.0f;
+      s->f[op].phi=0.0f;
+      s->f[op].phi2=0.0f;
+
+}
 
 
 
@@ -293,22 +310,32 @@ Jenvelope (goomf_synth_t * s, int op)
 
 
 float
-Pitch_LFO (goomf_synth_t * s, float t)
+Pitch_LFO (goomf_synth_t * s, float t,int type)
 {
 
-  float x, out;
+  float x, out,lfoinc;
   LADSPA_Data LFO_Delay = *(s->LFO_Delay);
-  LADSPA_Data LFO_Frequency = *(s->LFO_Frequency) * 8.0;
+  LADSPA_Data LFO_Frequency = *(s->LFO_Frequency);
   int LFO_Wave = *(s->LFO_Wave);
 
 
   if (t < LFO_Delay)
     return (0.0f);
-
-  x = fmodf (LFO_Frequency * t, 1.0) * D_PI;
-  //  if ( x > D_PI) x = fmodf(x,D_PI);
-
+  
+  if(type)
+  {
+   lfoinc = fabsf(LFO_Frequency) * s->D_PI_to_SAMPLE_RATE;
+   if (lfoinc > 0.49999999)  lfoinc = 0.499999999;
+   x = s->lfol*D_PI;    
+   s->lfol += lfoinc;
+   if(s->lfol > 1.0) s->lfol -= 1.0;
+  }
+  else
+  {
+  x = fmodf (LFO_Frequency * 8.0 * t, 1.0) * D_PI;
+  }
   out = NFsin (s, LFO_Wave, x);
+  
   return (out);
 
 }
@@ -409,6 +436,16 @@ Alg1s (goomf_synth_t * s, int nframes)
   float sound, sound2;
   float m_partial;
   LADSPA_Data volumen;
+  LADSPA_Data Ftype = *(s->Ftype);
+  LADSPA_Data Fgain = *(s->Fgain);
+  LADSPA_Data Fcutoff = *(s->Fcutoff);
+  LADSPA_Data Fq = *(s->Fq);
+  LADSPA_Data Fstages = *(s->Fstages);
+  LADSPA_Data FLFO = *(s->FLFO);
+  int FADSR = (int) *(s->FADSR);
+  int VELO = (int) *(s->Fvelocity);
+  float freq = 0.0f;
+  float tmp;
   float wave;
   float pLFO;
   float LFO;
@@ -426,12 +463,13 @@ Alg1s (goomf_synth_t * s, int nframes)
       sound = 0.0f;
       sound2 = 0.0f;
       
-      LFO = Pitch_LFO (s, s->env_time) * LFO_Volume * s->modulation;
+      LFO = Pitch_LFO (s, s->env_time,0) * LFO_Volume * s->modulation;
 
       for (i = 0; i < 6; i++)
 	{
 	  volumen = *(s->Ovol[i]);
-          if (volumen>0.0f)
+          
+           if (volumen  > 0.0f)
             { 
 	     pLFO = (float) *(s->pLFO[i]) * LFO;
 	     wave = (int) *(s->wave[i]);
@@ -443,7 +481,9 @@ Alg1s (goomf_synth_t * s, int nframes)
 	        }
 	     else
 	     s->Env_Vol[i] = Jenvelope (s, i);
-
+             
+             
+              
 	     //L
 	       s->f[i].dphi = m_partial * (pitch_Operator (s, i) + pLFO);
 	       if (s->f[i].dphi > D_PI)
@@ -466,8 +506,75 @@ Alg1s (goomf_synth_t * s, int nframes)
 	  
 	}
 
-      s->bufl[l1] += sound;
-      s->bufr[l1] += sound2;
+        if (s->Rtype != Ftype)
+      {
+        s->Rtype = Ftype;
+        settype(s,&s->Fl,(int)s->Rtype);
+        settype(s,&s->Fr,(int)s->Rtype);
+      }  
+
+  if (s->Rgain != Fgain)
+      {
+        s->Rgain = Fgain;
+        setgain(s,&s->Fl,s->Rgain*30.0);
+        setgain(s,&s->Fr,s->Rgain*30.0); 
+      }
+       
+  if (s->Rcutoff != Fcutoff)
+      {
+        s->Rcutoff = Fcutoff;
+        setfreq(s,&s->Fl,s->Rcutoff);
+        setfreq(s,&s->Fr,s->Rcutoff); 
+      }
+
+  if (s->Rq != Fq)
+      {
+        s->Rq = Fq;
+        tmp = powf(30.0, s->Rq);
+        setq(s,&s->Fl,tmp);
+        setq(s,&s->Fr,tmp); 
+      }
+
+  if (s->Rstages != Fstages)
+      {
+        s->Rstages = Fstages;
+        setstages(s,&s->Fl,s->Rstages);
+        setstages(s,&s->Fr,s->Rstages);
+      }  
+  
+   
+    if(VELO)
+       freq = s->Rcutoff * s->velocity;
+     
+
+
+    if((FADSR) && (s->gate))
+      {
+      if (VELO) freq *=Jenvelope (s, FADSR-1); 
+      else
+      freq = s->Rcutoff *  Jenvelope (s, FADSR-1); 
+      }
+
+   if (FLFO > 0.0f)    
+     {
+       if ((FADSR) || ( VELO)) freq +=Pitch_LFO(s, s->env_time,0)*FLFO*freq;
+             else
+            freq =s->Rcutoff+Pitch_LFO(s, s->env_time,0)*FLFO*s->Rcutoff;
+     }
+            
+   if (freq != 0.0f)
+     {
+        setfreq(s,&s->Fl,freq);
+        setfreq(s,&s->Fr,freq); 
+     }
+     
+
+   filterout(s,&s->Fl,&sound,1);
+   filterout(s,&s->Fr,&sound2,1);
+
+
+      s->bufl[l1] = sound;
+      s->bufr[l1] = sound2;
       s->env_time += s->increment;
       s->renv_time += (s->increment * .0001);
         
@@ -475,5 +582,5 @@ Alg1s (goomf_synth_t * s, int nframes)
     }
 
 
-
 };
+

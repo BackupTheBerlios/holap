@@ -21,6 +21,7 @@ goomf_fltk_CFLAGS = "-D_THREAD_SAFE -D_REENTRANT"
 
 goomf_la_SOURCES = goomf.c \
         synth.c \
+        analogfilter.c \
         goomf.h 
 
 goomf_la_LDFLAGS = -module -avoid-version 

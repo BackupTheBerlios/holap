@@ -200,6 +200,72 @@ thread1 (void *arg)
 	  gui.D_pLFO_c[gui.op] = 0;
 	}
 
+      if (gui.D_Ftype_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 63,
+		   gui.D_Ftype->value ());
+	  Ftype = gui.D_Ftype->value ();
+	  gui.D_Ftype_c = 0;
+	}
+
+      if (gui.D_Fgain_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 64,
+		   gui.D_Fgain->value ());
+	  Fgain = gui.D_Fgain->value ();
+	  gui.D_Fgain_c = 0;
+	}
+
+      if (gui.D_Fcutoff_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 65,
+		   gui.D_Fcutoff->value ());
+	  Fcutoff = gui.D_Fcutoff->value ();
+	  gui.D_Fcutoff_c = 0;
+	}
+
+      if (gui.D_Fq_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 66,
+		   gui.D_Fq->value ());
+	  Fq = gui.D_Fq->value ();
+	  gui.D_Fq_c = 0;
+	}
+
+      if (gui.D_FLFO_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 67,
+		   gui.D_FLFO->value ());
+	  FLFO = gui.D_FLFO->value ();
+	  gui.D_FLFO_c = 0;
+	}
+
+      if (gui.D_FADSR_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 68,
+		   gui.D_FADSR->value ());
+	  FADSR = gui.D_FADSR->value ();
+	  gui.D_FADSR_c = 0;
+	}
+
+      if (gui.D_Fstages_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 69,
+		   gui.D_Fstages->value ());
+	  Fstages = gui.D_Fstages->value ();
+	  gui.D_Fstages_c = 0;
+	}
+
+      if (gui.D_Fvelocity_c)
+	{
+	  lo_send (m_host, osc_control_path, "if", 70,
+		   (float) gui.D_Fvelocity->value ());
+	  Fvelocity = gui.D_Fvelocity->value();
+	  gui.D_Fvelocity_c = 0;
+	}
+
+
+
           Fl::wait();
     }
 
@@ -264,6 +330,30 @@ update_widgets (int port, float value)
     case 17:
       gui.D_pLFO->value (value);
       break;
+    case 63:
+      gui.D_Ftype->value(value);
+      break; 
+    case 64:
+      gui.D_Fgain->value(value);
+      break; 
+    case 65:
+      gui.D_Fcutoff->value(value);
+      break; 
+    case 66:
+      gui.D_Fq->value(value);
+      break; 
+    case 67:
+      gui.D_FLFO->value(value);
+      break; 
+    case 68:
+      gui.D_FADSR->value(value);
+      break; 
+    case 69:
+      gui.D_Fstages->value(value);
+      break; 
+    case 70:
+      gui.D_Fvelocity->value(value);
+      break; 
 
     }
 
@@ -435,6 +525,7 @@ main (int argc, char **argv)
   struct timeval tv;
   int retval;
   int done = 0;
+  int loadOK = 0;
 
   funcion = 0;
   gui.Pexitprogram = 0;
@@ -460,6 +551,16 @@ main (int argc, char **argv)
       gui.D_Release_c[i] = 0;
     }
 
+  gui.D_Ftype_c = 0;
+  gui.D_Fgain_c = 0;
+  gui.D_Fcutoff_c = 0;
+  gui.D_Fq_c = 0;
+  gui.D_FLFO_c = 0;
+  gui.D_FADSR_c = 0;
+  gui.D_Fstages_c = 0;
+  gui.D_Fvelocity_c = 0;
+  
+
 
   New();
   New_Bank();
@@ -472,7 +573,7 @@ main (int argc, char **argv)
 
 
   sprintf (gui.uBankFilename, "%s/Default.goomf", DATADIR);
-  loadbank(gui.uBankFilename);
+  loadOK= loadbank(gui.uBankFilename);
 
   pthread_create (&thr1, NULL, thread1, NULL);
   gui.ui_win->copy_label (argv[3]);
@@ -512,7 +613,7 @@ main (int argc, char **argv)
 
   lo_send (m_host, osc_update_path, "s", myurl);
 
-  Send_laristra();
+  if(!loadOK) Send_laristra();
 
   gui.d_osc_label->copy_label (myurl);
   gui.d_osc_label->redraw();
@@ -664,6 +765,17 @@ New_Bank ()
 	  Banco[j].pLFO[i] = 0.0f;
 	}
 
+       Banco[j].Ftype = 0;
+       Banco[j].Fgain = 0.5f;
+       Banco[j].Fcutoff = 5020.5f;
+       Banco[j].Fq = 0.0;
+       Banco[j].FLFO = 0.0;
+       Banco[j].FADSR = 0;
+       Banco[j].Fstages = 1;
+       Banco[j].Fvelocity = 0;
+       
+
+
     }
 
 };
@@ -672,9 +784,7 @@ New_Bank ()
 void
 New()
 {
-  int i, j;
-  for (j = 0; j < 80; j++)
-    {
+  int i;
 
       bzero (Name, sizeof (Name));
       sprintf (Name, "");
@@ -701,7 +811,18 @@ New()
 	  pLFO[i] = 0.0f;
 	}
 
-    }
+       Ftype = 0;
+       Fgain = 0.5f;
+       Fcutoff = 5020.5f;
+       Fq = 0.0;
+       FLFO = 0.0;
+       FADSR = 0;
+       Fstages = 1;
+       Fvelocity = 0;
+     
+
+
+    
 
 };
 
@@ -735,6 +856,17 @@ Put_Combi (int j)
       pLFO[i] = Banco[j].pLFO[i];
     }
 
+      Ftype = Banco[j].Ftype;
+      Fgain = Banco[j].Fgain;
+      Fcutoff = Banco[j].Fcutoff;
+      Fq = Banco[j].Fq;
+      FLFO = Banco[j].FLFO;
+      FADSR = Banco[j].FADSR;
+      Fstages = Banco[j].Fstages;
+      Fvelocity = Banco[j].Fvelocity;
+      
+        
+
 };
 
 
@@ -764,6 +896,20 @@ preset_to_bank (int j)
       Banco[j].release[i] = release[i];
       Banco[j].pLFO[i] = pLFO[i];
     }
+
+   
+      Banco[j].Ftype = Ftype;
+      Banco[j].Fgain = Fgain;
+      Banco[j].Fcutoff = Fcutoff;
+      Banco[j].Fq = Fq;
+      Banco[j].FLFO = FLFO;
+      Banco[j].FADSR = FADSR;
+      Banco[j].Fstages = Fstages;
+      Banco[j].Fvelocity = Fvelocity;
+      
+
+
+
 }
 
 int
@@ -800,6 +946,17 @@ savebank (const char *filename)
 		   Banco[j].release[i], Banco[j].pLFO[i]);
 	  fputs (buf, fn);
 	}
+    
+      bzero (buf, sizeof (buf));
+      sprintf (buf, "%d,%f,%f,%f\n", Banco[j].Ftype, Banco[j].Fgain,Banco[j].Fcutoff, Banco[j].Fq);
+      fputs (buf, fn);
+
+      bzero (buf, sizeof (buf));
+      sprintf (buf, "%f,%d,%d,%d\n", Banco[j].FLFO, Banco[j].FADSR,Banco[j].Fstages, Banco[j].Fvelocity);
+      fputs (buf, fn);
+
+    
+    
     }
 
   return 0;
@@ -855,6 +1012,18 @@ loadbank (const char *filename)
 		  &Banco[j].pLFO[i]);
 	}
 
+    
+      bzero (buf, sizeof (buf));
+      fgets (buf, sizeof buf, fn);
+      sscanf (buf, "%d,%f,%f,%f\n", &Banco[j].Ftype, &Banco[j].Fgain, &Banco[j].Fcutoff, &Banco[j].Fq);
+
+      bzero (buf, sizeof (buf));
+      fgets (buf, sizeof buf, fn);
+      sscanf (buf, "%f,%d,%d,%d\n", &Banco[j].FLFO, &Banco[j].FADSR, &Banco[j].Fstages, &Banco[j].Fvelocity);
+
+    
+    
+    
     }
 
   fclose (fn);
@@ -891,6 +1060,15 @@ Update_Main_Widgets ()
   update_widgets (6, LFO_Frequency);
   update_widgets (7, LFO_Delay);
   update_widgets (8, LFO_Wave);
+  update_widgets (63, Ftype);
+  update_widgets (64, Fgain);
+  update_widgets (65, Fcutoff);
+  update_widgets (66, Fq);
+  update_widgets (67, FLFO);
+  update_widgets (68, FADSR);
+  update_widgets (69, Fstages);
+  update_widgets (70, Fvelocity);
+  
 
 }
 
@@ -921,6 +1099,16 @@ Send_Values ()
       lo_send (m_host, osc_control_path, "if", 51 + i, release[i]);
       lo_send (m_host, osc_control_path, "if", 57 + i, pLFO[i]);
     }
+
+  lo_send (m_host, osc_control_path, "if", 63, (float) Ftype);
+  lo_send (m_host, osc_control_path, "if", 64, Fgain);
+  lo_send (m_host, osc_control_path, "if", 65, Fcutoff);
+  lo_send (m_host, osc_control_path, "if", 66, Fq);
+  lo_send (m_host, osc_control_path, "if", 67, FLFO);
+  lo_send (m_host, osc_control_path, "if", 68, (float) FADSR);
+  lo_send (m_host, osc_control_path, "if", 69, (float) Fstages);
+  lo_send (m_host, osc_control_path, "if", 70, (float) Fvelocity);
+
 
 }
 

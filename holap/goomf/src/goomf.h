@@ -28,7 +28,7 @@
 #include <ladspa.h>
 #define D_PI 6.283185
 #define F2I(x)  ( lrintf(x) )
-
+#define MAX_FILTER_STAGES 5
 
 typedef struct
 {
@@ -107,6 +107,19 @@ typedef struct
   LADSPA_Data *sustain[6];
   LADSPA_Data *release[6];
   LADSPA_Data *pLFO[6];
+  LADSPA_Data *Ftype;
+  LADSPA_Data *Fgain;
+  LADSPA_Data *Fcutoff;
+  LADSPA_Data *Fq;
+  LADSPA_Data *FLFO;
+  LADSPA_Data *FADSR;
+  LADSPA_Data *Fstages;
+  LADSPA_Data *Fvelocity;
+  float Rtype;
+  float Rgain;
+  float Rcutoff;
+  float Rq;
+  float Rstages;
   char Name[64];
   freqVarios f[6];
   Menoscalculos h[192];
@@ -124,6 +137,7 @@ typedef struct
   unsigned int SAMPLE_RATE;
   float Envelope_Volume[6];
   float Env_Vol[6];
+  float lfol;
   float pitch;
   float velocity; 
   float env_time;
@@ -142,6 +156,9 @@ typedef struct
   int active;
   Todolo Banco[80];
 
+  AnalogFilter Fl;
+  AnalogFilter Fr;
+
 } goomf_synth_t;
 
 long int lrintf (float x);
@@ -150,11 +167,11 @@ float NFsin (goomf_synth_t * s, int i, float x);
 void Alg1s (goomf_synth_t * s, int nframes);
 float Jenvelope (goomf_synth_t * s, int op);
 float Get_Partial (goomf_synth_t * s);
-float Pitch_LFO (goomf_synth_t * s, float t);
+float Pitch_LFO (goomf_synth_t * s, float t, int type);
 float pitch_Operator (goomf_synth_t * s, int i);
 float pitch_Operator2 (goomf_synth_t * s, int i);
 void init_vars (goomf_synth_t * s);
-
+void clear_synth(goomf_synth_t * s, int op);
 
 void AnalogFilter_Init(goomf_synth_t * s, AnalogFilter *filter, unsigned char Ftype, float Ffreq, float Fq, unsigned char Fstages);
 void filterout (goomf_synth_t * s, AnalogFilter *filter, float * smp, unsigned long count);

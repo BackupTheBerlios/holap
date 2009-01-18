@@ -50,6 +50,14 @@ typedef struct
   float sustain[6];
   float release[6];
   float pLFO[6];
+  int Ftype;
+  float Fgain;
+  float Fcutoff;
+  float Fq;
+  float FLFO;
+  int FADSR;
+  int Fstages;
+  int Fvelocity;
 
 } Todolo;
 
@@ -71,6 +79,16 @@ float decay[6];
 float sustain[6];
 float release[6];
 float pLFO[6];
+int Ftype;
+float Fgain;
+float Fcutoff;
+float Fq;
+float FLFO;
+int FADSR;
+int Fstages;
+int Fvelocity;
+
+
 char BankFilename[128];
 
 

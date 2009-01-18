@@ -92,6 +92,14 @@
 #define goomf_pLFO_3 60
 #define goomf_pLFO_4 61
 #define goomf_pLFO_5 62
+#define goomf_FilterType 63
+#define goomf_FilterGain 64
+#define goomf_FilterCutoff 65
+#define goomf_FilterQ 66
+#define goomf_FilterLFO 67
+#define goomf_FilterADSR 68
+#define goomf_FilterStages 69
+#define goomf_FilterVelocity 70
 
 
 static LADSPA_Descriptor *goomfLDescriptor = NULL;
@@ -331,8 +339,30 @@ connectPortgoomf (LADSPA_Handle instance, unsigned long port,
     case goomf_pLFO_5:
       plugin->pLFO[5] = data;
       break;
-
-
+    case goomf_FilterType:
+      plugin->Ftype = data;
+      break;
+    case goomf_FilterGain:
+      plugin->Fgain = data;
+      break;
+    case goomf_FilterCutoff:
+      plugin->Fcutoff = data;
+      break;
+    case goomf_FilterQ:
+      plugin->Fq = data;
+      break;
+    case goomf_FilterLFO:
+      plugin->FLFO = data;
+      break;
+    case goomf_FilterADSR:
+      plugin->FADSR = data;
+      break;
+    case goomf_FilterStages:
+      plugin->Fstages = data;
+      break;
+    case goomf_FilterVelocity:
+      plugin->Fvelocity = data;
+      break;
     }
 
 }
@@ -477,11 +507,8 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	    {
 	      synth->note = events[event_pos].data.note.note;
               synth->active = 1;
-	      if (!synth->gate)
-	      {
-	        synth->velocity = (float) events[event_pos].data.note.velocity / 126.0;  
-		synth->env_time = 0.0f;
-	      }
+              synth->velocity = (float) events[event_pos].data.note.velocity / 126.0;  
+              synth->env_time = 0.0f;
 	      synth->gate = 1;
 	      break;
 	    }
@@ -554,7 +581,7 @@ void __attribute__ ((constructor)) goomf_init ()
       goomfLDescriptor->Name = "goomf";
       goomfLDescriptor->Maker = "Josep Andreu <holborn@telefonica.net>";
       goomfLDescriptor->Copyright = "GNU General Public License version 2";
-      goomfLDescriptor->PortCount = 63;
+      goomfLDescriptor->PortCount = 71;
 
 
       port_descriptors = (LADSPA_PortDescriptor *)
@@ -1123,8 +1150,6 @@ void __attribute__ ((constructor)) goomf_init ()
       port_range_hints[goomf_Release_5].LowerBound = 0.01;
       port_range_hints[goomf_Release_5].UpperBound = 1.0;
 
-
-
       /* Parameters for pLFO_0 */
       port_descriptors[goomf_pLFO_0] =
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
@@ -1185,6 +1210,89 @@ void __attribute__ ((constructor)) goomf_init ()
       port_range_hints[goomf_pLFO_5].LowerBound = 0.0;
       port_range_hints[goomf_pLFO_5].UpperBound = 1.0;
 
+      /* Parameters for FilterType */
+      port_descriptors[goomf_FilterType] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_FilterType] = "Type";
+      port_range_hints[goomf_FilterType].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_FilterType].LowerBound = 0.0;
+      port_range_hints[goomf_FilterType].UpperBound = 8.0;
+
+      /* Parameters for FilterGain */
+      port_descriptors[goomf_FilterGain] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_FilterGain] = "Gain";
+      port_range_hints[goomf_FilterGain].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE | 
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_FilterGain].LowerBound = 0.0;
+      port_range_hints[goomf_FilterGain].UpperBound = 1.0;
+
+      /* Parameters for FilterCutoff */
+      port_descriptors[goomf_FilterCutoff] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_FilterCutoff] = "Cutoff";
+      port_range_hints[goomf_FilterCutoff].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE | 
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_FilterCutoff].LowerBound = 21.0;
+      port_range_hints[goomf_FilterCutoff].UpperBound = 10020.0;
+
+      /* Parameters for FilterQ */
+      port_descriptors[goomf_FilterQ] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_FilterQ] = "Resonance";
+      port_range_hints[goomf_FilterQ].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MIDDLE | 
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_FilterQ].LowerBound = -1.0;
+      port_range_hints[goomf_FilterQ].UpperBound = 1.0;
+
+      /* Parameters for FilterLFO */
+      port_descriptors[goomf_FilterLFO] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_FilterLFO] = "LFO";
+      port_range_hints[goomf_FilterLFO].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | 
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_FilterLFO].LowerBound = 0.0;
+      port_range_hints[goomf_FilterLFO].UpperBound = 1.0;
+
+      /* Parameters for FilterADSR */
+      port_descriptors[goomf_FilterADSR] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_FilterADSR] = "ADSR";
+      port_range_hints[goomf_FilterADSR].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_FilterADSR].LowerBound = 0.0;
+      port_range_hints[goomf_FilterADSR].UpperBound = 6.0;
+
+      /* Parameters for FilterStages */
+      port_descriptors[goomf_FilterStages] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_FilterStages] = "Stages";
+      port_range_hints[goomf_FilterStages].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_FilterStages].LowerBound = 1.0;
+      port_range_hints[goomf_FilterStages].UpperBound = 5.0;
+
+      /* Parameters for FilterVelocity */
+      port_descriptors[goomf_FilterVelocity] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_FilterVelocity] = "Velocity";
+      port_range_hints[goomf_FilterVelocity].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_FilterVelocity].LowerBound = 0.0;
+      port_range_hints[goomf_FilterVelocity].UpperBound = 1.0;
+
+
+
+       
 
       goomfLDescriptor->instantiate = instantiategoomf;
       goomfLDescriptor->connect_port = connectPortgoomf;
