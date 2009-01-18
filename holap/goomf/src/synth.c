@@ -265,13 +265,17 @@ Jenvelope (goomf_synth_t * s, int op)
   LADSPA_Data volume = *(s->Ovol[op]);
   float t = s->env_time;
   float r = s->renv_time;
+  
+  
 
   if (s->gate)
     {
       if (t > attack + decay)
 	return (sustain);
+
       if (t > attack)
 	return (1.0 - (1.0 - sustain) * (t - attack) / decay);
+
       if (s->Env_Vol[op] > (t / attack * volume * s->velocity))
 	return (s->Env_Vol[op] / (volume * s->velocity));
       else
@@ -286,12 +290,44 @@ Jenvelope (goomf_synth_t * s, int op)
       {
 	return (0.0f);
         s->active=0;
-        // clear_synth(s,op);
+        clear_synth(s,op);
       }
     }
 
 };
 
+
+float
+Fenvelope (goomf_synth_t * s, int op)
+{
+
+  LADSPA_Data attack = *(s->attack[op]);
+  LADSPA_Data decay = *(s->decay[op]);
+  LADSPA_Data sustain = *(s->sustain[op])+.0001;
+  LADSPA_Data release = *(s->release[op]);
+  float t = s->env_time;
+  float r = s->renv_time;
+  
+  if (s->gate)
+    {
+      if (t > attack + decay)
+	return (sustain);
+      if (t > attack)
+	return (1.0 - (1.0-sustain) * (t-attack)/decay);
+      if (s->FEnv_Vol > (t / attack)) return (s->FEnv_Vol);
+      else
+	return (t / attack);
+
+    }
+  else
+    {
+      if (r < release)
+	return (s->FEnv_Vol*(1.0-r/release));
+      else
+      return (0.0f);
+    }
+
+};
 
 void
 clear_synth(goomf_synth_t * s, int op )
@@ -301,6 +337,9 @@ clear_synth(goomf_synth_t * s, int op )
       s->f[op].dphi2=0.0f;
       s->f[op].phi=0.0f;
       s->f[op].phi2=0.0f;
+      AnalogFilter_Cleanup(s,&s->Fl);
+      AnalogFilter_Cleanup(s,&s->Fr);
+      
 
 }
 
@@ -424,7 +463,6 @@ NFsin (goomf_synth_t * s, int i, float x)
 }
 
 
-
 // Main Audio thread
 
 void
@@ -516,8 +554,8 @@ Alg1s (goomf_synth_t * s, int nframes)
   if (s->Rgain != Fgain)
       {
         s->Rgain = Fgain;
-        setgain(s,&s->Fl,s->Rgain*30.0);
-        setgain(s,&s->Fr,s->Rgain*30.0); 
+        setgain(s,&s->Fl,s->Rgain*12.0);
+        setgain(s,&s->Fr,s->Rgain*12.0); 
       }
        
   if (s->Rcutoff != Fcutoff)
@@ -541,18 +579,14 @@ Alg1s (goomf_synth_t * s, int nframes)
         setstages(s,&s->Fl,s->Rstages);
         setstages(s,&s->Fr,s->Rstages);
       }  
-  
    
-    if(VELO)
-       freq = s->Rcutoff * s->velocity;
-     
-
+    if(VELO) freq = s->Rcutoff * s->velocity;
 
     if((FADSR) && (s->gate))
       {
-      if (VELO) freq *=Jenvelope (s, FADSR-1); 
-      else
-      freq = s->Rcutoff *  Jenvelope (s, FADSR-1); 
+      s->FEnv_Vol=Fenvelope(s,FADSR-1);
+      if (VELO) freq *=s->FEnv_Vol; 
+      else freq = s->Rcutoff * s->FEnv_Vol; 
       }
 
    if (FLFO > 0.0f)    
@@ -567,7 +601,7 @@ Alg1s (goomf_synth_t * s, int nframes)
         setfreq(s,&s->Fl,freq);
         setfreq(s,&s->Fr,freq); 
      }
-     
+
 
    filterout(s,&s->Fl,&sound,1);
    filterout(s,&s->Fr,&sound2,1);
@@ -583,4 +617,5 @@ Alg1s (goomf_synth_t * s, int nframes)
 
 
 };
+
 

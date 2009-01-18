@@ -137,6 +137,7 @@ typedef struct
   unsigned int SAMPLE_RATE;
   float Envelope_Volume[6];
   float Env_Vol[6];
+  float FEnv_Vol;
   float lfol;
   float pitch;
   float velocity; 
@@ -166,6 +167,7 @@ long int lrintf (float x);
 float NFsin (goomf_synth_t * s, int i, float x);
 void Alg1s (goomf_synth_t * s, int nframes);
 float Jenvelope (goomf_synth_t * s, int op);
+float Fenvelope (goomf_synth_t * s, int op);
 float Get_Partial (goomf_synth_t * s);
 float Pitch_LFO (goomf_synth_t * s, float t, int type);
 float pitch_Operator (goomf_synth_t * s, int i);
