@@ -149,8 +149,7 @@ return i;} {}
   }
 } 
 
-class goomf_ui {open
-} {
+class goomf_ui {} {
   decl {int Pexitprogram;} {public
   }
   decl {int ready;} {public
@@ -225,12 +224,17 @@ Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
   Function {make_window()} {} {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;} selected
-      xywh {1365 93 500 580} type Double color 147 hide
+      callback {Pexitprogram=1;}
+      xywh {253 101 500 580} type Double color 147 hide
     } {
-      Fl_Menu_Bar {} {
+      Fl_Menu_Bar {} {open
         xywh {0 0 500 25} box BORDER_BOX color 147 selection_color 4 labelsize 18 labelcolor 7 textsize 18
       } {
+        MenuItem {} {
+          label {&New}
+          callback {ready = 6;}
+          xywh {0 0 36 21} shortcut 0x6e labelcolor 7
+        }
         MenuItem {} {
           label {&Bank}
           callback {BankWindow->show();
@@ -507,8 +511,9 @@ cop=1;
       }
     }
     Fl_Window BankWindow {
-      callback {o->hide();}
-      xywh {1407 163 800 600} type Double color 147 selection_color 7 hide resizable size_range {640 480 3200 2400}
+      label {goomf - Bank}
+      callback {o->hide();} selected
+      xywh {1400 156 800 600} type Double color 147 selection_color 7 hide resizable size_range {640 480 3200 2400}
     } {
       Fl_Menu_Bar MenuB {open
         xywh {0 0 800 20} down_box DOWN_BOX color 147 selection_color 7 labelcolor 7 textcolor 7

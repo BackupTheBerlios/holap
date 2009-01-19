@@ -527,6 +527,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	    {
 	      synth->gate = 0;
 	      synth->renv_time = 0.0f;
+              
 	    }
 
 	  break;

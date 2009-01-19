@@ -263,10 +263,12 @@ Jenvelope (goomf_synth_t * s, int op)
   LADSPA_Data sustain = *(s->sustain[op]);
   LADSPA_Data release = *(s->release[op]);
   LADSPA_Data volume = *(s->Ovol[op]);
+  LADSPA_Data coef = volume * s->velocity;
   float t = s->env_time;
   float r = s->renv_time;
-  
-  
+
+   
+    
 
   if (s->gate)
     {
@@ -276,8 +278,8 @@ Jenvelope (goomf_synth_t * s, int op)
       if (t > attack)
 	return (1.0 - (1.0 - sustain) * (t - attack) / decay);
 
-      if (s->Env_Vol[op] > (t / attack * volume * s->velocity))
-	return (s->Env_Vol[op] / (volume * s->velocity));
+      if (s->Env_Vol[op] > (t / attack * coef))
+	return (s->Env_Vol[op] / coef);
       else
 	return (t / attack);
 
@@ -303,7 +305,7 @@ Fenvelope (goomf_synth_t * s, int op)
 
   LADSPA_Data attack = *(s->attack[op]);
   LADSPA_Data decay = *(s->decay[op]);
-  LADSPA_Data sustain = *(s->sustain[op])+.0001;
+  LADSPA_Data sustain = *(s->sustain[op]);
   LADSPA_Data release = *(s->release[op]);
   float t = s->env_time;
   float r = s->renv_time;
@@ -321,7 +323,7 @@ Fenvelope (goomf_synth_t * s, int op)
     }
   else
     {
-      if ((r < release) && ( sustain > .0001))
+      if ((r < release) && (sustain>0.0f))
 	return (s->FEnv_Vol*(1.0-r/release));
       else
       return (0.0f);
@@ -339,7 +341,8 @@ clear_synth(goomf_synth_t * s, int op )
       s->f[op].phi2=0.0f;
       AnalogFilter_Cleanup(s,&s->Fl);
       AnalogFilter_Cleanup(s,&s->Fr);
-      
+      s->FEnv_Vol = 0.0f;
+      s->velocity = 0.0f;
 
 }
 
@@ -471,7 +474,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 
   int i;
   int l1;
-  float sound, sound2;
+  float sound, sound2, filt, filt2;
   float m_partial;
   LADSPA_Data volumen;
   LADSPA_Data Ftype = *(s->Ftype);
@@ -480,6 +483,7 @@ Alg1s (goomf_synth_t * s, int nframes)
   LADSPA_Data Fq = *(s->Fq);
   LADSPA_Data Fstages = *(s->Fstages);
   LADSPA_Data FLFO = *(s->FLFO);
+  LADSPA_Data realgain = Fgain * 12.0;
   int FADSR = (int) *(s->FADSR);
   int VELO = (int) *(s->Fvelocity);
   float freq = 0.0f;
@@ -500,6 +504,8 @@ Alg1s (goomf_synth_t * s, int nframes)
 
       sound = 0.0f;
       sound2 = 0.0f;
+      filt = 0.0f;
+      filt2 = 0.0f;
       
       LFO = Pitch_LFO (s, s->env_time,0) * LFO_Volume * s->modulation;
 
@@ -580,35 +586,45 @@ Alg1s (goomf_synth_t * s, int nframes)
         setstages(s,&s->Fr,s->Rstages);
       }  
    
+    freq = s->Rcutoff;
+    
     if(VELO) freq = s->Rcutoff * s->velocity;
 
     if((FADSR) && (s->gate))
       {
       s->FEnv_Vol=Fenvelope(s,FADSR-1);
-      if (VELO) freq *=s->FEnv_Vol; 
-      else freq = s->Rcutoff * s->FEnv_Vol; 
+      freq *=s->FEnv_Vol; 
       }
 
-   if (FLFO > 0.0f)    
+   if (FLFO>0.0f)    
      {
-       if ((FADSR) || ( VELO)) freq +=Pitch_LFO(s, s->env_time,0)*FLFO*freq;
-             else
-            freq =s->Rcutoff+Pitch_LFO(s, s->env_time,0)*FLFO*s->Rcutoff;
+       freq +=Pitch_LFO(s, s->env_time,0)*FLFO*freq;
      }
             
-   if (freq != 0.0f)
+   if ((freq>21.0f) && (freq<10020.0))
      {
         setfreq(s,&s->Fl,freq);
         setfreq(s,&s->Fr,freq); 
      }
+ 
+        filt = sound;
+        filt2 = sound2;
+ 
+        filterout(s,&s->Fl,&filt,1);
+        filterout(s,&s->Fr,&filt2,1);
 
 
-   filterout(s,&s->Fl,&sound,1);
-   filterout(s,&s->Fr,&sound2,1);
+     
 
-
-      s->bufl[l1] = sound;
-      s->bufr[l1] = sound2;
+      s->bufl[l1] = (sound*(12.0-realgain)) + (filt*realgain);
+      s->bufr[l1] = (sound2*(12.0-realgain)) + (filt2*realgain) ;
+      s->bufl[l1] *= .083;
+      s->bufr[l1] *= .083;
+      if (Ftype > 7.0)
+      {
+      s->bufl[l1] *= .05;
+      s->bufr[l1] *= .05;
+      }
       s->env_time += s->increment;
       s->renv_time += (s->increment * .0001);
         

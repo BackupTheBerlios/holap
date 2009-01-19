@@ -41,13 +41,11 @@ thread1 (void *arg)
           if(!i) Put_Loaded_Bank ();
 	  break;
 	case 2:
-          gui.PresetSelect->redraw();
 	  gui.Pname->value (Banco[(int) gui.PresetSelect->value ()].Name);
 	  Put_Combi (gui.PresetSelect->value ());
 	  Send_Values ();
 	  Update_Main_Widgets ();
 	  Update_Operator_Widgets (gui.op);
-          gui.ui_win->redraw();
 	  break;
 	case 3:
 	  savebank (gui.uBankFilename);
@@ -59,6 +57,13 @@ thread1 (void *arg)
         case 5:
           make_window_banks();
           break; 
+        case 6:
+          New();
+          Send_Values();
+          Update_Main_Widgets ();
+	  Update_Operator_Widgets (gui.op);
+	  gui.Pname->value ("");
+          break;  
 	}
 
       gui.ready = 0;
@@ -613,6 +618,7 @@ main (int argc, char **argv)
   temp = lo_server_get_url (osc_server);
   myurl = osc_build_path (temp, (strlen (path) > 1 ? path + 1 : path));
   lo_send (m_host, osc_update_path, "s", myurl);
+  sleep(2);  
   gui.d_osc_label->copy_label (myurl);
   gui.d_osc_label->redraw();
   if(!loadOK) Send_laristra();

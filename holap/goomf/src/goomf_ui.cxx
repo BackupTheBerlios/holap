@@ -114,6 +114,13 @@ void goomf_ui::cb_ui_win(Fl_Double_Window* o, void* v) {
   ((goomf_ui*)(o->user_data()))->cb_ui_win_i(o,v);
 }
 
+void goomf_ui::cb_New_i(Fl_Menu_*, void*) {
+  ready = 6;
+}
+void goomf_ui::cb_New(Fl_Menu_* o, void* v) {
+  ((goomf_ui*)(o->parent()->user_data()))->cb_New_i(o,v);
+}
+
 void goomf_ui::cb_Bank_i(Fl_Menu_*, void*) {
   BankWindow->show();
 if(!made) ready = 5;
@@ -123,6 +130,7 @@ void goomf_ui::cb_Bank(Fl_Menu_* o, void* v) {
 }
 
 Fl_Menu_Item goomf_ui::menu_[] = {
+ {gettext("&New"), 0x6e,  (Fl_Callback*)goomf_ui::cb_New, 0, 0, FL_NORMAL_LABEL, 0, 14, 7},
  {gettext("&Bank"), 0x62,  (Fl_Callback*)goomf_ui::cb_Bank, 0, 0, FL_NORMAL_LABEL, 0, 14, 7},
  {0,0,0,0,0,0,0,0,0}
 };
@@ -935,7 +943,7 @@ Fl_Double_Window* goomf_ui::make_window() {
     } // Fl_Group* o
     ui_win->end();
   } // Fl_Double_Window* ui_win
-  { BankWindow = new Fl_Double_Window(800, 600);
+  { BankWindow = new Fl_Double_Window(800, 600, gettext("goomf - Bank"));
     BankWindow->color((Fl_Color)147);
     BankWindow->selection_color(FL_BACKGROUND2_COLOR);
     BankWindow->callback((Fl_Callback*)cb_BankWindow, (void*)(this));

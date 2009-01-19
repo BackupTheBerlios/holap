@@ -72,6 +72,8 @@ private:
   void cb_ui_win_i(Fl_Double_Window*, void*);
   static void cb_ui_win(Fl_Double_Window*, void*);
   static Fl_Menu_Item menu_[];
+  void cb_New_i(Fl_Menu_*, void*);
+  static void cb_New(Fl_Menu_*, void*);
   void cb_Bank_i(Fl_Menu_*, void*);
   static void cb_Bank(Fl_Menu_*, void*);
 public:
