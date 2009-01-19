@@ -571,14 +571,17 @@ main (int argc, char **argv)
   char *label = argv[3];
   char *temp;
 
-
-  sprintf (gui.uBankFilename, "%s/Default.goomf", DATADIR);
-  loadOK= loadbank(gui.uBankFilename);
-
+ 
   pthread_create (&thr1, NULL, thread1, NULL);
   gui.ui_win->copy_label (argv[3]);
   gui.ui_win->show ();
 
+  sprintf (gui.uBankFilename, "%s/Default.goomf", DATADIR);
+  loadOK= loadbank(gui.uBankFilename);
+
+ 
+ 
+ 
   osc_server = 0;
   m_host = lo_address_new (host, port);
 
@@ -608,15 +611,12 @@ main (int argc, char **argv)
   lo_server_add_method (osc_server, NULL, NULL, debug_handler, NULL);
 
   temp = lo_server_get_url (osc_server);
-
   myurl = osc_build_path (temp, (strlen (path) > 1 ? path + 1 : path));
-
   lo_send (m_host, osc_update_path, "s", myurl);
-
-  if(!loadOK) Send_laristra();
-
   gui.d_osc_label->copy_label (myurl);
   gui.d_osc_label->redraw();
+  if(!loadOK) Send_laristra();
+
 
   lo_fd = lo_server_get_socket_fd (osc_server);
 

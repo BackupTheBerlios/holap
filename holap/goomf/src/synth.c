@@ -321,7 +321,7 @@ Fenvelope (goomf_synth_t * s, int op)
     }
   else
     {
-      if (r < release)
+      if ((r < release) && ( sustain > .0001))
 	return (s->FEnv_Vol*(1.0-r/release));
       else
       return (0.0f);
