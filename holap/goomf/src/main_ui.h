@@ -129,4 +129,5 @@ void make_window_banks();
 void Put_Loaded_Bank();
 void Haz_laristra();
 void Send_laristra();
+void set_FilterType(int type);
 #endif

@@ -237,6 +237,7 @@ private:
   void cb_D_Fvelocity_i(Fl_Button*, void*);
   static void cb_D_Fvelocity(Fl_Button*, void*);
 public:
+  Fl_Box *Flabel;
   Fl_Double_Window *BankWindow;
 private:
   void cb_BankWindow_i(Fl_Double_Window*, void*);

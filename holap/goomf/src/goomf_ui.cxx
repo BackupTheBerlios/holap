@@ -939,6 +939,11 @@ Fl_Double_Window* goomf_ui::make_window() {
         D_Fvelocity->callback((Fl_Callback*)cb_D_Fvelocity);
         D_Fvelocity->when(FL_WHEN_CHANGED);
       } // Fl_Button* D_Fvelocity
+      { Flabel = new Fl_Box(435, 173, 50, 34);
+        Flabel->labelsize(10);
+        Flabel->labelcolor(FL_BACKGROUND2_COLOR);
+        Flabel->align(FL_ALIGN_WRAP|FL_ALIGN_INSIDE);
+      } // Fl_Box* Flabel
       o->end();
     } // Fl_Group* o
     ui_win->end();

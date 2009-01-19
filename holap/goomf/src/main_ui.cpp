@@ -210,6 +210,7 @@ thread1 (void *arg)
 	  lo_send (m_host, osc_control_path, "if", 63,
 		   gui.D_Ftype->value ());
 	  Ftype = gui.D_Ftype->value ();
+          set_FilterType(Ftype);
 	  gui.D_Ftype_c = 0;
 	}
 
@@ -337,6 +338,7 @@ update_widgets (int port, float value)
       break;
     case 63:
       gui.D_Ftype->value(value);
+      set_FilterType(value);
       break; 
     case 64:
       gui.D_Fgain->value(value);
@@ -1256,3 +1258,41 @@ Send_laristra()
  lo_send (m_host, osc_configure_path, "ss", "names", laristra);
 }
 
+
+void
+set_FilterType(int value)
+{
+ switch(value)
+ {
+  case 0:
+  gui.Flabel->copy_label("LPF 1 pole");
+  break;
+  case 1:
+  gui.Flabel->copy_label("HPF 1 pole");
+  break;
+  case 2:
+  gui.Flabel->copy_label("LPF 2 poles");
+  break;
+  case 3:
+  gui.Flabel->copy_label("HPF 2 poles");
+  break;
+  case 4:
+  gui.Flabel->copy_label("BPF 2 poles");
+  break;
+  case 5:
+  gui.Flabel->copy_label("NOTCH 2 poles");
+  break;
+  case 6:
+  gui.Flabel->copy_label("PEAK 2 poles");
+  break;
+  case 7:
+  gui.Flabel->copy_label("Low Shelf 2 poles");
+  break;
+  case 8:
+  gui.Flabel->copy_label("High Shelf 2 poles");
+  break;
+}
+
+}
+
+  
