@@ -116,7 +116,7 @@ pthread_t thr1;
 
 void read_stdin (void);
 void update_widgets (int port, float value);
-void New();
+void New ();
 void New_Bank ();
 int loadbank (const char *filename);
 int savebank (const char *filename);
@@ -125,9 +125,9 @@ void Update_Operator_Widgets (int op);
 void Update_Main_Widgets ();
 void Send_Values ();
 void preset_to_bank (int j);
-void make_window_banks();
-void Put_Loaded_Bank();
-void Haz_laristra();
-void Send_laristra();
-void set_FilterType(int type);
+void make_window_banks ();
+void Put_Loaded_Bank ();
+void Haz_laristra ();
+void Send_laristra ();
+void set_FilterType (int type);
 #endif

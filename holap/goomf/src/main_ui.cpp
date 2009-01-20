@@ -37,8 +37,9 @@ thread1 (void *arg)
       switch (gui.ready)
 	{
 	case 1:
-	  i=loadbank (gui.uBankFilename);
-          if(!i) Put_Loaded_Bank ();
+	  i = loadbank (gui.uBankFilename);
+	  if (!i)
+	    Put_Loaded_Bank ();
 	  break;
 	case 2:
 	  gui.Pname->value (Banco[(int) gui.PresetSelect->value ()].Name);
@@ -50,20 +51,20 @@ thread1 (void *arg)
 	case 3:
 	  savebank (gui.uBankFilename);
 	  break;
-        case 4:
-          New_Bank();
-          Put_Loaded_Bank();
-          break;
-        case 5:
-          make_window_banks();
-          break; 
-        case 6:
-          New();
-          Send_Values();
-          Update_Main_Widgets ();
+	case 4:
+	  New_Bank ();
+	  Put_Loaded_Bank ();
+	  break;
+	case 5:
+	  make_window_banks ();
+	  break;
+	case 6:
+	  New ();
+	  Send_Values ();
+	  Update_Main_Widgets ();
 	  Update_Operator_Widgets (gui.op);
 	  gui.Pname->value ("");
-          break;  
+	  break;
 	}
 
       gui.ready = 0;
@@ -207,17 +208,15 @@ thread1 (void *arg)
 
       if (gui.D_Ftype_c)
 	{
-	  lo_send (m_host, osc_control_path, "if", 63,
-		   gui.D_Ftype->value ());
+	  lo_send (m_host, osc_control_path, "if", 63, gui.D_Ftype->value ());
 	  Ftype = gui.D_Ftype->value ();
-          set_FilterType(Ftype);
+	  set_FilterType (Ftype);
 	  gui.D_Ftype_c = 0;
 	}
 
       if (gui.D_Fgain_c)
 	{
-	  lo_send (m_host, osc_control_path, "if", 64,
-		   gui.D_Fgain->value ());
+	  lo_send (m_host, osc_control_path, "if", 64, gui.D_Fgain->value ());
 	  Fgain = gui.D_Fgain->value ();
 	  gui.D_Fgain_c = 0;
 	}
@@ -232,24 +231,21 @@ thread1 (void *arg)
 
       if (gui.D_Fq_c)
 	{
-	  lo_send (m_host, osc_control_path, "if", 66,
-		   gui.D_Fq->value ());
+	  lo_send (m_host, osc_control_path, "if", 66, gui.D_Fq->value ());
 	  Fq = gui.D_Fq->value ();
 	  gui.D_Fq_c = 0;
 	}
 
       if (gui.D_FLFO_c)
 	{
-	  lo_send (m_host, osc_control_path, "if", 67,
-		   gui.D_FLFO->value ());
+	  lo_send (m_host, osc_control_path, "if", 67, gui.D_FLFO->value ());
 	  FLFO = gui.D_FLFO->value ();
 	  gui.D_FLFO_c = 0;
 	}
 
       if (gui.D_FADSR_c)
 	{
-	  lo_send (m_host, osc_control_path, "if", 68,
-		   gui.D_FADSR->value ());
+	  lo_send (m_host, osc_control_path, "if", 68, gui.D_FADSR->value ());
 	  FADSR = gui.D_FADSR->value ();
 	  gui.D_FADSR_c = 0;
 	}
@@ -266,13 +262,13 @@ thread1 (void *arg)
 	{
 	  lo_send (m_host, osc_control_path, "if", 70,
 		   (float) gui.D_Fvelocity->value ());
-	  Fvelocity = gui.D_Fvelocity->value();
+	  Fvelocity = gui.D_Fvelocity->value ();
 	  gui.D_Fvelocity_c = 0;
 	}
 
 
 
-          Fl::wait();
+      Fl::wait ();
     }
 
   lo_send (m_host, osc_exiting_path, "");
@@ -337,30 +333,30 @@ update_widgets (int port, float value)
       gui.D_pLFO->value (value);
       break;
     case 63:
-      gui.D_Ftype->value(value);
-      set_FilterType(value);
-      break; 
+      gui.D_Ftype->value (value);
+      set_FilterType (value);
+      break;
     case 64:
-      gui.D_Fgain->value(value);
-      break; 
+      gui.D_Fgain->value (value);
+      break;
     case 65:
-      gui.D_Fcutoff->value(value);
-      break; 
+      gui.D_Fcutoff->value (value);
+      break;
     case 66:
-      gui.D_Fq->value(value);
-      break; 
+      gui.D_Fq->value (value);
+      break;
     case 67:
-      gui.D_FLFO->value(value);
-      break; 
+      gui.D_FLFO->value (value);
+      break;
     case 68:
-      gui.D_FADSR->value(value);
-      break; 
+      gui.D_FADSR->value (value);
+      break;
     case 69:
-      gui.D_Fstages->value(value);
-      break; 
+      gui.D_Fstages->value (value);
+      break;
     case 70:
-      gui.D_Fvelocity->value(value);
-      break; 
+      gui.D_Fvelocity->value (value);
+      break;
 
     }
 
@@ -490,9 +486,9 @@ control_handler (const char *path, const char *types, lo_arg ** argv,
 
   if ((port < 9) || (port > 62))
     update_widgets (port, value);
-  else
-    if (port < 63) update_widgets (((port + 3) / 6) + 7, value);
-  
+  else if (port < 63)
+    update_widgets (((port + 3) / 6) + 7, value);
+
   return 0;
 }
 
@@ -510,7 +506,7 @@ program_handler (const char *path, const char *types, lo_arg ** argv,
 
   bank = argv[0]->i;
   program = argv[1]->i;
-  
+
   gui.PresetSelect->value (program);
   gui.ready = 2;
 
@@ -566,11 +562,11 @@ main (int argc, char **argv)
   gui.D_FADSR_c = 0;
   gui.D_Fstages_c = 0;
   gui.D_Fvelocity_c = 0;
-  
 
 
-  New();
-  New_Bank();
+
+  New ();
+  New_Bank ();
   char *url = argv[1];
   char *host = lo_url_get_hostname (url);
   char *port = lo_url_get_port (url);
@@ -578,17 +574,17 @@ main (int argc, char **argv)
   char *label = argv[3];
   char *temp;
 
- 
+
   pthread_create (&thr1, NULL, thread1, NULL);
   gui.ui_win->copy_label (argv[3]);
   gui.ui_win->show ();
 
   sprintf (gui.uBankFilename, "%s/Default.goomf", DATADIR);
-  loadOK= loadbank(gui.uBankFilename);
+  loadOK = loadbank (gui.uBankFilename);
 
- 
- 
- 
+
+
+
   osc_server = 0;
   m_host = lo_address_new (host, port);
 
@@ -620,10 +616,11 @@ main (int argc, char **argv)
   temp = lo_server_get_url (osc_server);
   myurl = osc_build_path (temp, (strlen (path) > 1 ? path + 1 : path));
   lo_send (m_host, osc_update_path, "s", myurl);
-  sleep(2);  
+  sleep (2);
   gui.d_osc_label->copy_label (myurl);
-  gui.d_osc_label->redraw();
-  if(!loadOK) Send_laristra();
+  gui.d_osc_label->redraw ();
+  if (!loadOK)
+    Send_laristra ();
 
 
   lo_fd = lo_server_get_socket_fd (osc_server);
@@ -773,15 +770,15 @@ New_Bank ()
 	  Banco[j].pLFO[i] = 0.0f;
 	}
 
-       Banco[j].Ftype = 0;
-       Banco[j].Fgain = 0.5f;
-       Banco[j].Fcutoff = 5020.5f;
-       Banco[j].Fq = 0.0;
-       Banco[j].FLFO = 0.0;
-       Banco[j].FADSR = 0;
-       Banco[j].Fstages = 1;
-       Banco[j].Fvelocity = 0;
-       
+      Banco[j].Ftype = 0;
+      Banco[j].Fgain = 0.5f;
+      Banco[j].Fcutoff = 5020.5f;
+      Banco[j].Fq = 0.0;
+      Banco[j].FLFO = 0.0;
+      Banco[j].FADSR = 0;
+      Banco[j].Fstages = 1;
+      Banco[j].Fvelocity = 0;
+
 
 
     }
@@ -790,47 +787,47 @@ New_Bank ()
 
 
 void
-New()
+New ()
 {
   int i;
 
-      bzero (Name, sizeof (Name));
-      sprintf (Name, "");
-      modulation = .99f;
-      master_volume = 0.5f;
-      tune = 0.0f;
-      portamento = 0.0f;
-      LFO_Frequency = 0.0f;
-      LFO_Delay = 0.0f;
-      LFO_Wave = 1;
-      LFO_Volume = 0.0f;
+  bzero (Name, sizeof (Name));
+  sprintf (Name, "");
+  modulation = .99f;
+  master_volume = 0.5f;
+  tune = 0.0f;
+  portamento = 0.0f;
+  LFO_Frequency = 0.0f;
+  LFO_Delay = 0.0f;
+  LFO_Wave = 1;
+  LFO_Volume = 0.0f;
 
 
-      for (i = 0; i < 6; i++)
-	{
-	  H[i] = 0;
-	  HF[i] = 0.0f;
-	  Ovol[i] = 0.0f;
-	  wave[i] = 1;
-	  attack[i] = 0.01f;
-	  decay[i] = 0.5f;
-	  sustain[i] = 0.5f;
-	  release[i] = 0.01;
-	  pLFO[i] = 0.0f;
-	}
+  for (i = 0; i < 6; i++)
+    {
+      H[i] = 0;
+      HF[i] = 0.0f;
+      Ovol[i] = 0.0f;
+      wave[i] = 1;
+      attack[i] = 0.01f;
+      decay[i] = 0.5f;
+      sustain[i] = 0.5f;
+      release[i] = 0.01;
+      pLFO[i] = 0.0f;
+    }
 
-       Ftype = 0;
-       Fgain = 0.5f;
-       Fcutoff = 5020.5f;
-       Fq = 0.0;
-       FLFO = 0.0;
-       FADSR = 0;
-       Fstages = 1;
-       Fvelocity = 0;
-     
+  Ftype = 0;
+  Fgain = 0.5f;
+  Fcutoff = 5020.5f;
+  Fq = 0.0;
+  FLFO = 0.0;
+  FADSR = 0;
+  Fstages = 1;
+  Fvelocity = 0;
 
 
-    
+
+
 
 };
 
@@ -864,16 +861,16 @@ Put_Combi (int j)
       pLFO[i] = Banco[j].pLFO[i];
     }
 
-      Ftype = Banco[j].Ftype;
-      Fgain = Banco[j].Fgain;
-      Fcutoff = Banco[j].Fcutoff;
-      Fq = Banco[j].Fq;
-      FLFO = Banco[j].FLFO;
-      FADSR = Banco[j].FADSR;
-      Fstages = Banco[j].Fstages;
-      Fvelocity = Banco[j].Fvelocity;
-      
-        
+  Ftype = Banco[j].Ftype;
+  Fgain = Banco[j].Fgain;
+  Fcutoff = Banco[j].Fcutoff;
+  Fq = Banco[j].Fq;
+  FLFO = Banco[j].FLFO;
+  FADSR = Banco[j].FADSR;
+  Fstages = Banco[j].Fstages;
+  Fvelocity = Banco[j].Fvelocity;
+
+
 
 };
 
@@ -883,7 +880,7 @@ preset_to_bank (int j)
 {
   int i;
 
-  strcpy (Banco[j].Name,Name);
+  strcpy (Banco[j].Name, Name);
   Banco[j].master_volume = master_volume;
   Banco[j].tune = tune;
   Banco[j].portamento = portamento;
@@ -905,16 +902,16 @@ preset_to_bank (int j)
       Banco[j].pLFO[i] = pLFO[i];
     }
 
-   
-      Banco[j].Ftype = Ftype;
-      Banco[j].Fgain = Fgain;
-      Banco[j].Fcutoff = Fcutoff;
-      Banco[j].Fq = Fq;
-      Banco[j].FLFO = FLFO;
-      Banco[j].FADSR = FADSR;
-      Banco[j].Fstages = Fstages;
-      Banco[j].Fvelocity = Fvelocity;
-      
+
+  Banco[j].Ftype = Ftype;
+  Banco[j].Fgain = Fgain;
+  Banco[j].Fcutoff = Fcutoff;
+  Banco[j].Fq = Fq;
+  Banco[j].FLFO = FLFO;
+  Banco[j].FADSR = FADSR;
+  Banco[j].Fstages = Fstages;
+  Banco[j].Fvelocity = Fvelocity;
+
 
 
 
@@ -954,17 +951,19 @@ savebank (const char *filename)
 		   Banco[j].release[i], Banco[j].pLFO[i]);
 	  fputs (buf, fn);
 	}
-    
+
       bzero (buf, sizeof (buf));
-      sprintf (buf, "%d,%f,%f,%f\n", Banco[j].Ftype, Banco[j].Fgain,Banco[j].Fcutoff, Banco[j].Fq);
+      sprintf (buf, "%d,%f,%f,%f\n", Banco[j].Ftype, Banco[j].Fgain,
+	       Banco[j].Fcutoff, Banco[j].Fq);
       fputs (buf, fn);
 
       bzero (buf, sizeof (buf));
-      sprintf (buf, "%f,%d,%d,%d\n", Banco[j].FLFO, Banco[j].FADSR,Banco[j].Fstages, Banco[j].Fvelocity);
+      sprintf (buf, "%f,%d,%d,%d\n", Banco[j].FLFO, Banco[j].FADSR,
+	       Banco[j].Fstages, Banco[j].Fvelocity);
       fputs (buf, fn);
 
-    
-    
+
+
     }
 
   return 0;
@@ -995,9 +994,10 @@ loadbank (const char *filename)
 
       bzero (buf, sizeof (buf));
       fgets (buf, sizeof buf, fn);
-      for(i=0; i<64; i++)
-      if (buf[i]>20) Banco[j].Name[i]=buf[i];
-      
+      for (i = 0; i < 64; i++)
+	if (buf[i] > 20)
+	  Banco[j].Name[i] = buf[i];
+
       bzero (buf, sizeof (buf));
       fgets (buf, sizeof buf, fn);
       sscanf (buf, "%f,%f,%f,%f", &Banco[j].master_volume, &Banco[j].tune,
@@ -1020,22 +1020,24 @@ loadbank (const char *filename)
 		  &Banco[j].pLFO[i]);
 	}
 
-    
-      bzero (buf, sizeof (buf));
-      fgets (buf, sizeof buf, fn);
-      sscanf (buf, "%d,%f,%f,%f\n", &Banco[j].Ftype, &Banco[j].Fgain, &Banco[j].Fcutoff, &Banco[j].Fq);
 
       bzero (buf, sizeof (buf));
       fgets (buf, sizeof buf, fn);
-      sscanf (buf, "%f,%d,%d,%d\n", &Banco[j].FLFO, &Banco[j].FADSR, &Banco[j].Fstages, &Banco[j].Fvelocity);
+      sscanf (buf, "%d,%f,%f,%f\n", &Banco[j].Ftype, &Banco[j].Fgain,
+	      &Banco[j].Fcutoff, &Banco[j].Fq);
 
-    
-    
-    
+      bzero (buf, sizeof (buf));
+      fgets (buf, sizeof buf, fn);
+      sscanf (buf, "%f,%d,%d,%d\n", &Banco[j].FLFO, &Banco[j].FADSR,
+	      &Banco[j].Fstages, &Banco[j].Fvelocity);
+
+
+
+
     }
 
   fclose (fn);
-  Haz_laristra();
+  Haz_laristra ();
   return 0;
 };
 
@@ -1076,7 +1078,7 @@ Update_Main_Widgets ()
   update_widgets (68, FADSR);
   update_widgets (69, Fstages);
   update_widgets (70, Fvelocity);
-  
+
 
 }
 
@@ -1148,11 +1150,11 @@ preset_click (Fl_Button * o, void *)
 	    return;
 	}
 
-      strcpy(Name,gui.Pname->value ());
+      strcpy (Name, gui.Pname->value ());
       preset_to_bank (num);
       w->copy_label (gui.Pname->value ());
-      Haz_laristra();
-      Send_laristra();
+      Haz_laristra ();
+      Send_laristra ();
     }
 
 
@@ -1236,63 +1238,62 @@ Put_Loaded_Bank ()
 }
 
 void
-Haz_laristra()
+Haz_laristra ()
 {
-   
+
   int i;
-  bzero(laristra, sizeof(laristra));
-  for(i=0; i<80; i++)
-  {
-   if (i==0) sprintf(laristra,"%s",Banco[i].Name);
-   else
-   sprintf(laristra,"%s,%s",laristra,Banco[i].Name);  
-  }
+  bzero (laristra, sizeof (laristra));
+  for (i = 0; i < 80; i++)
+    {
+      if (i == 0)
+	sprintf (laristra, "%s", Banco[i].Name);
+      else
+	sprintf (laristra, "%s,%s", laristra, Banco[i].Name);
+    }
 
 
 }
 
 
 void
-Send_laristra()
+Send_laristra ()
 {
- lo_send (m_host, osc_configure_path, "ss", "names", laristra);
+  lo_send (m_host, osc_configure_path, "ss", "names", laristra);
 }
 
 
 void
-set_FilterType(int value)
+set_FilterType (int value)
 {
- switch(value)
- {
-  case 0:
-  gui.Flabel->copy_label("LPF 1 pole");
-  break;
-  case 1:
-  gui.Flabel->copy_label("HPF 1 pole");
-  break;
-  case 2:
-  gui.Flabel->copy_label("LPF 2 poles");
-  break;
-  case 3:
-  gui.Flabel->copy_label("HPF 2 poles");
-  break;
-  case 4:
-  gui.Flabel->copy_label("BPF 2 poles");
-  break;
-  case 5:
-  gui.Flabel->copy_label("NOTCH 2 poles");
-  break;
-  case 6:
-  gui.Flabel->copy_label("PEAK 2 poles");
-  break;
-  case 7:
-  gui.Flabel->copy_label("Low Shelf 2 poles");
-  break;
-  case 8:
-  gui.Flabel->copy_label("High Shelf 2 poles");
-  break;
-}
+  switch (value)
+    {
+    case 0:
+      gui.Flabel->copy_label ("LPF 1 pole");
+      break;
+    case 1:
+      gui.Flabel->copy_label ("HPF 1 pole");
+      break;
+    case 2:
+      gui.Flabel->copy_label ("LPF 2 poles");
+      break;
+    case 3:
+      gui.Flabel->copy_label ("HPF 2 poles");
+      break;
+    case 4:
+      gui.Flabel->copy_label ("BPF 2 poles");
+      break;
+    case 5:
+      gui.Flabel->copy_label ("NOTCH 2 poles");
+      break;
+    case 6:
+      gui.Flabel->copy_label ("PEAK 2 poles");
+      break;
+    case 7:
+      gui.Flabel->copy_label ("Low Shelf 2 poles");
+      break;
+    case 8:
+      gui.Flabel->copy_label ("High Shelf 2 poles");
+      break;
+    }
 
 }
-
-  

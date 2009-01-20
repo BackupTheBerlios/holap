@@ -167,9 +167,7 @@ init_vars (goomf_synth_t * s)
       s->rsin[i] = sinf (s->msin[i] + sinf (s->msin[i]));
       s->tsin[i] = sinf (s->msin[i] + sinf (s->nsin[i]));
 
-      s->ssin[i] =
-	(s->lsin[i] + s->nsin[i] + s->msin[i] + s->psin[i] + s->qsin[i] +
-	 s->rsin[i] + s->tsin[i]) / 7.0;
+      s->ssin[i] = sinf( x_sin + sinf(3.0 * x_sin));
       if (i > 0)
 	s->ssin[i - 1] =
 	  (s->ssin[i - 1] * (1.0 + s->ssin[i] - s->ssin[i - 1]));
@@ -215,9 +213,9 @@ init_vars (goomf_synth_t * s)
   memset (s->bufr, 0, sizeof (float) * 8192);
 
 
-  AnalogFilter_Init(s,&s->Fl,0,21.0,1,0);
-  AnalogFilter_Init(s,&s->Fr,0,21.0,1,0);
-  
+  AnalogFilter_Init (s, &s->Fl, 0, 21.0, 1, 0);
+  AnalogFilter_Init (s, &s->Fr, 0, 21.0, 1, 0);
+
 
 };
 
@@ -267,8 +265,8 @@ Jenvelope (goomf_synth_t * s, int op)
   float t = s->env_time;
   float r = s->renv_time;
 
-   
-    
+
+
 
   if (s->gate)
     {
@@ -289,11 +287,11 @@ Jenvelope (goomf_synth_t * s, int op)
       if (r < release)
 	return (s->Env_Vol[op] * (1.0 - r / release));
       else
-      {
-	return (0.0f);
-        s->active=0;
-        clear_synth(s,op);
-      }
+	{
+	  return (0.0f);
+	  s->active = 0;
+	  clear_synth (s, op);
+	}
     }
 
 };
@@ -309,40 +307,41 @@ Fenvelope (goomf_synth_t * s, int op)
   LADSPA_Data release = *(s->release[op]);
   float t = s->env_time;
   float r = s->renv_time;
-  
+
   if (s->gate)
     {
       if (t > attack + decay)
 	return (sustain);
       if (t > attack)
-	return (1.0 - (1.0-sustain) * (t-attack)/decay);
-      if (s->FEnv_Vol > (t / attack)) return (s->FEnv_Vol);
+	return (1.0 - (1.0 - sustain) * (t - attack) / decay);
+      if (s->FEnv_Vol > (t / attack))
+	return (s->FEnv_Vol);
       else
 	return (t / attack);
 
     }
   else
     {
-      if ((r < release) && (sustain>0.0f))
-	return (s->FEnv_Vol*(1.0-r/release));
+      if ((r < release) && (sustain > 0.0f))
+	return (s->FEnv_Vol * (1.0 - r / release));
       else
-      return (0.0f);
+	return (0.0f);
     }
 
 };
 
 void
-clear_synth(goomf_synth_t * s, int op )
+clear_synth (goomf_synth_t * s, int op)
 {
 
-      s->f[op].dphi=0.0f;
-      s->f[op].dphi2=0.0f;
-      s->f[op].phi=0.0f;
-      s->f[op].phi2=0.0f;
-      AnalogFilter_Cleanup(s,&s->Fl);
-      AnalogFilter_Cleanup(s,&s->Fr);
-      s->FEnv_Vol = 0.0f;
-      s->velocity = 0.0f;
+  s->f[op].dphi = 0.0f;
+  s->f[op].dphi2 = 0.0f;
+  s->f[op].phi = 0.0f;
+  s->f[op].phi2 = 0.0f;
+  AnalogFilter_Cleanup (s, &s->Fl);
+  AnalogFilter_Cleanup (s, &s->Fr);
+  s->FEnv_Vol = 0.0f;
+  s->velocity = 0.0f;
 
 }
 
@@ -352,10 +351,10 @@ clear_synth(goomf_synth_t * s, int op )
 
 
 float
-Pitch_LFO (goomf_synth_t * s, float t,int type)
+Pitch_LFO (goomf_synth_t * s, float t, int type)
 {
 
-  float x, out,lfoinc;
+  float x, out, lfoinc;
   LADSPA_Data LFO_Delay = *(s->LFO_Delay);
   LADSPA_Data LFO_Frequency = *(s->LFO_Frequency);
   int LFO_Wave = *(s->LFO_Wave);
@@ -363,21 +362,23 @@ Pitch_LFO (goomf_synth_t * s, float t,int type)
 
   if (t < LFO_Delay)
     return (0.0f);
-  
-  if(type)
-  {
-   lfoinc = fabsf(LFO_Frequency) * s->D_PI_to_SAMPLE_RATE;
-   if (lfoinc > 0.49999999)  lfoinc = 0.499999999;
-   x = s->lfol*D_PI;    
-   s->lfol += lfoinc;
-   if(s->lfol > 1.0) s->lfol -= 1.0;
-  }
+
+  if (type)
+    {
+      lfoinc = fabsf (LFO_Frequency) * s->D_PI_to_SAMPLE_RATE;
+      if (lfoinc > 0.49999999)
+	lfoinc = 0.499999999;
+      x = s->lfol * D_PI;
+      s->lfol += lfoinc;
+      if (s->lfol > 1.0)
+	s->lfol -= 1.0;
+    }
   else
-  {
-  x = fmodf (LFO_Frequency * 8.0 * t, 1.0) * D_PI;
-  }
+    {
+      x = fmodf (LFO_Frequency * 8.0 * t, 1.0) * D_PI;
+    }
   out = NFsin (s, LFO_Wave, x);
-  
+
   return (out);
 
 }
@@ -494,7 +495,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 
   memset (s->bufl, 0, sizeof (float) * 8192);
   memset (s->bufr, 0, sizeof (float) * 8192);
-  
+
   LADSPA_Data LFO_Volume = *(s->LFO_Volume) * .5;
 
   m_partial = Get_Partial (s);
@@ -506,135 +507,125 @@ Alg1s (goomf_synth_t * s, int nframes)
       sound2 = 0.0f;
       filt = 0.0f;
       filt2 = 0.0f;
-      
-      LFO = Pitch_LFO (s, s->env_time,0) * LFO_Volume * s->modulation;
+
+      LFO = Pitch_LFO (s, s->env_time, 0) * LFO_Volume * s->modulation;
 
       for (i = 0; i < 6; i++)
 	{
 	  volumen = *(s->Ovol[i]);
-          
-           if (volumen  > 0.0f)
-            { 
-	     pLFO = (float) *(s->pLFO[i]) * LFO;
-	     wave = (int) *(s->wave[i]);
 
-	     if (s->gate)
-	        {
-	          s->Envelope_Volume[i] = Jenvelope (s, i);
-	          s->Env_Vol[i] = s->velocity * volumen * s->Envelope_Volume[i];
-	        }
-	     else
-	     s->Env_Vol[i] = Jenvelope (s, i);
-             
-             
-              
-	     //L
-	       s->f[i].dphi = m_partial * (pitch_Operator (s, i) + pLFO);
-	       if (s->f[i].dphi > D_PI)
-	       s->f[i].dphi -= D_PI;
-	       s->f[i].phi += s->f[i].dphi;
-	       if (s->f[i].phi > D_PI)
-	       s->f[i].phi -= D_PI;
+	  if (volumen > 0.0f)
+	    {
+	      pLFO = (float) *(s->pLFO[i]) * LFO;
+	      wave = (int) *(s->wave[i]);
 
-	     //R 
-	       s->f[i].dphi2 = m_partial * (pitch_Operator2 (s, i) + pLFO);
-	       if (s->f[i].dphi2 > D_PI)
-	       s->f[i].dphi2 -= D_PI;
-	       s->f[i].phi2 += s->f[i].dphi2;
-	       if (s->f[i].phi2 > D_PI)
-	       s->f[i].phi2 -= D_PI;
+	      if (s->gate)
+		{
+		  s->Envelope_Volume[i] = Jenvelope (s, i);
+		  s->Env_Vol[i] =
+		    s->velocity * volumen * s->Envelope_Volume[i];
+		}
+	      else
+		s->Env_Vol[i] = Jenvelope (s, i);
 
-	  sound += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi);
-	  sound2 += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi2);
-             } 
-	  
+
+
+	      //L
+	      s->f[i].dphi = m_partial * (pitch_Operator (s, i) + pLFO);
+	      if (s->f[i].dphi > D_PI)
+		s->f[i].dphi -= D_PI;
+	      s->f[i].phi += s->f[i].dphi;
+	      if (s->f[i].phi > D_PI)
+		s->f[i].phi -= D_PI;
+
+	      //R 
+	      s->f[i].dphi2 = m_partial * (pitch_Operator2 (s, i) + pLFO);
+	      if (s->f[i].dphi2 > D_PI)
+		s->f[i].dphi2 -= D_PI;
+	      s->f[i].phi2 += s->f[i].dphi2;
+	      if (s->f[i].phi2 > D_PI)
+		s->f[i].phi2 -= D_PI;
+
+	      sound += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi);
+	      sound2 += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi2);
+	    }
+
 	}
 
-        if (s->Rtype != Ftype)
-      {
-        s->Rtype = Ftype;
-        settype(s,&s->Fl,(int)s->Rtype);
-        settype(s,&s->Fr,(int)s->Rtype);
-      }  
+      if (s->Rtype != Ftype)
+	{
+	  s->Rtype = Ftype;
+	  settype (s, &s->Fl, (int) s->Rtype);
+	  settype (s, &s->Fr, (int) s->Rtype);
+	}
 
-  if (s->Rgain != Fgain)
-      {
-        s->Rgain = Fgain;
-        setgain(s,&s->Fl,s->Rgain*12.0);
-        setgain(s,&s->Fr,s->Rgain*12.0); 
-      }
-       
-  if (s->Rcutoff != Fcutoff)
-      {
-        s->Rcutoff = Fcutoff;
-        setfreq(s,&s->Fl,s->Rcutoff);
-        setfreq(s,&s->Fr,s->Rcutoff); 
-      }
+      if (s->Rgain != Fgain)
+	{
+	  s->Rgain = Fgain;
+	  setgain (s, &s->Fl, s->Rgain * 12.0);
+	  setgain (s, &s->Fr, s->Rgain * 12.0);
+	}
 
-  if (s->Rq != Fq)
-      {
-        s->Rq = Fq;
-        tmp = powf(30.0, s->Rq);
-        setq(s,&s->Fl,tmp);
-        setq(s,&s->Fr,tmp); 
-      }
+      if (s->Rcutoff != Fcutoff)
+	{
+	  s->Rcutoff = Fcutoff;
+	  setfreq (s, &s->Fl, s->Rcutoff);
+	  setfreq (s, &s->Fr, s->Rcutoff);
+	}
 
-  if (s->Rstages != Fstages)
-      {
-        s->Rstages = Fstages;
-        setstages(s,&s->Fl,s->Rstages);
-        setstages(s,&s->Fr,s->Rstages);
-      }  
-   
-    freq = s->Rcutoff;
-    
-    if(VELO) freq = s->Rcutoff * s->velocity;
+      if (s->Rq != Fq)
+	{
+	  s->Rq = Fq;
+	  tmp = powf (30.0, s->Rq);
+	  setq (s, &s->Fl, tmp);
+	  setq (s, &s->Fr, tmp);
+	}
 
-    if((FADSR) && (s->gate))
-      {
-      s->FEnv_Vol=Fenvelope(s,FADSR-1);
-      freq *=s->FEnv_Vol; 
-      }
+      if (s->Rstages != Fstages)
+	{
+	  s->Rstages = Fstages;
+	  setstages (s, &s->Fl, s->Rstages);
+	  setstages (s, &s->Fr, s->Rstages);
+	}
 
-   if (FLFO>0.0f)    
-     {
-       freq +=Pitch_LFO(s, s->env_time,0)*FLFO*freq;
-     }
-            
-       if (freq<21.0f) freq = 21.0;
-       if (freq>10020.0) freq = 10020.0;
-     
-        setfreq(s,&s->Fl,freq);
-        setfreq(s,&s->Fr,freq); 
-     
- 
-        filt = sound;
-        filt2 = sound2;
- 
-        filterout(s,&s->Fl,&filt,1);
-        filterout(s,&s->Fr,&filt2,1);
+      freq = s->Rcutoff;
 
+      if (VELO)
+	freq = s->Rcutoff * s->velocity;
 
-     
+      if ((FADSR) && (s->gate))
+	{
+	  s->FEnv_Vol = Fenvelope (s, FADSR - 1);
+	  freq *= s->FEnv_Vol;
+	}
 
-      s->bufl[l1] = (sound*(12.0-realgain)) + (filt*realgain);
-      s->bufr[l1] = (sound2*(12.0-realgain)) + (filt2*realgain) ;
+      if (FLFO > 0.0f)
+	{
+	  freq += Pitch_LFO (s, s->env_time, 0) * FLFO * freq;
+	}
+
+      if (freq < 41.0f)
+	freq = 41.0;
+      if (freq > 10020.0)
+	freq = 10020.0;
+      setfreq (s, &s->Fl, freq);
+      setfreq (s, &s->Fr, freq);
+
+      filt = sound;
+      filt2 = sound2;
+      filterout (s, &s->Fl, &filt, 1);
+      filterout (s, &s->Fr, &filt2, 1);
+
+      s->bufl[l1] = (sound * (12.0 - realgain)) + (filt * realgain);
+      s->bufr[l1] = (sound2 * (12.0 - realgain)) + (filt2 * realgain);
       s->bufl[l1] *= .083;
       s->bufr[l1] *= .083;
-      
-      if (Ftype > 7.0)
-      {
-      s->bufl[l1] *= .05;
-      s->bufr[l1] *= .05;
-      }
-      
+
       s->env_time += s->increment;
       s->renv_time += (s->increment * .0001);
-        
-      
+
+
     }
 
 
 };
-
-

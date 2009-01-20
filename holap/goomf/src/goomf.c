@@ -375,12 +375,13 @@ goomfConfigure (LADSPA_Handle instance, const char *key, const char *value)
   char *temp;
   goomf_synth_t *synth = (goomf_synth_t *) instance;
 
-   if (!strcmp (key, "names"))
-       {
-        temp=value;         
-        for(i=0;i<80;i++) sprintf(synth->Banco[i].Name,"%s",strsep(&temp,","));
-        return NULL;
-       }
+  if (!strcmp (key, "names"))
+    {
+      temp = value;
+      for (i = 0; i < 80; i++)
+	sprintf (synth->Banco[i].Name, "%s", strsep (&temp, ","));
+      return NULL;
+    }
 
   return strdup ("error: unrecognized configure key");
 }
@@ -438,8 +439,9 @@ activategoomf (LADSPA_Handle instance)
 {
   goomf_synth_t *synth = (goomf_synth_t *) instance;
   int i;
-  for (i=0; i<6; i++) clear_synth(synth,i);
-    
+  for (i = 0; i < 6; i++)
+    clear_synth (synth, i);
+
 
 }
 
@@ -449,7 +451,8 @@ goomf_deactivate (LADSPA_Handle instance)
 {
   goomf_synth_t *synth = (goomf_synth_t *) instance;
   int i;
-  for (i=0; i<6; i++) clear_synth(synth,i);
+  for (i = 0; i < 6; i++)
+    clear_synth (synth, i);
 
 }
 
@@ -503,17 +506,19 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	  if (events[event_pos].data.control.param == 7)
 	    {
 	      *(synth->master_volume) =
-		(LADSPA_Data) events[event_pos].data.control.value/128.0*10000.0 + 20.0;
+		(LADSPA_Data) events[event_pos].data.control.value / 128.0 *
+		10000.0 + 20.0;
 	      break;
 	    }
-         
-          if (events[event_pos].data.control.param == 48)
+
+	  if (events[event_pos].data.control.param == 48)
 	    {
-	      *(synth->Fcutoff) = -1.0 + 
-		(LADSPA_Data) events[event_pos].data.control.value/128.0*2.0;
+	      *(synth->Fcutoff) = -1.0 +
+		(LADSPA_Data) events[event_pos].data.control.value / 128.0 *
+		2.0;
 	      break;
 	    }
-           
+
 	  if (events[event_pos].data.control.param == 49)
 	    {
 	      *(synth->Fq) =
@@ -522,11 +527,11 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	    }
 	  if (events[event_pos].data.control.param == 50)
 	    {
-	      *(synth->FLFO)=
-		(LADSPA_Data) events[event_pos].data.control.value/128.0;
+	      *(synth->FLFO) =
+		(LADSPA_Data) events[event_pos].data.control.value / 128.0;
 	      break;
 	    }
-           
+
 
 
 
@@ -538,9 +543,10 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	  if (events[event_pos].data.note.velocity != 0)
 	    {
 	      synth->note = events[event_pos].data.note.note;
-              synth->active = 1;
-              synth->velocity = (float) events[event_pos].data.note.velocity / 126.0;  
-              synth->env_time = 0.0f;
+	      synth->active = 1;
+	      synth->velocity =
+		(float) events[event_pos].data.note.velocity / 126.0;
+	      synth->env_time = 0.0f;
 	      synth->gate = 1;
 	      break;
 	    }
@@ -559,7 +565,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	    {
 	      synth->gate = 0;
 	      synth->renv_time = 0.0f;
-              
+
 	    }
 
 	  break;
@@ -591,11 +597,11 @@ getControllergoomf (LADSPA_Handle instance, unsigned long port)
     case goomf_VOLUME:
       return DSSI_CC (7);
     case goomf_FilterCutoff:
-      return DSSI_CC(48);
+      return DSSI_CC (48);
     case goomf_FilterQ:
-      return DSSI_CC(49);
+      return DSSI_CC (49);
     case goomf_FilterLFO:
-      return DSSI_CC(50);
+      return DSSI_CC (50);
     }
 
   return -1;
@@ -1264,7 +1270,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_FilterGain] = "Gain";
       port_range_hints[goomf_FilterGain].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE | 
+	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_FilterGain].LowerBound = 0.0;
       port_range_hints[goomf_FilterGain].UpperBound = 1.0;
@@ -1274,7 +1280,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_FilterCutoff] = "Cutoff";
       port_range_hints[goomf_FilterCutoff].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE | 
+	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_FilterCutoff].LowerBound = 21.0;
       port_range_hints[goomf_FilterCutoff].UpperBound = 10020.0;
@@ -1284,7 +1290,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_FilterQ] = "Resonance";
       port_range_hints[goomf_FilterQ].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MIDDLE | 
+	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_FilterQ].LowerBound = -1.0;
       port_range_hints[goomf_FilterQ].UpperBound = 1.0;
@@ -1294,7 +1300,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
       port_names[goomf_FilterLFO] = "LFO";
       port_range_hints[goomf_FilterLFO].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MINIMUM | 
+	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_FilterLFO].LowerBound = 0.0;
       port_range_hints[goomf_FilterLFO].UpperBound = 1.0;
@@ -1331,7 +1337,7 @@ void __attribute__ ((constructor)) goomf_init ()
 
 
 
-       
+
 
       goomfLDescriptor->instantiate = instantiategoomf;
       goomfLDescriptor->connect_port = connectPortgoomf;

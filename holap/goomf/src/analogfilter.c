@@ -32,12 +32,14 @@
 
 
 void
-AnalogFilter_Init(goomf_synth_t * s, AnalogFilter *filter, unsigned char Ftype, float Ffreq, float Fq, unsigned char Fstages)
+AnalogFilter_Init (goomf_synth_t * s, AnalogFilter * filter,
+		   unsigned char Ftype, float Ffreq, float Fq,
+		   unsigned char Fstages)
 {
-  
-  
-  int i;  
-  
+
+
+  int i;
+
   filter->stages = Fstages;
 
   for (i = 0; i < 3; i++)
@@ -53,13 +55,13 @@ AnalogFilter_Init(goomf_synth_t * s, AnalogFilter *filter, unsigned char Ftype, 
   filter->gain = 1.0;
   if (filter->stages >= MAX_FILTER_STAGES)
     filter->stages = MAX_FILTER_STAGES;
-  AnalogFilter_Cleanup (s,filter);
+  AnalogFilter_Cleanup (s, filter);
   filter->firsttime = 0;
   filter->abovenq = 0;
   filter->oldabovenq = 0;
   setfreq_and_q (s, filter, Ffreq, Fq);
   filter->firsttime = 1;
-  filter->d[0] = 0;			//this is not used
+  filter->d[0] = 0;		//this is not used
   filter->outgain = 1.0;
 
 
@@ -67,17 +69,17 @@ AnalogFilter_Init(goomf_synth_t * s, AnalogFilter *filter, unsigned char Ftype, 
 
 
 void
-AnalogFilter_Cleanup (goomf_synth_t * s, AnalogFilter *filter)
+AnalogFilter_Cleanup (goomf_synth_t * s, AnalogFilter * filter)
 {
   int i;
   for (i = 0; i < MAX_FILTER_STAGES + 1; i++)
     {
-     filter->x[i].c1 = 0.0;
-     filter->x[i].c2 = 0.0;
-     filter->y[i].c1 = 0.0;
-     filter->y[i].c2 = 0.0;
-     filter->oldx[i] = filter->x[i];
-     filter->oldy[i] = filter->y[i];
+      filter->x[i].c1 = 0.0;
+      filter->x[i].c2 = 0.0;
+      filter->y[i].c1 = 0.0;
+      filter->y[i].c2 = 0.0;
+      filter->oldx[i] = filter->x[i];
+      filter->oldy[i] = filter->y[i];
     };
   filter->needsinterpolation = 0;
 
@@ -85,7 +87,7 @@ AnalogFilter_Cleanup (goomf_synth_t * s, AnalogFilter *filter)
 };
 
 void
-computefiltercoefs (goomf_synth_t * s, AnalogFilter *filter)
+computefiltercoefs (goomf_synth_t * s, AnalogFilter * filter)
 {
   float tmp;
   float omega, sn, cs, alpha, beta;
@@ -110,8 +112,10 @@ computefiltercoefs (goomf_synth_t * s, AnalogFilter *filter)
       tmpgain = filter->gain;
     }
   else
-    {  
-      tmpq = (filter->q > 1.0 ? powf (filter->q, 1.0 / (filter->stages + 1)) : filter->q);
+    {
+      tmpq =
+	(filter->q >
+	 1.0 ? powf (filter->q, 1.0 / (filter->stages + 1)) : filter->q);
       tmpgain = powf (filter->gain, 1.0 / (filter->stages + 1));
     };
 
@@ -285,7 +289,8 @@ computefiltercoefs (goomf_synth_t * s, AnalogFilter *filter)
 	  filter->c[2] =
 	    tmpgain * ((tmpgain + 1.0) - (tmpgain - 1.0) * cs -
 		       beta * sn) / tmp;
-	  filter->d[1] = -2.0 * ((tmpgain - 1.0) + (tmpgain + 1.0) * cs) / tmp * (-1);
+	  filter->d[1] =
+	    -2.0 * ((tmpgain - 1.0) + (tmpgain + 1.0) * cs) / tmp * (-1);
 	  filter->d[2] =
 	    ((tmpgain + 1.0) + (tmpgain - 1.0) * cs - beta * sn) / tmp * (-1);
 	}
@@ -318,7 +323,8 @@ computefiltercoefs (goomf_synth_t * s, AnalogFilter *filter)
 	  filter->c[2] =
 	    tmpgain * ((tmpgain + 1.0) + (tmpgain - 1.0) * cs -
 		       beta * sn) / tmp;
-	  filter->d[1] = 2.0 * ((tmpgain - 1.0) - (tmpgain + 1.0) * cs) / tmp * (-1);
+	  filter->d[1] =
+	    2.0 * ((tmpgain - 1.0) - (tmpgain + 1.0) * cs) / tmp * (-1);
 	  filter->d[2] =
 	    ((tmpgain + 1.0) - (tmpgain - 1.0) * cs - beta * sn) / tmp * (-1);
 	}
@@ -334,14 +340,14 @@ computefiltercoefs (goomf_synth_t * s, AnalogFilter *filter)
       break;
     default:			//wrong type
       filter->type = 0;
-      computefiltercoefs (s,filter);
+      computefiltercoefs (s, filter);
       break;
     };
 };
 
 
 void
-setfreq (goomf_synth_t * s, AnalogFilter *filter, float frequency)
+setfreq (goomf_synth_t * s, AnalogFilter * filter, float frequency)
 {
   int i;
   if (frequency < 0.1)
@@ -372,52 +378,54 @@ setfreq (goomf_synth_t * s, AnalogFilter *filter, float frequency)
 	filter->needsinterpolation = 1;
     };
   filter->freq = frequency;
-  computefiltercoefs (s,filter);
+  computefiltercoefs (s, filter);
   filter->firsttime = 0;
 
 };
 
 void
-setfreq_and_q (goomf_synth_t * s, AnalogFilter *filter,float frequency, float q_)
+setfreq_and_q (goomf_synth_t * s, AnalogFilter * filter, float frequency,
+	       float q_)
 {
   filter->q = q_;
-  setfreq (s,filter,frequency);
+  setfreq (s, filter, frequency);
 };
 
 void
-setq (goomf_synth_t * s, AnalogFilter *filter, float q_)
+setq (goomf_synth_t * s, AnalogFilter * filter, float q_)
 {
   filter->q = q_;
-  computefiltercoefs (s,filter);
+  computefiltercoefs (s, filter);
 };
 
 void
-settype (goomf_synth_t * s, AnalogFilter *filter, int type_)
+settype (goomf_synth_t * s, AnalogFilter * filter, int type_)
 {
   filter->type = type_;
-  computefiltercoefs (s,filter);
+  computefiltercoefs (s, filter);
 };
 
 void
-setgain (goomf_synth_t * s, AnalogFilter *filter, float dBgain)
+setgain (goomf_synth_t * s, AnalogFilter * filter, float dBgain)
 {
   filter->gain = dB2rap (dBgain);
-  computefiltercoefs (s,filter);
+  computefiltercoefs (s, filter);
 };
 
 void
-setstages (goomf_synth_t * s, AnalogFilter *filter, int stages_)
+setstages (goomf_synth_t * s, AnalogFilter * filter, int stages_)
 {
   if (stages_ >= MAX_FILTER_STAGES)
     stages_ = MAX_FILTER_STAGES - 1;
   filter->stages = stages_;
-  AnalogFilter_Cleanup (s,filter);
-  computefiltercoefs (s,filter);
+  AnalogFilter_Cleanup (s, filter);
+  computefiltercoefs (s, filter);
 };
 
 void
-singlefilterout (goomf_synth_t * s, AnalogFilter *filter, float * smp, fstage *x, fstage  *y,
-			       float * c, float * d, unsigned long count)
+singlefilterout (goomf_synth_t * s, AnalogFilter * filter, float *smp,
+		 fstage * x, fstage * y, float *c, float *d,
+		 unsigned long count)
 {
   int i;
   float y0;
@@ -425,7 +433,9 @@ singlefilterout (goomf_synth_t * s, AnalogFilter *filter, float * smp, fstage *x
     {				//First order filter
       for (i = 0; i < count; i++)
 	{
-	  y0 = smp[i] * filter->c[0] + x->c1 * filter->c[1] + y->c1 * filter->d[1];
+	  y0 =
+	    smp[i] * filter->c[0] + x->c1 * filter->c[1] +
+	    y->c1 * filter->d[1];
 	  y->c1 = y0;
 	  x->c1 = smp[i];
 	  //output
@@ -437,7 +447,8 @@ singlefilterout (goomf_synth_t * s, AnalogFilter *filter, float * smp, fstage *x
       for (i = 0; i < count; i++)
 	{
 	  y0 =
-	    (smp[i] * filter->c[0]) + (x->c1 * filter->c[1]) + (x->c2 * filter->c[2]) + (y->c1 * filter->d[1]) +
+	    (smp[i] * filter->c[0]) + (x->c1 * filter->c[1]) +
+	    (x->c2 * filter->c[2]) + (y->c1 * filter->d[1]) +
 	    (y->c2 * filter->d[2]);
 	  y->c2 = y->c1;
 	  y->c1 = y0;
@@ -450,7 +461,8 @@ singlefilterout (goomf_synth_t * s, AnalogFilter *filter, float * smp, fstage *x
 };
 
 void
-filterout (goomf_synth_t * s, AnalogFilter *filter, float * smp, unsigned long count)
+filterout (goomf_synth_t * s, AnalogFilter * filter, float *smp,
+	   unsigned long count)
 {
   int i;
   if (filter->needsinterpolation != 0)
@@ -458,11 +470,13 @@ filterout (goomf_synth_t * s, AnalogFilter *filter, float * smp, unsigned long c
       for (i = 0; i < count; i++)
 	filter->ismp[i] = smp[i];
       for (i = 0; i < filter->stages + 1; i++)
-	singlefilterout (s,filter,filter->ismp, &filter->oldx[i], &filter->oldy[i],filter->oldc, filter->oldd, count);
+	singlefilterout (s, filter, filter->ismp, &filter->oldx[i],
+			 &filter->oldy[i], filter->oldc, filter->oldd, count);
     };
 
   for (i = 0; i < filter->stages + 1; i++)
-    singlefilterout (s,filter,smp, &filter->x[i], &filter->y[i], filter->c, filter->d,count);
+    singlefilterout (s, filter, smp, &filter->x[i], &filter->y[i], filter->c,
+		     filter->d, count);
 
   if (filter->needsinterpolation != 0)
     {
@@ -478,22 +492,19 @@ filterout (goomf_synth_t * s, AnalogFilter *filter, float * smp, unsigned long c
     smp[i] *= filter->outgain;
 };
 
-float 
-H (goomf_synth_t * s, AnalogFilter *filter, float freq)
+float
+H (goomf_synth_t * s, AnalogFilter * filter, float freq)
 {
-  int n; 
+  int n;
 
-  float
-    fr = freq / s->SAMPLE_RATE * M_PI * 2.0;
-  float
-    x = filter->c[0], y = 0.0;
+  float fr = freq / s->SAMPLE_RATE * M_PI * 2.0;
+  float x = filter->c[0], y = 0.0;
   for (n = 1; n < 3; n++)
     {
       x += cosf (n * fr) * filter->c[n];
       y -= sinf (n * fr) * filter->c[n];
     };
-  float
-    h = x * x + y * y;
+  float h = x * x + y * y;
   x = 1.0;
   y = 0.0;
   for (n = 1; n < 3; n++)
@@ -504,4 +515,3 @@ H (goomf_synth_t * s, AnalogFilter *filter, float freq)
   h = h / (x * x + y * y);
   return (powf (h, (filter->stages + 1.0) / 2.0));
 };
-
