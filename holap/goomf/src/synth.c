@@ -601,11 +601,12 @@ Alg1s (goomf_synth_t * s, int nframes)
        freq +=Pitch_LFO(s, s->env_time,0)*FLFO*freq;
      }
             
-   if ((freq>21.0f) && (freq<10020.0))
-     {
+       if (freq<21.0f) freq = 21.0;
+       if (freq>10020.0) freq = 10020.0;
+     
         setfreq(s,&s->Fl,freq);
         setfreq(s,&s->Fr,freq); 
-     }
+     
  
         filt = sound;
         filt2 = sound2;
@@ -620,11 +621,13 @@ Alg1s (goomf_synth_t * s, int nframes)
       s->bufr[l1] = (sound2*(12.0-realgain)) + (filt2*realgain) ;
       s->bufl[l1] *= .083;
       s->bufr[l1] *= .083;
+      
       if (Ftype > 7.0)
       {
       s->bufl[l1] *= .05;
       s->bufr[l1] *= .05;
       }
+      
       s->env_time += s->increment;
       s->renv_time += (s->increment * .0001);
         

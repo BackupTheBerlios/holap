@@ -437,6 +437,10 @@ static void
 activategoomf (LADSPA_Handle instance)
 {
   goomf_synth_t *synth = (goomf_synth_t *) instance;
+  int i;
+  for (i=0; i<6; i++) clear_synth(synth,i);
+    
+
 }
 
 
@@ -444,6 +448,9 @@ void
 goomf_deactivate (LADSPA_Handle instance)
 {
   goomf_synth_t *synth = (goomf_synth_t *) instance;
+  int i;
+  for (i=0; i<6; i++) clear_synth(synth,i);
+
 }
 
 
@@ -496,9 +503,34 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 	  if (events[event_pos].data.control.param == 7)
 	    {
 	      *(synth->master_volume) =
+		(LADSPA_Data) events[event_pos].data.control.value/128.0*10000.0 + 20.0;
+	      break;
+	    }
+         
+          if (events[event_pos].data.control.param == 48)
+	    {
+	      *(synth->Fcutoff) = -1.0 + 
+		(LADSPA_Data) events[event_pos].data.control.value/128.0*2.0;
+	      break;
+	    }
+           
+	  if (events[event_pos].data.control.param == 49)
+	    {
+	      *(synth->Fq) =
 		(LADSPA_Data) events[event_pos].data.control.value / 128.0;
 	      break;
 	    }
+	  if (events[event_pos].data.control.param == 50)
+	    {
+	      *(synth->FLFO)=
+		(LADSPA_Data) events[event_pos].data.control.value/128.0;
+	      break;
+	    }
+           
+
+
+
+
 	  break;
 
 	case SND_SEQ_EVENT_NOTEON:
@@ -558,6 +590,12 @@ getControllergoomf (LADSPA_Handle instance, unsigned long port)
     {
     case goomf_VOLUME:
       return DSSI_CC (7);
+    case goomf_FilterCutoff:
+      return DSSI_CC(48);
+    case goomf_FilterQ:
+      return DSSI_CC(49);
+    case goomf_FilterLFO:
+      return DSSI_CC(50);
     }
 
   return -1;
