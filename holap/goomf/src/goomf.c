@@ -621,7 +621,7 @@ void __attribute__ ((constructor)) goomf_init ()
 
   if (goomfLDescriptor)
     {
-      goomfLDescriptor->UniqueID = 3983;
+      goomfLDescriptor->UniqueID = 3992;
       goomfLDescriptor->Label = "goomf";
       goomfLDescriptor->Properties = 0;
       goomfLDescriptor->Name = "goomf";
