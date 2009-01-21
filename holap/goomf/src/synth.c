@@ -266,7 +266,7 @@ Jenvelope (goomf_synth_t * s, int op)
   LADSPA_Data coef = volume * s->velocity;
   float t = s->env_time;
   float r = s->renv_time;
-
+  float tmp = 0.0f;
 
 
 
@@ -279,7 +279,7 @@ Jenvelope (goomf_synth_t * s, int op)
 	return (1.0 - (1.0 - sustain) * (t - attack) / decay);
 
       if (s->Env_Vol[op] > (t / attack * coef))
-	return (s->Env_Vol[op] / coef);
+	return (s->Env_Vol[op] / coef );
       else
 	return (t / attack);
 
@@ -288,13 +288,13 @@ Jenvelope (goomf_synth_t * s, int op)
     {
       if (r <release)
         {
-	if (r*1200.0>release)
-	   {
-	    clear_synth (s, op);
-	    return (0.0f);
-	    } 
-	else
-	return (s->Env_Vol[op] * (1.0 - r / release));
+	tmp =s->Env_Vol[op] * (1.0 - r / release);
+	if (tmp<0.0000001)
+	  { 
+	  clear_synth (s, op);
+	  return (0.0f);
+          }
+        else return (tmp);
         }
          else
 	{
@@ -323,21 +323,17 @@ Fenvelope (goomf_synth_t * s, int op)
 	return (sustain);
       if (t > attack)
 	return (1.0 - (1.0 - sustain) * (t - attack) / decay);
-      if (s->FEnv_Vol > (t / attack))
-	return (s->FEnv_Vol);
-      else
 	return (t / attack);
-
     }
   else
     {
-      if ((r < release) && (sustain > 0.0f))
+      if (r < release)
 	return (s->FEnv_Vol * (1.0 - r / release));
       else
 	return (0.0f);
     }
 
-};
+}
 
 void
 clear_synth (goomf_synth_t * s, int op)
@@ -507,7 +503,6 @@ Alg1s (goomf_synth_t * s, int nframes)
   LADSPA_Data Fq = *(s->Fq);
   LADSPA_Data Fstages = *(s->Fstages);
   LADSPA_Data FLFO = *(s->FLFO);
-  LADSPA_Data realgain = Fgain * 12.0;
   int FADSR = (int) *(s->FADSR);
   int VELO = (int) *(s->Fvelocity);
   float freq = 0.0f;
@@ -640,10 +635,8 @@ Alg1s (goomf_synth_t * s, int nframes)
 
       }
       
-      s->bufl[l1] = (sound * (12.0 - realgain)) + (filt * realgain);
-      s->bufr[l1] = (sound2 * (12.0 - realgain)) + (filt2 * realgain);
-      s->bufl[l1] *= .083;
-      s->bufr[l1] *= .083;
+      s->bufl[l1] = (sound * (1.0 - Fgain)) + (filt * Fgain);
+      s->bufr[l1] = (sound2 * (1.0 - Fgain)) + (filt2 * Fgain);
 
       s->env_time += s->increment;
       s->renv_time += (s->increment * .0001);
