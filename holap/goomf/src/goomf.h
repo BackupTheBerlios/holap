@@ -154,7 +154,8 @@ typedef struct
   float increment;
   float D_PI_to_SAMPLE_RATE;
   int preset;
-  int active;
+  int active[6];
+  int filt_cleared;
   Todolo Banco[80];
 
   AnalogFilter Fl;

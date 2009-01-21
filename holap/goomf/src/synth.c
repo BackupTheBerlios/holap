@@ -212,6 +212,8 @@ init_vars (goomf_synth_t * s)
   memset (s->bufl, 0, sizeof (float) * 8192);
   memset (s->bufr, 0, sizeof (float) * 8192);
 
+  for(i=0; i<6; i++) s->active[i] = 0;
+
 
   AnalogFilter_Init (s, &s->Fl, 0, 21.0, 1, 0);
   AnalogFilter_Init (s, &s->Fr, 0, 21.0, 1, 0);
@@ -284,13 +286,20 @@ Jenvelope (goomf_synth_t * s, int op)
     }
   else
     {
-      if (r < release)
+      if (r <release)
+        {
+	if (r*1200.0>release)
+	   {
+	    clear_synth (s, op);
+	    return (0.0f);
+	    } 
+	else
 	return (s->Env_Vol[op] * (1.0 - r / release));
-      else
+        }
+         else
 	{
-	  return (0.0f);
-	  s->active = 0;
 	  clear_synth (s, op);
+	  return (0.0f);
 	}
     }
 
@@ -333,16 +342,30 @@ Fenvelope (goomf_synth_t * s, int op)
 void
 clear_synth (goomf_synth_t * s, int op)
 {
+  int i;
+  int sum = 0;
+  
+
+  if(s->filt_cleared) return;
+  if(!s->active[op]) return;
 
   s->f[op].dphi = 0.0f;
   s->f[op].dphi2 = 0.0f;
   s->f[op].phi = 0.0f;
   s->f[op].phi2 = 0.0f;
+  s->active[op]= 0;
+
+  for(i=0;i<6;i++) if (*(s->Ovol[i])>0.0f) sum += s->active[i]; 
+ 
+
+  if ((!sum) && (!s->filt_cleared))
+  {
   AnalogFilter_Cleanup (s, &s->Fl);
   AnalogFilter_Cleanup (s, &s->Fr);
   s->FEnv_Vol = 0.0f;
   s->velocity = 0.0f;
-
+  s->filt_cleared=1;
+  }
 }
 
 
@@ -476,7 +499,7 @@ Alg1s (goomf_synth_t * s, int nframes)
   int i;
   int l1;
   float sound, sound2, filt, filt2;
-  float m_partial;
+  float m_partial=0.0f;
   LADSPA_Data volumen;
   LADSPA_Data Ftype = *(s->Ftype);
   LADSPA_Data Fgain = *(s->Fgain);
@@ -491,14 +514,12 @@ Alg1s (goomf_synth_t * s, int nframes)
   float tmp;
   float wave;
   float pLFO;
-  float LFO;
+  float LFO=0.0f;
 
-  memset (s->bufl, 0, sizeof (float) * 8192);
-  memset (s->bufr, 0, sizeof (float) * 8192);
 
   LADSPA_Data LFO_Volume = *(s->LFO_Volume) * .5;
 
-  m_partial = Get_Partial (s);
+  if (!s->filt_cleared) m_partial = Get_Partial (s);
 
   for (l1 = 0; l1 < nframes; l1++)
     {
@@ -508,13 +529,13 @@ Alg1s (goomf_synth_t * s, int nframes)
       filt = 0.0f;
       filt2 = 0.0f;
 
-      LFO = Pitch_LFO (s, s->env_time, 0) * LFO_Volume * s->modulation;
+      if (!s->filt_cleared) LFO = Pitch_LFO (s, s->env_time, 0) * LFO_Volume * s->modulation;
 
       for (i = 0; i < 6; i++)
 	{
 	  volumen = *(s->Ovol[i]);
 
-	  if (volumen > 0.0f)
+	  if ((s->active[i]) && (volumen > 0.0f))
 	    {
 	      pLFO = (float) *(s->pLFO[i]) * LFO;
 	      wave = (int) *(s->wave[i]);
@@ -527,8 +548,6 @@ Alg1s (goomf_synth_t * s, int nframes)
 		}
 	      else
 		s->Env_Vol[i] = Jenvelope (s, i);
-
-
 
 	      //L
 	      s->f[i].dphi = m_partial * (pitch_Operator (s, i) + pLFO);
@@ -551,6 +570,8 @@ Alg1s (goomf_synth_t * s, int nframes)
 	    }
 
 	}
+
+      
 
       if (s->Rtype != Ftype)
 	{
@@ -590,20 +611,20 @@ Alg1s (goomf_synth_t * s, int nframes)
 
       freq = s->Rcutoff;
 
+      if(!s->filt_cleared)
+
+      { 
       if (VELO)
 	freq = s->Rcutoff * s->velocity;
-
       if ((FADSR) && (s->gate))
 	{
 	  s->FEnv_Vol = Fenvelope (s, FADSR - 1);
 	  freq *= s->FEnv_Vol;
 	}
-
       if (FLFO > 0.0f)
 	{
 	  freq += Pitch_LFO (s, s->env_time, 0) * FLFO * freq;
 	}
-
       if (freq < 41.0f)
 	freq = 41.0;
       if (freq > 10020.0)
@@ -613,9 +634,12 @@ Alg1s (goomf_synth_t * s, int nframes)
 
       filt = sound;
       filt2 = sound2;
+      
       filterout (s, &s->Fl, &filt, 1);
       filterout (s, &s->Fr, &filt2, 1);
 
+      }
+      
       s->bufl[l1] = (sound * (12.0 - realgain)) + (filt * realgain);
       s->bufr[l1] = (sound2 * (12.0 - realgain)) + (filt2 * realgain);
       s->bufl[l1] *= .083;
@@ -628,4 +652,5 @@ Alg1s (goomf_synth_t * s, int nframes)
     }
 
 
-};
+}
+
