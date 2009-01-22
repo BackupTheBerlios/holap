@@ -610,20 +610,23 @@ Alg1s (goomf_synth_t * s, int nframes)
 
       { 
       if (VELO)
-	freq = s->Rcutoff * s->velocity;
+	freq *= s->velocity;
       if ((FADSR) && (s->gate))
 	{
-	  s->FEnv_Vol = Fenvelope (s, FADSR - 1);
+	  s->FEnv_Vol = 1.0 - Fenvelope (s, FADSR - 1);
 	  freq *= s->FEnv_Vol;
+	  if (freq < 220.0) freq = 220.0;
 	}
       if (FLFO > 0.0f)
 	{
 	  freq += Pitch_LFO (s, s->env_time, 0) * FLFO * freq;
 	}
-      if (freq < 41.0f)
-	freq = 41.0;
+
+      if (freq < 20.0f)
+	freq = 20.0;
       if (freq > 10020.0)
 	freq = 10020.0;
+
       setfreq (s, &s->Fl, freq);
       setfreq (s, &s->Fr, freq);
 

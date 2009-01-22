@@ -618,6 +618,7 @@ Fl_Double_Window* goomf_ui::make_window() {
         D_Attack->labelsize(11);
         D_Attack->labelcolor(FL_BACKGROUND2_COLOR);
         D_Attack->minimum(0.01);
+        D_Attack->maximum(4);
         D_Attack->step(0.01);
         D_Attack->value(0.01);
         D_Attack->callback((Fl_Callback*)cb_D_Attack);
@@ -634,6 +635,7 @@ Fl_Double_Window* goomf_ui::make_window() {
         D_Decay->labelsize(11);
         D_Decay->labelcolor(FL_BACKGROUND2_COLOR);
         D_Decay->minimum(0.01);
+        D_Decay->maximum(4);
         D_Decay->step(0.01);
         D_Decay->value(0.01);
         D_Decay->callback((Fl_Callback*)cb_D_Decay);

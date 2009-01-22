@@ -961,7 +961,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Attack_0].LowerBound = 0.01;
-      port_range_hints[goomf_Attack_0].UpperBound = 1.0;
+      port_range_hints[goomf_Attack_0].UpperBound = 4.0;
 
       /* Parameters for Attack_1 */
       port_descriptors[goomf_Attack_1] =
@@ -971,7 +971,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Attack_1].LowerBound = 0.01;
-      port_range_hints[goomf_Attack_1].UpperBound = 1.0;
+      port_range_hints[goomf_Attack_1].UpperBound = 4.0;
 
       /* Parameters for Attack_2 */
       port_descriptors[goomf_Attack_2] =
@@ -981,7 +981,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Attack_2].LowerBound = 0.01;
-      port_range_hints[goomf_Attack_2].UpperBound = 1.0;
+      port_range_hints[goomf_Attack_2].UpperBound = 4.0;
 
       /* Parameters for Attack_3 */
       port_descriptors[goomf_Attack_3] =
@@ -991,7 +991,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Attack_3].LowerBound = 0.01;
-      port_range_hints[goomf_Attack_3].UpperBound = 1.0;
+      port_range_hints[goomf_Attack_3].UpperBound = 4.0;
 
       /* Parameters for Attack_4 */
       port_descriptors[goomf_Attack_4] =
@@ -1001,7 +1001,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Attack_4].LowerBound = 0.01;
-      port_range_hints[goomf_Attack_4].UpperBound = 1.0;
+      port_range_hints[goomf_Attack_4].UpperBound = 4.0;
 
       /* Parameters for Attack_5 */
       port_descriptors[goomf_Attack_5] =
@@ -1011,7 +1011,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MINIMUM |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Attack_5].LowerBound = 0.01;
-      port_range_hints[goomf_Attack_5].UpperBound = 1.0;
+      port_range_hints[goomf_Attack_5].UpperBound = 4.0;
 
 
       /* Parameters for Decay_0 */
@@ -1022,7 +1022,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_0].LowerBound = 0.01;
-      port_range_hints[goomf_Decay_0].UpperBound = 1.0;
+      port_range_hints[goomf_Decay_0].UpperBound = 4.0;
 
       /* Parameters for Decay_1 */
       port_descriptors[goomf_Decay_1] =
@@ -1032,7 +1032,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_1].LowerBound = 0.01;
-      port_range_hints[goomf_Decay_1].UpperBound = 1.0;
+      port_range_hints[goomf_Decay_1].UpperBound = 4.0;
 
       /* Parameters for Decay_2 */
       port_descriptors[goomf_Decay_2] =
@@ -1042,7 +1042,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_2].LowerBound = 0.01;
-      port_range_hints[goomf_Decay_2].UpperBound = 1.0;
+      port_range_hints[goomf_Decay_2].UpperBound = 4.0;
 
       /* Parameters for Decay_3 */
       port_descriptors[goomf_Decay_3] =
@@ -1052,7 +1052,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_3].LowerBound = 0.01;
-      port_range_hints[goomf_Decay_3].UpperBound = 1.0;
+      port_range_hints[goomf_Decay_3].UpperBound = 4.0;
 
       /* Parameters for Decay_4 */
       port_descriptors[goomf_Decay_4] =
@@ -1062,7 +1062,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_4].LowerBound = 0.01;
-      port_range_hints[goomf_Decay_4].UpperBound = 1.0;
+      port_range_hints[goomf_Decay_4].UpperBound = 4.0;
 
       /* Parameters for Decay_5 */
       port_descriptors[goomf_Decay_5] =
@@ -1072,7 +1072,7 @@ void __attribute__ ((constructor)) goomf_init ()
 	LADSPA_HINT_DEFAULT_MIDDLE |
 	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
       port_range_hints[goomf_Decay_5].LowerBound = 0.01;
-      port_range_hints[goomf_Decay_5].UpperBound = 1.0;
+      port_range_hints[goomf_Decay_5].UpperBound = 4.0;
 
 
       /* Parameters for Sustain_0 */
