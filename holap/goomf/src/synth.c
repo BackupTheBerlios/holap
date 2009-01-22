@@ -506,7 +506,7 @@ Alg1s (goomf_synth_t * s, int nframes)
   int FADSR = (int) *(s->FADSR);
   int VELO = (int) *(s->Fvelocity);
   float freq = 0.0f;
-  float tmp;
+  float tmp,oldfreq;
   float wave;
   float pLFO;
   float LFO=0.0f;
@@ -578,8 +578,8 @@ Alg1s (goomf_synth_t * s, int nframes)
       if (s->Rgain != Fgain)
 	{
 	  s->Rgain = Fgain;
-	  setgain (s, &s->Fl, s->Rgain * 12.0);
-	  setgain (s, &s->Fr, s->Rgain * 12.0);
+	  setgain (s, &s->Fl, s->Rgain*12.0);
+	  setgain (s, &s->Fr, s->Rgain*12.0);
 	}
 
       if (s->Rcutoff != Fcutoff)
@@ -613,9 +613,11 @@ Alg1s (goomf_synth_t * s, int nframes)
 	freq *= s->velocity;
       if ((FADSR) && (s->gate))
 	{
-	  s->FEnv_Vol = 1.0 - Fenvelope (s, FADSR - 1);
+	  s->FEnv_Vol = Fenvelope (s, FADSR - 1);
+	  oldfreq = freq;
 	  freq *= s->FEnv_Vol;
-	  if (freq < 220.0) freq = 220.0;
+	  if (freq < (s->Rcutoff *.5)) freq=oldfreq;
+	  
 	}
       if (FLFO > 0.0f)
 	{
