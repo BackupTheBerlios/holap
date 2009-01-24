@@ -193,7 +193,7 @@ init_vars (goomf_synth_t * s)
 	s->ssin[i - 8] =
 	  (s->ssin[i - 8] * (1.0 + s->ssin[i - 7] - s->ssin[i - 8]));
 
-      s->usin[i] = sinf (s->ssin[i]);
+      s->usin[i] = sinf (x_sin + sinf(2.0 * s->ssin[i]));
 
     }
 
@@ -503,8 +503,8 @@ Alg1s (goomf_synth_t * s, int nframes)
   LADSPA_Data Fq = *(s->Fq);
   LADSPA_Data Fstages = *(s->Fstages);
   LADSPA_Data FLFO = *(s->FLFO);
-  int FADSR = (int) *(s->FADSR);
-  int VELO = (int) *(s->Fvelocity);
+  int FADSR = F2I(*(s->FADSR));
+  int VELO = F2I(*(s->Fvelocity));
   float freq = 0.0f;
   float tmp,oldfreq;
   float wave;
@@ -533,7 +533,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 	  if ((s->active[i]) && (volumen > 0.0f))
 	    {
 	      pLFO = (float) *(s->pLFO[i]) * LFO;
-	      wave = (int) *(s->wave[i]);
+	      wave = F2I(*(s->wave[i]));
 
 	      if (s->gate)
 		{
