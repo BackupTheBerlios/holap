@@ -115,11 +115,12 @@ typedef struct
   LADSPA_Data *FADSR;
   LADSPA_Data *Fstages;
   LADSPA_Data *Fvelocity;
-  float Rtype;
-  float Rgain;
-  float Rcutoff;
-  float Rq;
-  float Rstages;
+
+  LADSPA_Data Rtype;
+  LADSPA_Data Rgain;
+  LADSPA_Data Rcutoff;
+  LADSPA_Data Rq;
+  LADSPA_Data Rstages;
   char Name[64];
   freqVarios f[6];
   Menoscalculos h[192];
