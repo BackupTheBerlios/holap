@@ -497,19 +497,19 @@ Alg1s (goomf_synth_t * s, int nframes)
   float sound, sound2, filt, filt2;
   float m_partial=0.0f;
   LADSPA_Data volumen;
-  LADSPA_Data Ftype = *(s->Ftype);
+  int Ftype = F2I(*(s->Ftype));
   LADSPA_Data Fgain = *(s->Fgain);
   LADSPA_Data Fcutoff = *(s->Fcutoff);
   LADSPA_Data Fq = *(s->Fq);
-  LADSPA_Data Fstages = *(s->Fstages);
+  int Fstages = F2I(*(s->Fstages));
   LADSPA_Data FLFO = *(s->FLFO);
   int FADSR = F2I(*(s->FADSR));
   int VELO = F2I(*(s->Fvelocity));
-  float freq = 0.0f;
-  float tmp,oldfreq;
-  float wave;
-  float pLFO;
-  float LFO=0.0f;
+  LADSPA_Data freq = 0.0f;
+  LADSPA_Data tmp,oldfreq;
+  int wave;
+  LADSPA_Data pLFO;
+  LADSPA_Data LFO=0.0f;
 
 
   LADSPA_Data LFO_Volume = *(s->LFO_Volume) * .5;
@@ -566,7 +566,6 @@ Alg1s (goomf_synth_t * s, int nframes)
 
 	}
 
-      
 
       if (s->Rtype != Ftype)
 	{
@@ -611,7 +610,7 @@ Alg1s (goomf_synth_t * s, int nframes)
       { 
       if (VELO)
 	freq *= s->velocity;
-      if ((FADSR) && (s->gate))
+      if (FADSR)
 	{
 	  s->FEnv_Vol = Fenvelope (s, FADSR - 1);
 	  oldfreq = freq;
