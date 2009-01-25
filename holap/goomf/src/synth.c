@@ -616,7 +616,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 	  s->FEnv_Vol = Fenvelope (s, FADSR - 1);
 	  oldfreq = freq;
 	  freq *= s->FEnv_Vol;
-	  if (freq < (s->Rcutoff *.5)) freq=oldfreq;
+	  if (freq < (s->Rcutoff *.33)) freq=oldfreq;
 	  
 	}
       if (FLFO > 0.0f)
