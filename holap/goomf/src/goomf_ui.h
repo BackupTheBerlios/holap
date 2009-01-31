@@ -63,6 +63,7 @@ public:
   int D_FADSR_c; 
   int D_Fstages_c; 
   int D_Fvelocity_c; 
+  int D_Algo_c; 
   char uBankFilename[255]; 
   int made; 
   goomf_ui();
@@ -139,6 +140,11 @@ public:
 private:
   void cb_D_Release_i(Rueda*, void*);
   static void cb_D_Release(Rueda*, void*);
+public:
+  Rueda *D_Algo;
+private:
+  void cb_D_Algo_i(Rueda*, void*);
+  static void cb_D_Algo(Rueda*, void*);
 public:
   Fl_Button *OP1;
 private:

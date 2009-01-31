@@ -505,9 +505,11 @@ Alg1s (goomf_synth_t * s, int nframes)
   LADSPA_Data FLFO = *(s->FLFO);
   int FADSR = F2I(*(s->FADSR));
   int VELO = F2I(*(s->Fvelocity));
+  int algo = F2I(*(s->algo));
   LADSPA_Data freq = 0.0f;
   LADSPA_Data tmp,oldfreq;
-  int wave;
+  int wave = 0;
+  int wave1 = 0;
   LADSPA_Data pLFO;
   LADSPA_Data LFO=0.0f;
 
@@ -526,7 +528,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 
       if (!s->filt_cleared) LFO = Pitch_LFO (s, s->env_time, 0) * LFO_Volume * s->modulation;
 
-      for (i = 0; i < 6; i++)
+      for (i = 0; i < 6; i += 2)
 	{
 	  volumen = *(s->Ovol[i]);
 
@@ -534,6 +536,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 	    {
 	      pLFO = (float) *(s->pLFO[i]) * LFO;
 	      wave = F2I(*(s->wave[i]));
+              if ((algo==2) && (wave==1)) wave = 2;
 
 	      if (s->gate)
 		{
@@ -551,7 +554,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      s->f[i].phi += s->f[i].dphi;
 	      if (s->f[i].phi > D_PI)
 		s->f[i].phi -= D_PI;
-
+         
 	      //R 
 	      s->f[i].dphi2 = m_partial * (pitch_Operator2 (s, i) + pLFO);
 	      if (s->f[i].dphi2 > D_PI)
@@ -559,11 +562,59 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      s->f[i].phi2 += s->f[i].dphi2;
 	      if (s->f[i].phi2 > D_PI)
 		s->f[i].phi2 -= D_PI;
+          
+             }
+        
+          volumen = *(s->Ovol[i+1]);
 
-	      sound += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi);
-	      sound2 += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi2);
-	    }
+	  if ((s->active[i+1]) && (volumen > 0.0f))
+	    {
+	      pLFO = (float) *(s->pLFO[i+1]) * LFO;
+	      wave1 = F2I(*(s->wave[i+1]));
 
+	      if (s->gate)
+		{
+		  s->Envelope_Volume[i+1] = Jenvelope (s, i+1);
+		  s->Env_Vol[i+1] =
+		    s->velocity * volumen * s->Envelope_Volume[i+1];
+		}
+	      else
+		s->Env_Vol[i+1] = Jenvelope (s, i+1);
+
+	      //L
+	      if (algo == 1) s->f[i+1].dphi = m_partial * (pitch_Operator (s, i+1) + pLFO);
+	      else s->f[i+1].dphi = s->f[i].dphi * (pitch_Operator (s, i+1) + pLFO);
+	      if (s->f[i+1].dphi > D_PI)
+		s->f[i+1].dphi -= D_PI;
+	      s->f[i+1].phi += s->f[i+1].dphi;
+	      if (s->f[i+1].phi > D_PI)
+		s->f[i+1].phi -= D_PI;
+           
+	      //R 
+	      if (algo==1)s->f[i+1].dphi2 = m_partial * (pitch_Operator2 (s, i+1) + pLFO);
+	      else s->f[i+1].dphi2 = s->f[i].dphi2 * (pitch_Operator (s, i+1) + pLFO);
+	      if (s->f[i+1].dphi2 > D_PI)
+		s->f[i+1].dphi2 -= D_PI;
+	      s->f[i+1].phi2 += s->f[i+1].dphi2;
+	      if (s->f[i+1].phi2 > D_PI)
+		s->f[i+1].phi2 -= D_PI;
+            
+             
+             }             
+             
+              if (algo==2)
+              {              
+	      sound += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi + s->Env_Vol[i+1]*NFsin(s,wave1,s->f[i+1].phi));
+	      sound2 += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi2 + s->Env_Vol[i+1]*NFsin(s,wave1,s->f[i+1].phi2));
+	      }
+	      else
+	      {
+              sound += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi);
+              sound += s->Env_Vol[i+1] * NFsin (s, wave1, s->f[i+1].phi);
+              sound2 += s->Env_Vol[i] * NFsin (s, wave, s->f[i].phi2);
+	      sound2 += s->Env_Vol[i+1] * NFsin (s, wave1, s->f[i+1].phi2);
+              }
+	
 	}
 
 

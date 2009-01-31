@@ -266,6 +266,13 @@ thread1 (void *arg)
 	  gui.D_Fvelocity_c = 0;
 	}
 
+      if (gui.D_Algo_c)
+        {
+         lo_send (m_host, osc_control_path, "if", 71,
+		   (float) gui.D_Algo->value ());
+	  algo = gui.D_Algo->value ();
+	  gui.D_Algo_c = 0;
+        }
 
 
       Fl::wait ();
@@ -357,7 +364,10 @@ update_widgets (int port, float value)
     case 70:
       gui.D_Fvelocity->value (value);
       break;
-
+    case 71:
+      gui.D_Algo->value(value);
+      break; 
+ 
     }
 
 
@@ -562,7 +572,7 @@ main (int argc, char **argv)
   gui.D_FADSR_c = 0;
   gui.D_Fstages_c = 0;
   gui.D_Fvelocity_c = 0;
-
+  gui.D_Algo_c = 0;
 
 
   New ();
@@ -747,7 +757,6 @@ New_Bank ()
 
       bzero (Banco[j].Name, sizeof (Banco[j].Name));
       sprintf (Banco[j].Name, "");
-      Banco[j].modulation = .99f;
       Banco[j].master_volume = 0.5f;
       Banco[j].tune = 0.0f;
       Banco[j].portamento = 0.0f;
@@ -778,7 +787,7 @@ New_Bank ()
       Banco[j].FADSR = 0;
       Banco[j].Fstages = 1;
       Banco[j].Fvelocity = 0;
-
+      Banco[j].algo = 1;
 
 
     }
@@ -793,7 +802,6 @@ New ()
 
   bzero (Name, sizeof (Name));
   sprintf (Name, "");
-  modulation = .99f;
   master_volume = 0.5f;
   tune = 0.0f;
   portamento = 0.0f;
@@ -824,7 +832,7 @@ New ()
   FADSR = 0;
   Fstages = 1;
   Fvelocity = 0;
-
+  algo = 1;
 
 
 
@@ -869,7 +877,7 @@ Put_Combi (int j)
   FADSR = Banco[j].FADSR;
   Fstages = Banco[j].Fstages;
   Fvelocity = Banco[j].Fvelocity;
-
+  algo = Banco[j].algo;
 
 
 };
@@ -911,7 +919,7 @@ preset_to_bank (int j)
   Banco[j].FADSR = FADSR;
   Banco[j].Fstages = Fstages;
   Banco[j].Fvelocity = Fvelocity;
-
+  Banco[j].algo = algo;
 
 
 
@@ -933,8 +941,8 @@ savebank (const char *filename)
       fputs (buf, fn);
 
       bzero (buf, sizeof (buf));
-      sprintf (buf, "%f,%f,%f,%f\n", Banco[j].master_volume, Banco[j].tune,
-	       Banco[j].portamento, Banco[j].modulation);
+      sprintf (buf, "%f,%f,%f,%d\n", Banco[j].master_volume, Banco[j].tune,
+	       Banco[j].portamento, Banco[j].algo);
       fputs (buf, fn);
 
       bzero (buf, sizeof (buf));
@@ -1000,8 +1008,8 @@ loadbank (const char *filename)
 
       bzero (buf, sizeof (buf));
       fgets (buf, sizeof buf, fn);
-      sscanf (buf, "%f,%f,%f,%f", &Banco[j].master_volume, &Banco[j].tune,
-	      &Banco[j].portamento, &Banco[j].modulation);
+      sscanf (buf, "%f,%f,%f,%d", &Banco[j].master_volume, &Banco[j].tune,
+	      &Banco[j].portamento, &Banco[j].algo);
 
       bzero (buf, sizeof (buf));
       fgets (buf, sizeof buf, fn);
@@ -1078,6 +1086,7 @@ Update_Main_Widgets ()
   update_widgets (68, FADSR);
   update_widgets (69, Fstages);
   update_widgets (70, Fvelocity);
+  update_widgets (71, algo);
 
 
 }
@@ -1118,7 +1127,7 @@ Send_Values ()
   lo_send (m_host, osc_control_path, "if", 68, (float) FADSR);
   lo_send (m_host, osc_control_path, "if", 69, (float) Fstages);
   lo_send (m_host, osc_control_path, "if", 70, (float) Fvelocity);
-
+  lo_send (m_host, osc_control_path, "if", 71, (float) algo);
 
 }
 
@@ -1297,3 +1306,4 @@ set_FilterType (int value)
     }
 
 }
+

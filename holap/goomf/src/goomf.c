@@ -100,7 +100,7 @@
 #define goomf_FilterADSR 68
 #define goomf_FilterStages 69
 #define goomf_FilterVelocity 70
-
+#define goomf_Algo 71
 
 static LADSPA_Descriptor *goomfLDescriptor = NULL;
 static DSSI_Descriptor *goomfDDescriptor = NULL;
@@ -363,6 +363,10 @@ connectPortgoomf (LADSPA_Handle instance, unsigned long port,
     case goomf_FilterVelocity:
       plugin->Fvelocity = data;
       break;
+    case goomf_Algo:
+      plugin->algo = data;
+      break;
+
     }
 
 }
@@ -627,7 +631,7 @@ void __attribute__ ((constructor)) goomf_init ()
       goomfLDescriptor->Name = "goomf";
       goomfLDescriptor->Maker = "Josep Andreu <holborn@telefonica.net>";
       goomfLDescriptor->Copyright = "GNU General Public License version 2";
-      goomfLDescriptor->PortCount = 71;
+      goomfLDescriptor->PortCount = 72;
 
 
       port_descriptors = (LADSPA_PortDescriptor *)
@@ -1336,6 +1340,15 @@ void __attribute__ ((constructor)) goomf_init ()
       port_range_hints[goomf_FilterVelocity].LowerBound = 0.0;
       port_range_hints[goomf_FilterVelocity].UpperBound = 1.0;
 
+      /* Parameters for FilterStages */
+      port_descriptors[goomf_Algo] =
+	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+      port_names[goomf_Algo] = "Algorhytm";
+      port_range_hints[goomf_Algo].HintDescriptor =
+	LADSPA_HINT_DEFAULT_MINIMUM | LADSPA_HINT_INTEGER |
+	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
+      port_range_hints[goomf_FilterStages].LowerBound = 1.0;
+      port_range_hints[goomf_FilterStages].UpperBound = 2.0;
 
 
 

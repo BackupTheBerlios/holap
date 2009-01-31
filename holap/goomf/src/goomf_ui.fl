@@ -207,6 +207,8 @@ class goomf_ui {open
   }
   decl {int D_Fvelocity_c;} {public
   }
+  decl {int D_Algo_c;} {public
+  }
   decl {char uBankFilename[255];} {public
   }
   decl {int made;} {public
@@ -223,11 +225,10 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;} open
-      xywh {1629 117 500 580} type Double color 147 visible
+      callback {Pexitprogram=1;}
+      xywh {1622 110 500 580} type Double color 147 visible
     } {
       Fl_Menu_Bar {} {open
         xywh {0 0 500 25} box BORDER_BOX color 147 selection_color 4 labelsize 18 labelcolor 7 textsize 18
@@ -285,7 +286,7 @@ if(!made) ready = 5;}
         class Rueda
       }
       Fl_Group {} {
-        label {Operator Parameters} open
+        label {Operator Parameters} selected
         xywh {10 285 480 210} box BORDER_BOX color 147 labelfont 1 labelcolor 5
       } {
         Fl_Dial D_Wave {
@@ -332,7 +333,7 @@ if(!made) ready = 5;}
         }
         Fl_Dial D_Decay {
           label Decay
-          callback {D_Decay_c[op]=1;} selected
+          callback {D_Decay_c[op]=1;}
           xywh {95 405 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.01 maximum 4 step 0.01 value 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
           class Rueda
@@ -349,6 +350,13 @@ if(!made) ready = 5;}
           callback {D_Release_c[op]=1;}
           xywh {225 405 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 0.01 step 0.01 value 0.01
           code0 {strcpy(o->theformat,"%1.2f");}
+          class Rueda
+        }
+        Fl_Dial D_Algo {
+          label Algorhytm
+          callback {D_Algo_c=1;}
+          xywh {365 405 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 minimum 1 maximum 2 step 1 value 1
+          code0 {strcpy(o->theformat,"%1.0f");}
           class Rueda
         }
         Fl_Group {} {

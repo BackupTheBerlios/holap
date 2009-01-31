@@ -35,7 +35,7 @@ typedef struct
   char Name[64];
   float master_volume;
   float tune;
-  float modulation;
+  int algo;
   float portamento;
   float LFO_Volume;
   float LFO_Frequency;
@@ -64,7 +64,7 @@ typedef struct
 char Name[64];
 float master_volume;
 float tune;
-float modulation;
+int algo;
 float portamento;
 float LFO_Volume;
 float LFO_Frequency;

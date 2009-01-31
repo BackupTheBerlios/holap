@@ -92,7 +92,7 @@ typedef struct
   LADSPA_Data *output_r;
   LADSPA_Data *master_volume;
   LADSPA_Data *tune;
-  LADSPA_Data *rmodulation;
+  LADSPA_Data *algo;
   LADSPA_Data *portamento;
   LADSPA_Data *LFO_Volume;
   LADSPA_Data *LFO_Frequency;

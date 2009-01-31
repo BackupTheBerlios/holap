@@ -219,6 +219,13 @@ void goomf_ui::cb_D_Release(Rueda* o, void* v) {
   ((goomf_ui*)(o->parent()->parent()->user_data()))->cb_D_Release_i(o,v);
 }
 
+void goomf_ui::cb_D_Algo_i(Rueda*, void*) {
+  D_Algo_c=1;
+}
+void goomf_ui::cb_D_Algo(Rueda* o, void* v) {
+  ((goomf_ui*)(o->parent()->parent()->user_data()))->cb_D_Algo_i(o,v);
+}
+
 void goomf_ui::cb_OP1_i(Fl_Button* o, void*) {
   if ((int) o->value()==1)
 {
@@ -674,6 +681,23 @@ Fl_Double_Window* goomf_ui::make_window() {
         D_Release->when(FL_WHEN_CHANGED);
         strcpy(o->theformat,"%1.2f");
       } // Rueda* D_Release
+      { Rueda* o = D_Algo = new Rueda(365, 405, 50, 60, gettext("Algorhytm"));
+        D_Algo->box(FL_FLAT_BOX);
+        D_Algo->color((Fl_Color)147);
+        D_Algo->selection_color(FL_INACTIVE_COLOR);
+        D_Algo->labeltype(FL_NORMAL_LABEL);
+        D_Algo->labelfont(0);
+        D_Algo->labelsize(11);
+        D_Algo->labelcolor(FL_BACKGROUND2_COLOR);
+        D_Algo->minimum(1);
+        D_Algo->maximum(2);
+        D_Algo->step(1);
+        D_Algo->value(1);
+        D_Algo->callback((Fl_Callback*)cb_D_Algo);
+        D_Algo->align(FL_ALIGN_TOP);
+        D_Algo->when(FL_WHEN_CHANGED);
+        strcpy(o->theformat,"%1.0f");
+      } // Rueda* D_Algo
       { Fl_Group* o = new Fl_Group(365, 315, 105, 65, gettext("Selector"));
         o->box(FL_BORDER_BOX);
         o->color((Fl_Color)147);
