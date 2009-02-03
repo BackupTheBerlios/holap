@@ -345,10 +345,6 @@ clear_synth (goomf_synth_t * s, int op)
   if(s->filt_cleared) return;
   if(!s->active[op]) return;
 
-  s->f[op].dphi = 0.0f;
-  s->f[op].dphi2 = 0.0f;
-  s->f[op].phi = 0.0f;
-  s->f[op].phi2 = 0.0f;
   s->active[op]= 0;
 
   for(i=0;i<6;i++) if (*(s->Ovol[i])>0.0f) sum += s->active[i]; 
