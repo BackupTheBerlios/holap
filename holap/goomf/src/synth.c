@@ -289,7 +289,7 @@ Jenvelope (goomf_synth_t * s, int op)
       if (r <release)
         {
 	tmp =s->Env_Vol[op] * (1.0 - r / release);
-	if (tmp<0.0000001)
+	if (tmp<0.000000001)
 	  { 
 	  clear_synth (s, op);
 	  return (0.0f);
