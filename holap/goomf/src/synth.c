@@ -578,8 +578,10 @@ Alg1s (goomf_synth_t * s, int nframes)
 		s->Env_Vol[i+1] = Jenvelope (s, i+1);
 
 	      //L
-	      if (algo == 1) s->f[i+1].dphi = m_partial * (pitch_Operator (s, i+1) + pLFO);
-	      else s->f[i+1].dphi = s->f[i].dphi * (pitch_Operator (s, i+1) + pLFO);
+	      if (algo == 1)
+	      s->f[i+1].dphi = m_partial * (pitch_Operator (s, i+1) + pLFO);
+	      else 
+	      s->f[i+1].dphi = s->f[i].dphi * (pitch_Operator (s, i+1) + pLFO);
 	      if (s->f[i+1].dphi > D_PI)
 		s->f[i+1].dphi -= D_PI;
 	      s->f[i+1].phi += s->f[i+1].dphi;
@@ -587,8 +589,10 @@ Alg1s (goomf_synth_t * s, int nframes)
 		s->f[i+1].phi -= D_PI;
            
 	      //R 
-	      if (algo==1)s->f[i+1].dphi2 = m_partial * (pitch_Operator2 (s, i+1) + pLFO);
-	      else s->f[i+1].dphi2 = s->f[i].dphi2 * (pitch_Operator (s, i+1) + pLFO);
+	      if (algo==1)
+	      s->f[i+1].dphi2 = m_partial * (pitch_Operator2 (s, i+1) + pLFO);
+	      else 
+	      s->f[i+1].dphi2 = s->f[i].dphi2 * (pitch_Operator (s, i+1) + pLFO);
 	      if (s->f[i+1].dphi2 > D_PI)
 		s->f[i+1].dphi2 -= D_PI;
 	      s->f[i+1].phi2 += s->f[i+1].dphi2;
