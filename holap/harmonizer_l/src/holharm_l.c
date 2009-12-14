@@ -27,6 +27,7 @@
 #include <ladspa.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 #include "harmonizer.h"
 
 
@@ -161,7 +162,7 @@ instantiateholharm_l(const LADSPA_Descriptor * descriptor,
   harmonizer->hq = ReadConfig();
   RecChord_init (harmonizer);
   harmonizer->SAMPLE_RATE = s_rate;
-  Recognize_init (harmonizer);
+  Recognize_init (harmonizer,harmonizer->efxoutl, harmonizer->efxoutr);
   PitchShifter_init (harmonizer, 2048, harmonizer->hq,
 		     harmonizer->SAMPLE_RATE);
   Harmonizer_start (harmonizer);
@@ -179,7 +180,7 @@ activateholharm_l (LADSPA_Handle instance)
 void
 holharm_l_deactivate(LADSPA_Handle instance)
 {
-  holharm_t *harmonizer = (holharm_t *) instance;
+//  holharm_t *harmonizer = (holharm_t *) instance;
 }
 
 

@@ -159,7 +159,7 @@ static void
 activateZynEq3par (LADSPA_Handle instance)
 {
 
-  ZEq3par_t *eq3 = (ZEq3par_t *) instance;
+//  ZEq3par_t *eq3 = (ZEq3par_t *) instance;
 
 
 }
@@ -169,7 +169,7 @@ void
 ZynEq3par_deactivate (LADSPA_Handle instance)
 {
 
-  ZEq3par_t *eq3 = (ZEq3par_t *) instance;
+//  ZEq3par_t *eq3 = (ZEq3par_t *) instance;
 
 
 }

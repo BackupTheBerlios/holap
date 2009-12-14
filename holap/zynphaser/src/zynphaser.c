@@ -181,7 +181,7 @@ static void
 activateZynPhaser (LADSPA_Handle instance)
 {
 
-  ZPhaser_t *phaser = (ZPhaser_t *) instance;
+//  ZPhaser_t *phaser = (ZPhaser_t *) instance;
 
 
 }
@@ -191,7 +191,7 @@ void
 ZynPhaser_deactivate (LADSPA_Handle instance)
 {
 
-  ZPhaser_t *phaser = (ZPhaser_t *) instance;
+//  ZPhaser_t *phaser = (ZPhaser_t *) instance;
 
 
 }

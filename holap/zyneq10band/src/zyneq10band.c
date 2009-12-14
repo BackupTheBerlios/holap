@@ -171,7 +171,7 @@ static void
 activateZynEq10ban (LADSPA_Handle instance)
 {
 
-  ZEq10ban_t *eq10 = (ZEq10ban_t *) instance;
+//  ZEq10ban_t *eq10 = (ZEq10ban_t *) instance;
 
 
 }
@@ -181,7 +181,7 @@ void
 ZynEq10ban_deactivate (LADSPA_Handle instance)
 {
 
-  ZEq10ban_t *eq10 = (ZEq10ban_t *) instance;
+//  ZEq10ban_t *eq10 = (ZEq10ban_t *) instance;
 
 
 }

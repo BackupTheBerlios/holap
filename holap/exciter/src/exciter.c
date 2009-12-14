@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <lo/lo.h>
+#include <string.h>
 #include "exciter.h"
 
 
@@ -166,7 +167,7 @@ osc_build_path (char *base_path, const char *method)
   char *full_path;
 
   snprintf (buffer, 256, "%s%s", base_path, method);
-  if (!(full_path = strdup (buffer)))
+  if (!(full_path = strdup(buffer)))
     {
       printf ("out of memory!\n");
       exit (1);
@@ -209,9 +210,6 @@ create_osc (LADSPA_Handle instance, const char *value)
 char *
 exciterConfigure (LADSPA_Handle instance, const char *key, const char *value)
 {
-  int i = 0;
-  exciter_t *exciter = (exciter_t *) instance;
-
 
   if (!strcmp (key, "load"))
     {
@@ -233,7 +231,6 @@ const DSSI_Program_Descriptor *
 exciter_get_program (LADSPA_Handle handle, unsigned long index)
 {
   static DSSI_Program_Descriptor pd;
-  exciter_t *exciter = (exciter_t *) handle;
 
 
   if (index < 32)
@@ -252,7 +249,6 @@ void
 exciter_select_program (LADSPA_Handle handle, unsigned long bank,
 			unsigned long program)
 {
-  exciter_t *exciter = (exciter_t *) handle;
 
 }
 
@@ -274,7 +270,7 @@ static void
 activateexciter (LADSPA_Handle instance)
 {
 
-  exciter_t *exciter = (exciter_t *) instance;
+//  exciter_t *exciter = (exciter_t *) instance;
 }
 
 
@@ -301,7 +297,7 @@ runexciter (LADSPA_Handle instance, unsigned long sample_count,
 
   LADSPA_Data *const pinputl = exc->inputl;
   LADSPA_Data *const pinputr = exc->inputr;
-  LADSPA_Data dry = *(exc->dry);
+//  LADSPA_Data dry = *(exc->dry);
   LADSPA_Data vol = *(exc->outvolume);
   LADSPA_Data pan = *(exc->panning);
   LADSPA_Data mag_1 = *(exc->mag_1);
@@ -322,8 +318,8 @@ runexciter (LADSPA_Handle instance, unsigned long sample_count,
 
   int i;
 
-  memset (exc->efxoutl, 0, sizeof (LADSPA_Data) * sample_count);
-  memset (exc->efxoutr, 0, sizeof (LADSPA_Data) * sample_count);
+//  memset (exc->efxoutl, 0, sizeof (LADSPA_Data) * sample_count);
+//  memset (exc->efxoutr, 0, sizeof (LADSPA_Data) * sample_count);
 
   for (pos = 0, event_pos = 0; pos < sample_count; pos += STEP_SIZE)
     {

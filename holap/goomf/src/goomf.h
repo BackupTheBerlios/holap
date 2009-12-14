@@ -175,6 +175,7 @@ float Pitch_LFO (goomf_synth_t * s, float t, int type);
 float pitch_Operator (goomf_synth_t * s, int i);
 float pitch_Operator2 (goomf_synth_t * s, int i);
 void init_vars (goomf_synth_t * s);
+void Adjust_Audio(goomf_synth_t * s);
 void clear_synth (goomf_synth_t * s, int op);
 
 void AnalogFilter_Init (goomf_synth_t * s, AnalogFilter * filter,

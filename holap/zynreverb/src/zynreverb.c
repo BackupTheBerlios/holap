@@ -162,7 +162,7 @@ static void
 activateZynReverb (LADSPA_Handle instance)
 {
 
-  ZReverb_t *reverb = (ZReverb_t *) instance;
+//  ZReverb_t *reverb = (ZReverb_t *) instance;
 
 
 }
@@ -172,7 +172,7 @@ void
 ZynReverb_deactivate (LADSPA_Handle instance)
 {
 
-  ZReverb_t *reverb = (ZReverb_t *) instance;
+//  ZReverb_t *reverb = (ZReverb_t *) instance;
 
 
 }

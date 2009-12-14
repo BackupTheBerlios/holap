@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0109 
+version 1.0110 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
@@ -196,7 +196,7 @@ Fl::add_timeout(1.0 * 0.04,tick,v);} {}
     Fl_Window ui_win {
       label holharm
       callback {Pexitprogram=1;}
-      xywh {1841 66 390 322} type Double color 147 hide
+      xywh {1834 59 390 322} type Double color 147 hide
     } {
       Fl_Box d_osc_label {
         xywh {0 -2 390 22} labelsize 9 labelcolor 3
@@ -213,8 +213,8 @@ Fl::add_timeout(1.0 * 0.04,tick,v);} {}
         xywh {280 354 120 16} labelsize 11
       }
       Fl_Dial D_Wet {
-        label {Wet/Dry}
-        callback {D_Wet_c=1;}
+        label Dry
+        callback {D_Wet_c=1;} selected
         xywh {10 44 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01
         code0 {strcpy(o->theformat,"%1.2f");}
         class Rueda
@@ -329,7 +329,7 @@ Qadjust(SQuality);
       } {}
       Fl_Choice D_Note {
         label Base
-        callback {D_Note_c=1;} open selected
+        callback {D_Note_c=1;} open
         xywh {130 255 90 20} box PLASTIC_THIN_DOWN_BOX down_box UP_BOX color 14 selection_color 147 labelsize 11 labelcolor 7 textsize 11
       } {}
       Fl_Choice D_ChType {

@@ -87,7 +87,7 @@ typedef struct
 
 
 
-  void Alienwah (ZAlienwah_t * s);
+  void Alienwah_Init(ZAlienwah_t * s);
   void out (ZAlienwah_t * s, float * smpsl, float * smpsr, unsigned long count);
   void Alienwah_Cleanup(ZAlienwah_t * s);
 

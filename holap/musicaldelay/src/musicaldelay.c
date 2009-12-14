@@ -181,7 +181,7 @@ static void
 activateMusicalDelay (LADSPA_Handle instance)
 {
 
-  MDelay_t *mdelay = (MDelay_t *) instance;
+//  MDelay_t *mdelay = (MDelay_t *) instance;
 
 
 }
@@ -190,7 +190,9 @@ activateMusicalDelay (LADSPA_Handle instance)
 void
 MusicalDelay_deactivate (LADSPA_Handle instance)
 {
-  MDelay_t *mdelay = (MDelay_t *) instance;
+
+//  MDelay_t *mdelay = (MDelay_t *) instance;
+
 }
 
 

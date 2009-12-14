@@ -169,7 +169,7 @@ static void
 activateZynAlienwah (LADSPA_Handle instance)
 {
 
-  ZAlienwah_t *alienwah = (ZAlienwah_t *) instance;
+//  ZAlienwah_t *alienwah = (ZAlienwah_t *) instance;
 
 
 }
@@ -179,7 +179,7 @@ void
 ZynAlienwah_deactivate (LADSPA_Handle instance)
 {
 
-  ZAlienwah_t *alienwah = (ZAlienwah_t *) instance;
+//  ZAlienwah_t *alienwah = (ZAlienwah_t *) instance;
 
 
 }

@@ -177,7 +177,7 @@ void Vamos (holharm_t * s, int canal, int interval);
 //Recognize Note
 
 
-void Recognize (holharm_t * s, float *efxoutl_, float *efxoutr_);
+void Recognize_init (holharm_t * s, float *efxoutl_, float *efxoutr_);
 void schmittFloat (holharm_t * s, float *indatal, float *indatar,
 		   unsigned long count);
 void displayFrequency (holharm_t * s, float freq);

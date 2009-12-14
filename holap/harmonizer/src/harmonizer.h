@@ -218,6 +218,7 @@ int ReadConfig();
 
 // Recognize Chord
 
+void Recognize_init (holharm_t * s, float *efxoutl_, float *efxoutr_);
 void RecChord_init (holharm_t * s);
 void RecChord_destroy (holharm_t * s);
 void MiraChord (holharm_t * s);

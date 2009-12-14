@@ -378,10 +378,11 @@ goomfConfigure (LADSPA_Handle instance, const char *key, const char *value)
   int i;
   char *temp;
   goomf_synth_t *synth = (goomf_synth_t *) instance;
+  
+  temp=strdup(value);
 
   if (!strcmp (key, "names"))
     {
-      temp = value;
       for (i = 0; i < 80; i++)
 	sprintf (synth->Banco[i].Name, "%s", strsep (&temp, ","));
       return NULL;
@@ -412,17 +413,14 @@ goomf_select_program (LADSPA_Handle handle, unsigned long bank,
 		      unsigned long program)
 {
 
-  goomf_synth_t *synth = (goomf_synth_t *) handle;
+//  goomf_synth_t *synth = (goomf_synth_t *) handle;
+
   if (bank || program > 80)
     return;
 
 
 
 }
-
-
-
-
 
 static LADSPA_Handle
 instantiategoomf (const LADSPA_Descriptor * descriptor, unsigned long s_rate)
@@ -431,8 +429,8 @@ instantiategoomf (const LADSPA_Descriptor * descriptor, unsigned long s_rate)
   goomf_synth_t *synth = (goomf_synth_t *) calloc (1, sizeof (goomf_synth_t));
 
   synth->SAMPLE_RATE = (unsigned int) s_rate;
-  init_vars (synth);
-  Adjust_Audio (synth);
+  init_vars(synth);
+  Adjust_Audio(synth);
   pthread_mutex_init (&synth->mutex, NULL);
 
   return (LADSPA_Handle) synth;

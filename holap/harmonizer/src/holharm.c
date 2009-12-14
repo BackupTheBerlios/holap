@@ -29,6 +29,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <lo/lo.h>
 #include "harmonizer.h"
 
@@ -187,8 +188,8 @@ create_osc (LADSPA_Handle instance, const char *value)
 char *
 holharmConfigure (LADSPA_Handle instance, const char *key, const char *value)
 {
-  int i = 0;
-  holharm_t *harmonizer = (holharm_t *) instance;
+
+//  holharm_t *harmonizer = (holharm_t *) instance;
 
 
   if (!strcmp (key, "load"))
@@ -211,7 +212,8 @@ const DSSI_Program_Descriptor *
 holharm_get_program (LADSPA_Handle handle, unsigned long index)
 {
   static DSSI_Program_Descriptor pd;
-  holharm_t *harmonizer = (holharm_t *) handle;
+
+//  holharm_t *harmonizer = (holharm_t *) handle;
 
 
   if (index < 32)
@@ -231,7 +233,8 @@ void
 holharm_select_program (LADSPA_Handle handle, unsigned long bank,
 			unsigned long program)
 {
-  holharm_t *harmonizer = (holharm_t *) handle;
+
+//  holharm_t *harmonizer = (holharm_t *) handle;
 
 }
 
@@ -274,7 +277,7 @@ instantiateholharm (const LADSPA_Descriptor * descriptor,
   harmonizer->hq = ReadConfig();
   RecChord_init (harmonizer);
   harmonizer->SAMPLE_RATE = s_rate;
-  Recognize_init (harmonizer);
+  Recognize_init(harmonizer, harmonizer->efxoutl, harmonizer->efxoutr);
   PitchShifter_init (harmonizer, 2048, harmonizer->hq,
 		     harmonizer->SAMPLE_RATE);
   pthread_mutex_init (&harmonizer->mutex, NULL);
@@ -286,7 +289,8 @@ static void
 activateholharm (LADSPA_Handle instance)
 {
 
-  holharm_t *harmonizer = (holharm_t *) instance;
+//  holharm_t *harmonizer = (holharm_t *) instance;
+
 }
 
 

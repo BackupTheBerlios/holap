@@ -236,8 +236,6 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
   LADSPA_Data vol = *(synth->vol);
 
   unsigned long event_pos = 0;
-  unsigned long pos;
-  unsigned long count;
   int i, l1;
 
 

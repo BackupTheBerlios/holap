@@ -225,13 +225,11 @@ init_vars (goomf_synth_t * s)
 
 
 void
-Adjust_Audio (goomf_synth_t * s)
+Adjust_Audio(goomf_synth_t * s)
 {
-
   s->increment = 1.0 / s->SAMPLE_RATE;
   s->D_PI_to_SAMPLE_RATE = D_PI / s->SAMPLE_RATE;
-
-}
+};
 
 // Returns the FM Operator Pitch (Frequency + LFO)
 
