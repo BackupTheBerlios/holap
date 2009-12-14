@@ -207,7 +207,7 @@ runZynAlienwah (LADSPA_Handle instance, unsigned long sample_count)
 
   int i;
 
-   for (i=0; i<=sample_count; i++)
+   for (i=0; i<sample_count; i++)
         {
           alienwah->indatal[i]=pinputl[i];
           alienwah->indatar[i]=pinputr[i];
@@ -215,7 +215,8 @@ runZynAlienwah (LADSPA_Handle instance, unsigned long sample_count)
 
     out(alienwah, pinputl,pinputr,sample_count);
  
-        for (i=0; i<=sample_count; i++)
+
+        for (i=0; i<sample_count; i++)
 
         {
           outputl[i] += alienwah->indatal[i]*dry;
