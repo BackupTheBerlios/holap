@@ -283,10 +283,8 @@ init_vars (horgand_synth_t * s)
 void
 Adjust_Audio (horgand_synth_t * s)
 {
-
   s->increment = .5 / s->SAMPLE_RATE;
   s->D_PI_to_SAMPLE_RATE = D_PI / s->SAMPLE_RATE;
-
 }
 
 // Keyboard Level Scaling
@@ -501,10 +499,8 @@ void
 Calc_LFO_Frequency (horgand_synth_t * s)
 {
 
-   float modulation = *(s->modulation);
-
   s->LFO_Frequency =
-    modulation * s->a[0].LFOpitch * s->D_PI_to_SAMPLE_RATE*.5;
+    s->a[0].modulation * s->a[0].LFOpitch * s->D_PI_to_SAMPLE_RATE*.5;
 
 };
 
@@ -653,12 +649,6 @@ Alg1s (horgand_synth_t * s, int nframes)
 	}
 
     }
-
-
-  s->a[0].E_Chorus_On = *(s->E_Chorus_On);
-  s->a[0].E_Rotary_On = *(s->E_Rotary_On);
-  s->a[0].E_Delay_On = *(s->E_Delay_On);
-  s->a[0].E_Reverb_On = *(s->E_Reverb_On);
 
 
 

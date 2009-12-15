@@ -49,7 +49,6 @@ char *osc_show_path;
 char *osc_update_path;
 char *myurl;
 int funcion;
-pthread_mutex_t mutex;
 
 
 #endif

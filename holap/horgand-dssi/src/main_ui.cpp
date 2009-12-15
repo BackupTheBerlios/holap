@@ -84,32 +84,6 @@ thread1 (void *arg)
 	  gui.D_Tune_c = 0;
 	}
 
-      if (gui.D_Reverb_c)
-	{
-	  lo_send (m_host, osc_control_path, "if", 5, (float) gui.D_Reverb->value ());
-	  gui.D_Reverb_c = 0;
-	}
-
-      if (gui.D_Chorus_c)
-	{
-	  lo_send (m_host, osc_control_path, "if", 6, (float) gui.D_Chorus->value ());
-	  gui.D_Chorus_c = 0;
-	}
-      if (gui.D_Rotary_c)
-	{
-	  lo_send (m_host, osc_control_path, "if", 7, (float) gui.D_Rotary->value ());
-	  gui.D_Rotary_c = 0;
-	}
-
-      if (gui.D_Delay_c)
-	{
-	  lo_send (m_host, osc_control_path, "if", 8, (float) gui.D_Delay->value ());
-	  gui.D_Delay_c = 0;
-	}
-
-      
-
-
     }
 
   lo_send (m_host, osc_exiting_path, "");
@@ -131,19 +105,6 @@ update_widgets (int port, float value)
     case 3:
       gui.D_Tune->value (value);
       break;
-    case 5:
-      gui.D_Reverb->value (value);
-      break;
-    case 6:
-      gui.D_Chorus->value (value);
-      break;
-    
-    case 7:
-      gui.D_Rotary->value (value);
-      break;
-    case 8:
-      gui.D_Delay->value (value);
-      break;
     }
 
 
@@ -156,7 +117,6 @@ update_patches (const char *filename)
   int i, j;
   FILE *fn;
   char buf[2048];
-  float Data_Version;
   char Name[64];
 
   if ((fn = fopen (filename, "r")) == NULL)
@@ -164,14 +124,6 @@ update_patches (const char *filename)
 
   bzero (buf, sizeof (buf));
   fgets (buf, sizeof buf, fn);
-  sscanf (buf, "%f\n", &Data_Version);
-
-  if (Data_Version < 1.11)
-    {
-      printf ("old file format, please install the default bank file\n");
-      fclose (fn);
-      return;
-    }
 
   gui.PresetSelect->clear ();
 
@@ -186,8 +138,6 @@ update_patches (const char *filename)
 	}
 
 
-      if (Data_Version >= 1.12)
-	{
 	  bzero (buf, sizeof (buf));
 	  fgets (buf, sizeof buf, fn);
 
@@ -198,13 +148,9 @@ update_patches (const char *filename)
 	      fgets (buf, sizeof buf, fn);
 	    }
 
-	}
 
-      if (Data_Version >= 1.13)
-	{
 	  bzero (buf, sizeof (buf));
 	  fgets (buf, sizeof buf, fn);
-	}
 
 
       bzero (buf, sizeof (buf));

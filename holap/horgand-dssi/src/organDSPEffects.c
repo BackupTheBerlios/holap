@@ -54,9 +54,8 @@ Chorus_LFO (horgand_synth_t * s, float *Chorus_X)
 void
 Calc_Chorus_LFO_Frequency (horgand_synth_t * s)
 {
-  float modulation = *(s->modulation);
   
-  s->Chorus_LFO_Frequency = modulation * s->a[0].Chorus_LFO_Amplitude*.5;
+  s->Chorus_LFO_Frequency = s->a[0].modulation * s->a[0].Chorus_LFO_Amplitude*.5;
 
 };
 
@@ -153,10 +152,9 @@ Effect_Rotary (horgand_synth_t * s, int nframes)
 {
   int i = 0;
   float val, l, r;
-  float modulation = *(s->modulation);
   
   s->Rotary_LFO_Frequency =
-    modulation * s->a[0].Rotary_LFO_Amplitude * s->D_PI_to_SAMPLE_RATE;
+    s->a[0].modulation * s->a[0].Rotary_LFO_Amplitude * s->D_PI_to_SAMPLE_RATE;
 
 
   for (i = 0; i < nframes; i++)

@@ -26,15 +26,6 @@
 #include <math.h>
 
 
-// Init Some Vars
-
-void
-Put_Period (horgand_synth_t * s)
-{
-  s->PERIOD2 = s->PERIOD * 2;
-  s->PERIOD4 = s->PERIOD * 4;
-};
-
 void
 New_Bank (horgand_synth_t * s)
 {
@@ -159,13 +150,6 @@ Put_Combi_t (horgand_synth_t * s, int i)
   Calc_LFO_Frequency (s);
   Calc_Chorus_LFO_Frequency (s);
   syncadsr (s);
-
- *(s->E_Chorus_On) = s->a[0].E_Chorus_On;
- *(s->E_Rotary_On) = s->a[0].E_Rotary_On;
- *(s->E_Delay_On) = s->a[0].E_Reverb_On;
- *(s->E_Reverb_On) = s->a[0].E_Reverb_On;
-
-
 
 };
 

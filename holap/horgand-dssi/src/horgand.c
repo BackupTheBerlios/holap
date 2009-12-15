@@ -26,18 +26,11 @@
 #include <math.h>
 #include <dssi.h>
 #include <ladspa.h>
-#include <pthread.h>
 
 #define horgand_OUTPUT_L 0
 #define horgand_OUTPUT_R 1
 #define horgand_VOLUME 2
 #define horgand_MASTERTUNE 3
-#define horgand_MODULATION 4
-#define horgand_REVERB 5
-#define horgand_CHORUS 6
-#define horgand_ROTARY 7
-#define horgand_DELAY 8
-
 
 
 static LADSPA_Descriptor *horgandLDescriptor = NULL;
@@ -100,22 +93,8 @@ connectPorthorgand (LADSPA_Handle instance, unsigned long port,
     case horgand_MASTERTUNE:
       plugin->tune = data;
       break;
-    case horgand_MODULATION:
-      plugin->modulation = data;
-      break;
-    case horgand_REVERB:
-      plugin->E_Reverb_On = data;
-      break;  
-    case horgand_CHORUS:
-      plugin->E_Chorus_On = data;
-      break;
-    case horgand_ROTARY:
-      plugin->E_Rotary_On = data;
-      break;
-    case horgand_DELAY:
-      plugin->E_Delay_On = data;
-      break;      
     }
+
 }
 
 
@@ -128,9 +107,7 @@ horgandConfigure (LADSPA_Handle instance, const char *key, const char *value)
 
   if (!strcmp (key, "load"))
     {
-      pthread_mutex_lock (&synth->mutex);
       i = loadbank (synth, value);
-      pthread_mutex_unlock (&synth->mutex);
       if (i)
 	return strdup ("Error loading file");
       else
@@ -148,7 +125,6 @@ horgand_get_program (LADSPA_Handle handle, unsigned long index)
 
   if (index < 32)
     {
-
       pd.Bank = 0;
       pd.Program = index + 1;
       pd.Name = synth->Banco[index + 1].Name;
@@ -165,12 +141,11 @@ horgand_select_program (LADSPA_Handle handle, unsigned long bank,
 
 
   horgand_synth_t *synth = (horgand_synth_t *) handle;
-  if (bank || program > 32)
+
+  if (program > 32)
     return;
 
-  pthread_mutex_lock (&synth->mutex);
   Put_Combi_t (synth, program);
-  pthread_mutex_unlock (&synth->mutex);
 
 
 }
@@ -189,14 +164,11 @@ instantiatehorgand (const LADSPA_Descriptor * descriptor,
 
   synth->SAMPLE_RATE = (unsigned int) s_rate;
   init_vars (synth);
-  synth->PERIOD = 128;
-  Put_Period (synth);
   Adjust_Audio (synth);
+
+
   sprintf (synth->BankFilename, "%s/Default.horeb", DATADIR);
-  pthread_mutex_init (&synth->mutex, NULL);
-  pthread_mutex_lock (&synth->mutex);
-  loadbank (synth, synth->BankFilename);
-  pthread_mutex_unlock (&synth->mutex);
+  loadbank(synth, synth->BankFilename);
 
   return (LADSPA_Handle) synth;
 }
@@ -206,8 +178,8 @@ activatehorgand (LADSPA_Handle instance)
 {
 
   horgand_synth_t *synth = (horgand_synth_t *) instance;
-
   panic (synth);
+
 }
 
 
@@ -225,6 +197,8 @@ runhorgandWrapper (LADSPA_Handle instance, unsigned long sample_count)
 {
   runhorgand (instance, sample_count, NULL, 0);
 }
+
+
 
 static void
 runhorgand (LADSPA_Handle instance, unsigned long sample_count,
@@ -359,18 +333,18 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 	  event_pos++;
 	}
 
-      Alg1s (synth, sample_count);
 
-      for (i = 0; i < sample_count; i ++)
+      Alg1s(synth, sample_count);
+
+      for (i=0; i<sample_count; i++)
 	{
 	  outputl[i] = synth->bufl[i] * vol;
 	  outputr[i] = synth->bufr[i] * vol;
-
 	}
     
 
-}
 
+}
 
 
 
@@ -381,13 +355,7 @@ getControllerhorgand (LADSPA_Handle instance, unsigned long port)
     {
     case horgand_VOLUME:
       return DSSI_CC (7);
-    case horgand_MODULATION:
-      return DSSI_CC (1);  
-
-
     }
-
-
 
 
   return -1;
@@ -413,7 +381,7 @@ horgand_init()
       horgandLDescriptor->Name = "horgand";
       horgandLDescriptor->Maker = "Josep Andreu <holborn@telefonica.net>";
       horgandLDescriptor->Copyright = "GNU General Public License version 2";
-      horgandLDescriptor->PortCount = 9;
+      horgandLDescriptor->PortCount = 4;
 
 
       port_descriptors = (LADSPA_PortDescriptor *)
@@ -463,54 +431,6 @@ horgand_init()
       port_range_hints[horgand_MASTERTUNE].LowerBound = -1.0;
       port_range_hints[horgand_MASTERTUNE].UpperBound = 1.0;
 
-      /* Parameters for Modulation */
-      port_descriptors[horgand_MODULATION] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-      port_names[horgand_MODULATION] = "Modulation";
-      port_range_hints[horgand_MODULATION].HintDescriptor =
-	LADSPA_HINT_DEFAULT_MAXIMUM |
-	LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE;
-      port_range_hints[horgand_MODULATION].LowerBound = 0.0;
-      port_range_hints[horgand_MODULATION].UpperBound = 1.0;
-
-      /* Parameters for Reverb */
-      port_descriptors[horgand_REVERB] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-      port_names[horgand_REVERB] = "Reverb";
-      port_range_hints[horgand_REVERB].HintDescriptor =
-	LADSPA_HINT_DEFAULT_1 | LADSPA_HINT_TOGGLED;
-      port_range_hints[horgand_REVERB].LowerBound = 0;
-      port_range_hints[horgand_REVERB].UpperBound = 1;
-
-
-      /* Parameters for Chorus */
-      port_descriptors[horgand_CHORUS] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-      port_names[horgand_CHORUS] = "Chorus";
-      port_range_hints[horgand_CHORUS].HintDescriptor =
-	LADSPA_HINT_DEFAULT_1 | LADSPA_HINT_TOGGLED;
-      port_range_hints[horgand_CHORUS].LowerBound = 0;
-      port_range_hints[horgand_CHORUS].UpperBound = 1;
-
-
-      /* Parameters for Rotary */
-      port_descriptors[horgand_ROTARY] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-      port_names[horgand_ROTARY] = "Rotary";
-      port_range_hints[horgand_ROTARY].HintDescriptor =
-	LADSPA_HINT_DEFAULT_1 | LADSPA_HINT_TOGGLED;
-      port_range_hints[horgand_ROTARY].LowerBound = 0;
-      port_range_hints[horgand_ROTARY].UpperBound = 1;
-
-
-      /* Parameters for Delay */
-      port_descriptors[horgand_DELAY] =
-	LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-      port_names[horgand_DELAY] = "Delay";
-      port_range_hints[horgand_DELAY].HintDescriptor =
-	LADSPA_HINT_DEFAULT_1 | LADSPA_HINT_TOGGLED;
-      port_range_hints[horgand_DELAY].LowerBound = 0;
-      port_range_hints[horgand_DELAY].UpperBound = 1;
 
       
 
@@ -522,6 +442,7 @@ horgand_init()
       horgandLDescriptor->set_run_adding_gain = NULL;
       horgandLDescriptor->deactivate = horgand_deactivate;
       horgandLDescriptor->cleanup = cleanuphorgand;
+
 
 
     }

@@ -33,24 +33,17 @@ loadbank (horgand_synth_t * s, const char *filename)
   int i, j;
   FILE *fn;
   char buf[2048];
-  float Data_Version;
-
 
   if ((fn = fopen (filename, "r")) == NULL)
     {
       fprintf (stderr, "File not found\n");
       return 1;
     }
+
   bzero (buf, sizeof (buf));
   fgets (buf, sizeof buf, fn);
-  sscanf (buf, "%f\n", &Data_Version);
 
-  if (Data_Version < 1.11)
-    {
-      printf ("old file format, please install the default bank file\n");
-      fclose (fn);
-      return 1;
-    }
+
   New_Bank (s);
 
   for (j = 1; j <= 32; j++)
@@ -105,8 +98,6 @@ loadbank (horgand_synth_t * s, const char *filename)
 	  sscanf (buf, "%f\n", &s->Banco[j].Normalize[i]);
 	}
 
-      if (Data_Version >= 1.12)
-	{
 	  bzero (buf, sizeof (buf));
 	  fgets (buf, sizeof buf, fn);
 	  sscanf (buf, "%d,%d,%f,%f,%f,%f,%f,%f\n", &s->Banco[j].Speed_Sync,
@@ -123,16 +114,12 @@ loadbank (horgand_synth_t * s, const char *filename)
 	      sscanf (buf, "%d\n", &s->Banco[j].Operator[i].wave);
 	    }
 
-	}
 
-      if (Data_Version >= 1.13)
-	{
 	  bzero (buf, sizeof (buf));
 	  fgets (buf, sizeof buf, fn);
 	  sscanf (buf, "%d,%d,%d\n", &s->Banco[j].LFO_Wave,
 		  &s->Banco[j].Chorus_Wave, &s->Banco[j].Rotary_Wave);
 
-	}
 
 
       bzero (buf, sizeof (buf));

@@ -26,10 +26,8 @@
 #include <alsa/asoundlib.h>
 #include "../config.h"
 #include <ladspa.h>
-#define MPERIOD  128
-#define BUFSIZE 512
-#define POLY 32
-#define DSAMPLE_RATE 44100
+#define BUFSIZE 4096
+#define POLY 16
 #define D_PI 6.283185
 #define F2I(x)  ( lrintf(x) )
 
@@ -114,20 +112,12 @@ typedef struct
 
 typedef struct
 {
-  pthread_mutex_t mutex;
 
   LADSPA_Data *output_l;
   LADSPA_Data *output_r;
   LADSPA_Data *vol;
   LADSPA_Data *tune;
-  LADSPA_Data *modulation;
-  LADSPA_Data *E_Reverb_On;
-  LADSPA_Data *E_Chorus_On;
-  LADSPA_Data *E_Rotary_On;
-  LADSPA_Data *E_Delay_On;
   
-  
-
   Todolo a[1];
   freqVarios f[11];
   Menoscalculos h[192];
@@ -165,10 +155,7 @@ typedef struct
   float u_c_decay;
   float dcphi[POLY];
   float dcphi2[POLY];
-  int PERIOD;
   unsigned int SAMPLE_RATE;
-  int PERIOD2;
-  int PERIOD4;
   float velocity[POLY];
   float pitch;
   float env_time[POLY];
@@ -245,7 +232,6 @@ void New (horgand_synth_t * s);
 void New_Bank (horgand_synth_t * s);
 void panic (horgand_synth_t * s);
 int loadbank (horgand_synth_t * s, const char *filename);
-void Put_Period (horgand_synth_t * s);
 void Put_Combi_t (horgand_synth_t * s, int i);
 void syncadsr (horgand_synth_t * s);
 void Adjust_Audio (horgand_synth_t * s);
