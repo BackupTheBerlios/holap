@@ -309,6 +309,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 			  synth->gate[l1] = 0;
 			  if (synth->pedal == 0)
 			    synth->env_time[l1] = 0;
+                          break;
 			}
 
 		    }
@@ -324,6 +325,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 		      synth->gate[l1] = 0;
 		      if (synth->pedal == 0)
 			synth->env_time[l1] = 0;
+			break;
 		    }
 
 		}
@@ -333,6 +335,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 	  event_pos++;
 	}
 
+      
 
       Alg1s(synth, sample_count);
 

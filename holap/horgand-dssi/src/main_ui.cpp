@@ -479,6 +479,7 @@ main (int argc, char **argv)
 
 
 
+  pthread_exit(&thr1);  
 
   free (host);
   free (port);
@@ -493,7 +494,6 @@ main (int argc, char **argv)
   free (osc_show_path);
   free (osc_update_path);
   free (myurl);
-
 
   return (0);
 

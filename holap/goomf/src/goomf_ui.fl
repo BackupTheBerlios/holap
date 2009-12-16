@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0109 
+version 1.0110 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
@@ -225,10 +225,11 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {} {
+  Function {make_window()} {open
+  } {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;}
-      xywh {1622 110 500 580} type Double color 147 visible
+      callback {//Pexitprogram=1;} selected
+      xywh {1615 103 500 580} type Double color 147 visible
     } {
       Fl_Menu_Bar {} {open
         xywh {0 0 500 25} box BORDER_BOX color 147 selection_color 4 labelsize 18 labelcolor 7 textsize 18
@@ -286,7 +287,7 @@ if(!made) ready = 5;}
         class Rueda
       }
       Fl_Group {} {
-        label {Operator Parameters} selected
+        label {Operator Parameters}
         xywh {10 285 480 210} box BORDER_BOX color 147 labelfont 1 labelcolor 5
       } {
         Fl_Dial D_Wave {

@@ -48,7 +48,6 @@ AC_DEFINE_UNQUOTED(DATADIR,"$DATADIR",[DATADIR])
 PKG_CHECK_MODULES(MODULE, dssi >= 0.4 liblo >= 0.12)
 
 SSE=$(cat /proc/cpuinfo | grep sse)
-
 if test -z "$SSE"; then
 SSE=""
 else

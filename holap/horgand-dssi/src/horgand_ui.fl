@@ -176,10 +176,11 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {} {
+  Function {make_window()} {open
+  } {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;} selected
-      xywh {1578 111 330 280} type Double color 147 visible
+      callback {//Pexitprogram=1;} selected
+      xywh {1571 104 330 280} type Double color 147 visible
     } {
       Fl_Box {} {
         image {horgand128.xpm} xywh {170 49 165 116} labelsize 18

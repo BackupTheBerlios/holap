@@ -111,7 +111,7 @@ return i;
 }
 
 void horgand_ui::cb_ui_win_i(Fl_Double_Window*, void*) {
-  Pexitprogram=1;
+  //Pexitprogram=1;
 }
 void horgand_ui::cb_ui_win(Fl_Double_Window* o, void* v) {
   ((horgand_ui*)(o->user_data()))->cb_ui_win_i(o,v);

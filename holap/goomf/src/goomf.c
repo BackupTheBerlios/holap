@@ -413,7 +413,7 @@ goomf_select_program (LADSPA_Handle handle, unsigned long bank,
 		      unsigned long program)
 {
 
-//  goomf_synth_t *synth = (goomf_synth_t *) handle;
+  goomf_synth_t *synth = (goomf_synth_t *) handle;
 
   if (bank || program > 80)
     return;
