@@ -473,11 +473,6 @@ o->do_callback();
 Fl::repeat_timeout(1.0 * 0.04,tick,v);
 }
 
-void holharm_ui::quit() {
-  Pexitprogram=1;
-exit(0);
-}
-
 void holharm_ui::Qadjust(int Quality) {
   switch(Quality)
 {

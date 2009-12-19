@@ -279,8 +279,8 @@ thread1 (void *arg)
     }
 
   lo_send (m_host, osc_exiting_path, "");
+  
 
-  return (0);
 };
 
 
@@ -382,7 +382,7 @@ osc_build_path (char *base_path, const char *method)
   snprintf (buffer, 256, "%s%s", base_path, method);
   if (!(full_path = strdup (buffer)))
     {
-      printf ("out of memory!\n");
+
       exit (1);
     }
   return strdup (buffer);
@@ -456,11 +456,9 @@ int
 quit_handler (const char *path, const char *types, lo_arg ** argv,
 	      int argc, void *data, void *user_data)
 {
-
-  gui.ui_win->do_callback ();
-  gui.quit ();
-  lo_send (m_host, osc_exiting_path, "");
   gui.Pexitprogram = 1;
+  lo_send (m_host, osc_exiting_path, "");
+  exit(0);
   return 0;
 
 }
@@ -469,13 +467,9 @@ int
 exiting_handler (const char *path, const char *types, lo_arg ** argv,
 		 int argc, void *data, void *user_data)
 {
-  gui.ui_win->do_callback ();
-  gui.quit ();
-  lo_send (m_host, osc_exiting_path, "");
   gui.Pexitprogram = 1;
+  lo_send (m_host, osc_exiting_path, "");
   return 0;
-
-
 }
 
 int

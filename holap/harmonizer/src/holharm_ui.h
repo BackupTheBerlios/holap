@@ -125,7 +125,6 @@ private:
   static void cb_D_recocount(Rueda*, void*);
 public:
   static void tick(void* v);
-  void quit();
   void Qadjust(int Quality);
   void SaveConfig(int Quality);
 };

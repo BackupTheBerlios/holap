@@ -88,7 +88,6 @@ thread1 (void *arg)
 
   lo_send (m_host, osc_exiting_path, "");
 
-  return (0);
 };
 
 
@@ -256,10 +255,9 @@ quit_handler (const char *path, const char *types, lo_arg ** argv,
 	      int argc, void *data, void *user_data)
 {
 
-  gui.ui_win->do_callback ();
-  gui.quit ();
-  lo_send (m_host, osc_exiting_path, "");
   gui.Pexitprogram = 1;
+  lo_send (m_host, osc_exiting_path, "");
+  exit(0);
   return 0;
 
 }
@@ -268,10 +266,9 @@ int
 exiting_handler (const char *path, const char *types, lo_arg ** argv,
 		 int argc, void *data, void *user_data)
 {
-  gui.ui_win->do_callback ();
-  gui.quit ();
-  lo_send (m_host, osc_exiting_path, "");
+
   gui.Pexitprogram = 1;
+  lo_send (m_host, osc_exiting_path, "");
   return 0;
 
 

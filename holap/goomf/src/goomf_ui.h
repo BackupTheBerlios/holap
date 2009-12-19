@@ -274,6 +274,5 @@ private:
 public:
   Fl_Group *ob;
   static void tick(void* v);
-  void quit();
 };
 #endif

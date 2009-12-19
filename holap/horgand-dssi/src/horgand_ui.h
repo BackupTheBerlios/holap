@@ -68,6 +68,5 @@ private:
   static void cb_PresetSelect(Fl_Choice*, void*);
 public:
   static void tick(void* v);
-  void quit();
 };
 #endif

@@ -108,7 +108,7 @@ return i;
 }
 
 void goomf_ui::cb_ui_win_i(Fl_Double_Window*, void*) {
-  //Pexitprogram=1;
+  Pexitprogram=1;
 }
 void goomf_ui::cb_ui_win(Fl_Double_Window* o, void* v) {
   ((goomf_ui*)(o->user_data()))->cb_ui_win_i(o,v);
@@ -460,11 +460,11 @@ Fl::add_timeout(1.0 * 0.04,tick,v);
 
 Fl_Double_Window* goomf_ui::make_window() {
   { ui_win = new Fl_Double_Window(500, 580);
-    ui_win->color((Fl_Color)147);
+    ui_win->color((Fl_Color)137);
     ui_win->callback((Fl_Callback*)cb_ui_win, (void*)(this));
     { Fl_Menu_Bar* o = new Fl_Menu_Bar(0, 0, 500, 25);
       o->box(FL_BORDER_BOX);
-      o->color((Fl_Color)147);
+      o->color((Fl_Color)138);
       o->selection_color((Fl_Color)4);
       o->labelsize(18);
       o->labelcolor((Fl_Color)FL_BACKGROUND2_COLOR);
@@ -493,7 +493,7 @@ Fl_Double_Window* goomf_ui::make_window() {
     } // Fl_Box* MT
     { Rueda* o = D_Vol = new Rueda(10, 70, 50, 60, gettext("Volume"));
       D_Vol->box(FL_FLAT_BOX);
-      D_Vol->color((Fl_Color)147);
+      D_Vol->color((Fl_Color)137);
       D_Vol->selection_color((Fl_Color)FL_INACTIVE_COLOR);
       D_Vol->labeltype(FL_NORMAL_LABEL);
       D_Vol->labelfont(0);
@@ -508,7 +508,7 @@ Fl_Double_Window* goomf_ui::make_window() {
     } // Rueda* D_Vol
     { Rueda* o = D_Tune = new Rueda(80, 70, 50, 60, gettext("Master Tune"));
       D_Tune->box(FL_FLAT_BOX);
-      D_Tune->color((Fl_Color)147);
+      D_Tune->color((Fl_Color)137);
       D_Tune->selection_color((Fl_Color)FL_INACTIVE_COLOR);
       D_Tune->labeltype(FL_NORMAL_LABEL);
       D_Tune->labelfont(0);
@@ -523,7 +523,7 @@ Fl_Double_Window* goomf_ui::make_window() {
     } // Rueda* D_Tune
     { Rueda* o = D_Portamento = new Rueda(150, 70, 50, 60, gettext("Portamento"));
       D_Portamento->box(FL_FLAT_BOX);
-      D_Portamento->color((Fl_Color)147);
+      D_Portamento->color((Fl_Color)137);
       D_Portamento->selection_color((Fl_Color)FL_INACTIVE_COLOR);
       D_Portamento->labeltype(FL_NORMAL_LABEL);
       D_Portamento->labelfont(0);
@@ -537,12 +537,12 @@ Fl_Double_Window* goomf_ui::make_window() {
     } // Rueda* D_Portamento
     { Fl_Group* o = new Fl_Group(10, 285, 480, 210, gettext("Operator Parameters"));
       o->box(FL_BORDER_BOX);
-      o->color((Fl_Color)147);
+      o->color((Fl_Color)138);
       o->labelfont(1);
       o->labelcolor((Fl_Color)5);
       { Rueda* o = D_Wave = new Rueda(30, 310, 50, 60, gettext("Wave"));
         D_Wave->box(FL_FLAT_BOX);
-        D_Wave->color((Fl_Color)147);
+        D_Wave->color((Fl_Color)138);
         D_Wave->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Wave->labeltype(FL_NORMAL_LABEL);
         D_Wave->labelfont(0);
@@ -559,7 +559,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Wave
       { Rueda* o = D_H = new Rueda(95, 310, 50, 60, gettext("Harmonic"));
         D_H->box(FL_FLAT_BOX);
-        D_H->color((Fl_Color)147);
+        D_H->color((Fl_Color)138);
         D_H->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_H->labeltype(FL_NORMAL_LABEL);
         D_H->labelfont(0);
@@ -574,7 +574,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_H
       { Rueda* o = D_HF = new Rueda(160, 310, 50, 60, gettext("H.Fine"));
         D_HF->box(FL_FLAT_BOX);
-        D_HF->color((Fl_Color)147);
+        D_HF->color((Fl_Color)138);
         D_HF->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_HF->labeltype(FL_NORMAL_LABEL);
         D_HF->labelfont(0);
@@ -590,7 +590,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_HF
       { Rueda* o = D_OVol = new Rueda(225, 310, 50, 60, gettext("Volume"));
         D_OVol->box(FL_FLAT_BOX);
-        D_OVol->color((Fl_Color)147);
+        D_OVol->color((Fl_Color)138);
         D_OVol->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_OVol->labeltype(FL_NORMAL_LABEL);
         D_OVol->labelfont(0);
@@ -604,7 +604,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_OVol
       { Rueda* o = D_pLFO = new Rueda(290, 310, 50, 60, gettext("pLFO"));
         D_pLFO->box(FL_FLAT_BOX);
-        D_pLFO->color((Fl_Color)147);
+        D_pLFO->color((Fl_Color)138);
         D_pLFO->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_pLFO->labeltype(FL_NORMAL_LABEL);
         D_pLFO->labelfont(0);
@@ -618,7 +618,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_pLFO
       { Rueda* o = D_Attack = new Rueda(30, 405, 50, 60, gettext("Attack"));
         D_Attack->box(FL_FLAT_BOX);
-        D_Attack->color((Fl_Color)147);
+        D_Attack->color((Fl_Color)138);
         D_Attack->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Attack->labeltype(FL_NORMAL_LABEL);
         D_Attack->labelfont(0);
@@ -635,7 +635,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Attack
       { Rueda* o = D_Decay = new Rueda(95, 405, 50, 60, gettext("Decay"));
         D_Decay->box(FL_FLAT_BOX);
-        D_Decay->color((Fl_Color)147);
+        D_Decay->color((Fl_Color)138);
         D_Decay->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Decay->labeltype(FL_NORMAL_LABEL);
         D_Decay->labelfont(0);
@@ -652,7 +652,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Decay
       { Rueda* o = D_Sustain = new Rueda(160, 405, 50, 60, gettext("Sustain"));
         D_Sustain->box(FL_FLAT_BOX);
-        D_Sustain->color((Fl_Color)147);
+        D_Sustain->color((Fl_Color)138);
         D_Sustain->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Sustain->labeltype(FL_NORMAL_LABEL);
         D_Sustain->labelfont(0);
@@ -667,7 +667,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Sustain
       { Rueda* o = D_Release = new Rueda(225, 405, 50, 60, gettext("Release"));
         D_Release->box(FL_FLAT_BOX);
-        D_Release->color((Fl_Color)147);
+        D_Release->color((Fl_Color)138);
         D_Release->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Release->labeltype(FL_NORMAL_LABEL);
         D_Release->labelfont(0);
@@ -683,7 +683,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Release
       { Rueda* o = D_Algo = new Rueda(365, 405, 50, 60, gettext("Algorhytm"));
         D_Algo->box(FL_FLAT_BOX);
-        D_Algo->color((Fl_Color)147);
+        D_Algo->color((Fl_Color)138);
         D_Algo->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Algo->labeltype(FL_NORMAL_LABEL);
         D_Algo->labelfont(0);
@@ -700,7 +700,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Algo
       { Fl_Group* o = new Fl_Group(365, 315, 105, 65, gettext("Selector"));
         o->box(FL_BORDER_BOX);
-        o->color((Fl_Color)147);
+        o->color((Fl_Color)138);
         o->labelfont(1);
         o->labelcolor((Fl_Color)5);
         { OP1 = new Fl_Button(375, 350, 25, 20, gettext("1"));
@@ -757,12 +757,12 @@ Fl_Double_Window* goomf_ui::make_window() {
     } // Fl_Group* o
     { LFO = new Fl_Group(225, 50, 265, 100, gettext("LFO"));
       LFO->box(FL_BORDER_BOX);
-      LFO->color((Fl_Color)147);
+      LFO->color((Fl_Color)138);
       LFO->labelfont(1);
       LFO->labelcolor((Fl_Color)5);
       { Rueda* o = D_LFO_Frequency = new Rueda(305, 70, 50, 60, gettext("Frequency"));
         D_LFO_Frequency->box(FL_FLAT_BOX);
-        D_LFO_Frequency->color((Fl_Color)147);
+        D_LFO_Frequency->color((Fl_Color)138);
         D_LFO_Frequency->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_LFO_Frequency->labeltype(FL_NORMAL_LABEL);
         D_LFO_Frequency->labelfont(0);
@@ -776,7 +776,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_LFO_Frequency
       { Rueda* o = D_LFO_Volume = new Rueda(240, 70, 50, 60, gettext("Volume"));
         D_LFO_Volume->box(FL_FLAT_BOX);
-        D_LFO_Volume->color((Fl_Color)147);
+        D_LFO_Volume->color((Fl_Color)138);
         D_LFO_Volume->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_LFO_Volume->labeltype(FL_NORMAL_LABEL);
         D_LFO_Volume->labelfont(0);
@@ -790,7 +790,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_LFO_Volume
       { Rueda* o = D_LFO_Delay = new Rueda(365, 70, 50, 60, gettext("Delay"));
         D_LFO_Delay->box(FL_FLAT_BOX);
-        D_LFO_Delay->color((Fl_Color)147);
+        D_LFO_Delay->color((Fl_Color)138);
         D_LFO_Delay->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_LFO_Delay->labeltype(FL_NORMAL_LABEL);
         D_LFO_Delay->labelfont(0);
@@ -804,7 +804,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_LFO_Delay
       { Rueda* o = D_LFO_Wave = new Rueda(425, 70, 50, 60, gettext("Wave"));
         D_LFO_Wave->box(FL_FLAT_BOX);
-        D_LFO_Wave->color((Fl_Color)147);
+        D_LFO_Wave->color((Fl_Color)138);
         D_LFO_Wave->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_LFO_Wave->labeltype(FL_NORMAL_LABEL);
         D_LFO_Wave->labelfont(0);
@@ -846,12 +846,12 @@ Fl_Double_Window* goomf_ui::make_window() {
     } // Fl_Input* Pname
     { Fl_Group* o = new Fl_Group(10, 170, 480, 95, gettext("Filter"));
       o->box(FL_BORDER_BOX);
-      o->color((Fl_Color)147);
+      o->color((Fl_Color)138);
       o->labelfont(1);
       o->labelcolor((Fl_Color)5);
       { Rueda* o = D_Ftype = new Rueda(20, 190, 50, 60, gettext("Type"));
         D_Ftype->box(FL_FLAT_BOX);
-        D_Ftype->color((Fl_Color)147);
+        D_Ftype->color((Fl_Color)138);
         D_Ftype->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Ftype->labeltype(FL_NORMAL_LABEL);
         D_Ftype->labelfont(0);
@@ -866,7 +866,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Ftype
       { Rueda* o = D_Fgain = new Rueda(80, 190, 50, 60, gettext("Gain"));
         D_Fgain->box(FL_FLAT_BOX);
-        D_Fgain->color((Fl_Color)147);
+        D_Fgain->color((Fl_Color)138);
         D_Fgain->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Fgain->labeltype(FL_NORMAL_LABEL);
         D_Fgain->labelfont(0);
@@ -881,7 +881,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Fgain
       { Rueda* o = D_Fcutoff = new Rueda(140, 190, 50, 60, gettext("Cutoff"));
         D_Fcutoff->box(FL_FLAT_BOX);
-        D_Fcutoff->color((Fl_Color)147);
+        D_Fcutoff->color((Fl_Color)138);
         D_Fcutoff->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Fcutoff->labeltype(FL_NORMAL_LABEL);
         D_Fcutoff->labelfont(0);
@@ -898,7 +898,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Fcutoff
       { Rueda* o = D_Fq = new Rueda(200, 190, 50, 60, gettext("Resonance"));
         D_Fq->box(FL_FLAT_BOX);
-        D_Fq->color((Fl_Color)147);
+        D_Fq->color((Fl_Color)138);
         D_Fq->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Fq->labeltype(FL_NORMAL_LABEL);
         D_Fq->labelfont(0);
@@ -913,7 +913,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_Fq
       { Rueda* o = D_FLFO = new Rueda(260, 190, 50, 60, gettext("LFO"));
         D_FLFO->box(FL_FLAT_BOX);
-        D_FLFO->color((Fl_Color)147);
+        D_FLFO->color((Fl_Color)138);
         D_FLFO->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_FLFO->labeltype(FL_NORMAL_LABEL);
         D_FLFO->labelfont(0);
@@ -927,7 +927,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_FLFO
       { Rueda* o = D_FADSR = new Rueda(320, 190, 50, 60, gettext("ADSR"));
         D_FADSR->box(FL_FLAT_BOX);
-        D_FADSR->color((Fl_Color)147);
+        D_FADSR->color((Fl_Color)138);
         D_FADSR->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_FADSR->labeltype(FL_NORMAL_LABEL);
         D_FADSR->labelfont(0);
@@ -942,7 +942,7 @@ Fl_Double_Window* goomf_ui::make_window() {
       } // Rueda* D_FADSR
       { Rueda* o = D_Fstages = new Rueda(380, 190, 50, 60, gettext("Stages"));
         D_Fstages->box(FL_FLAT_BOX);
-        D_Fstages->color((Fl_Color)147);
+        D_Fstages->color((Fl_Color)138);
         D_Fstages->selection_color((Fl_Color)FL_INACTIVE_COLOR);
         D_Fstages->labeltype(FL_NORMAL_LABEL);
         D_Fstages->labelfont(0);
@@ -975,12 +975,12 @@ Fl_Double_Window* goomf_ui::make_window() {
     ui_win->end();
   } // Fl_Double_Window* ui_win
   { BankWindow = new Fl_Double_Window(800, 600, gettext("goomf - Bank"));
-    BankWindow->color((Fl_Color)147);
+    BankWindow->color((Fl_Color)138);
     BankWindow->selection_color((Fl_Color)FL_BACKGROUND2_COLOR);
     BankWindow->callback((Fl_Callback*)cb_BankWindow, (void*)(this));
     { MenuB = new Fl_Menu_Bar(0, 0, 800, 20);
       MenuB->down_box(FL_DOWN_BOX);
-      MenuB->color((Fl_Color)147);
+      MenuB->color((Fl_Color)138);
       MenuB->selection_color((Fl_Color)FL_BACKGROUND2_COLOR);
       MenuB->labelcolor((Fl_Color)FL_BACKGROUND2_COLOR);
       MenuB->textcolor((Fl_Color)FL_BACKGROUND2_COLOR);
@@ -1001,9 +1001,4 @@ void goomf_ui::tick(void* v) {
   Fl_Box *o = (Fl_Box*)v;
 o->do_callback();
 Fl::repeat_timeout(1.0 * 0.04,tick,v);
-}
-
-void goomf_ui::quit() {
-  Pexitprogram=1;
-exit(0);
 }

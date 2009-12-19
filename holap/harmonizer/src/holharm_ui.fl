@@ -156,7 +156,7 @@ return i;} {}
   }
 } 
 
-class holharm_ui {open
+class holharm_ui {open selected
 } {
   decl {int SQuality;} {public
   }
@@ -214,7 +214,7 @@ Fl::add_timeout(1.0 * 0.04,tick,v);} {}
       }
       Fl_Dial D_Wet {
         label Dry
-        callback {D_Wet_c=1;} selected
+        callback {D_Wet_c=1;}
         xywh {10 44 50 60} box FLAT_BOX color 147 labelsize 11 labelcolor 7 align 1 step 0.01
         code0 {strcpy(o->theformat,"%1.2f");}
         class Rueda
@@ -351,10 +351,6 @@ Qadjust(SQuality);
     code {Fl_Box *o = (Fl_Box*)v;
 o->do_callback();
 Fl::repeat_timeout(1.0 * 0.04,tick,v);} {}
-  }
-  Function {quit()} {} {
-    code {Pexitprogram=1;
-exit(0);} {}
   }
   Function {Qadjust(int Quality)} {} {
     code {switch(Quality)

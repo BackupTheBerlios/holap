@@ -153,8 +153,7 @@ return i;} {}
   }
 } 
 
-class horgand_ui {open
-} {
+class horgand_ui {} {
   decl {int ready;} {public
   }
   decl {int D_Vol_c;} {public
@@ -176,11 +175,10 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {open
-  } {
+  Function {make_window()} {} {
     Fl_Window ui_win {
-      callback {//Pexitprogram=1;} selected
-      xywh {1571 104 330 280} type Double color 147 visible
+      callback {Pexitprogram=1;} selected
+      xywh {1564 97 330 280} type Double color 147 visible
     } {
       Fl_Box {} {
         image {horgand128.xpm} xywh {170 49 165 116} labelsize 18
@@ -249,9 +247,5 @@ ready=1;}
     code {Fl_Box *o = (Fl_Box*)v;
 o->do_callback();
 Fl::repeat_timeout(1.0 * 0.04,tick,v);} {}
-  }
-  Function {quit()} {} {
-    code {Pexitprogram=1;
-exit(0);} {}
   }
 } 
