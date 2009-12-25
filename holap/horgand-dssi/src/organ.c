@@ -495,7 +495,7 @@ NFsin (horgand_synth_t * s, int i, float x)
 {
 
 
-  int k = F2I (x * 1000.0);
+  long int k = F2I (x * 1000.0);
 
 
   if (i == 1)

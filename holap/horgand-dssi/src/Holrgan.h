@@ -178,7 +178,7 @@ typedef struct
   float Chorus_X_R;
   float Chorus_X_L;
   float Chorus_LFO_Frequency;
-  int cl_counter;
+  long int cl_counter;
   float increment;
   float D_PI_to_SAMPLE_RATE;
   int Reverb_Time;

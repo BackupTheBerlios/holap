@@ -65,7 +65,7 @@ void
 Effect_Chorus (horgand_synth_t * s, int nframes)
 {
 
-  int elkel, elkel2;
+  long int elkel, elkel2;
   float ldelay1, rdelay1, dell, valorl;
   int i = 0;
   float chor_vol = s->a.Chorus_Volume * .5;
