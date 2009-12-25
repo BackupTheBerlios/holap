@@ -35,7 +35,6 @@ init_vars (horgand_synth_t * s)
   s->capsg = 0;
   s->cl_counter = 0;
   s->Master_Volume = 0.70;
-  s->split = 0;
 
 // FM Operator frequencys
 
@@ -134,8 +133,8 @@ init_vars (horgand_synth_t * s)
       s->h[i].f3 = 8.1757989156 * expf ((float) (i + 2) * logf (2.0) / 12.0);
     }
 
+// Init waves
 
-  // Allocate memory for calculated sins
 
   size_t sizesin = (size_t) (D_PI * 1000) + 2;
 
@@ -267,8 +266,8 @@ init_vars (horgand_synth_t * s)
 void
 Adjust_Audio (horgand_synth_t * s)
 {
-  s->increment = .5 / s->SAMPLE_RATE;
-  s->D_PI_to_SAMPLE_RATE = D_PI / s->SAMPLE_RATE;
+  s->increment = .5 / (float) s->SAMPLE_RATE;
+  s->D_PI_to_SAMPLE_RATE = D_PI / (float) s->SAMPLE_RATE;
 }
 
 // Keyboard Level Scaling

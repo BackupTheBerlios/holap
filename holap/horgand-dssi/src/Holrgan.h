@@ -138,8 +138,8 @@ typedef struct
   float tsin[6290];
   float ssin[6290];
   float usin[6290];
-  float bufl[8192];
-  float bufr[8192];
+  float bufl[4096];
+  float bufr[4096];
   float history[131200];
   float cldelay[8192];
   float crdelay[8192];
@@ -160,7 +160,6 @@ typedef struct
   float pitch;
   float env_time[POLY];
   int note[POLY];
-  int rnote[POLY];
   int gate[POLY];
   float Envelope_Volume[POLY];
   float Perc_Volume[POLY];
@@ -180,7 +179,6 @@ typedef struct
   float Chorus_X_L;
   float Chorus_LFO_Frequency;
   int cl_counter;
-  int split;
   float increment;
   float D_PI_to_SAMPLE_RATE;
   int Reverb_Time;

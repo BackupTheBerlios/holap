@@ -278,8 +278,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 		    {
 		      if (!synth->note_active[l1])
 			{
-			  synth->rnote[l1] = events[event_pos].data.note.note;
-			  synth->note[l1] = synth->rnote[l1];
+			  synth->note[l1] = events[event_pos].data.note.note;
 			  synth->velocity[l1] =
 			    events[event_pos].data.note.velocity / 126.0;
 			  if (synth->a.scaling)
@@ -300,7 +299,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 		  for (l1 = 0; l1 < POLY; l1++)
 		    {
 		      if (synth->gate[l1] && synth->note_active[l1]
-			  && (synth->rnote[l1] ==
+			  && (synth->note[l1] ==
 			      events[event_pos].data.note.note))
 			{
 			  synth->gate[l1] = 0;
@@ -316,7 +315,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 	      for (l1 = 0; l1 < POLY; l1++)
 		{
 		  if (synth->gate[l1] && synth->note_active[l1]
-		      && (synth->rnote[l1] ==
+		      && (synth->note[l1] ==
 			  events[event_pos].data.note.note))
 		    {
 		      synth->gate[l1] = 0;
