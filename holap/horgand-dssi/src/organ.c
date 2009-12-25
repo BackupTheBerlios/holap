@@ -140,18 +140,6 @@ init_vars (horgand_synth_t * s)
   size_t sizesin = (size_t) (D_PI * 1000) + 2;
 
 
-  memset (s->lsin, 0, sizeof (float) * (sizesin + 4));
-  memset (s->nsin, 0, sizeof (float) * (sizesin + 4));
-  memset (s->msin, 0, sizeof (float) * (sizesin + 4));
-  memset (s->psin, 0, sizeof (float) * (sizesin + 4));
-  memset (s->qsin, 0, sizeof (float) * (sizesin + 4));
-  memset (s->rsin, 0, sizeof (float) * (sizesin + 4));
-  memset (s->tsin, 0, sizeof (float) * (sizesin + 4));
-  memset (s->ssin, 0, sizeof (float) * (sizesin + 4));
-  memset (s->usin, 0, sizeof (float) * (sizesin + 4));
-
-
-
   float x_sin;
   for (i = 0; i < (int) sizesin; i++)
 
@@ -268,12 +256,8 @@ init_vars (horgand_synth_t * s)
 
 // Init Buffers
 
+  Clean_Buffer_Effects(s);
 
-  memset (s->history, 0, sizeof (float) * 131200);
-  memset (s->cldelay, 0, sizeof (float) * 8192);
-  memset (s->crdelay, 0, sizeof (float) * 8192);
-  memset (s->bufl, 0, sizeof(float) * 8192);
-  memset (s->bufr, 0, sizeof(float) * 8192);
 
 };
 
@@ -512,7 +496,7 @@ NFsin (horgand_synth_t * s, int i, float x)
 {
 
 
-  long int k = F2I (x * 1000.0);
+  int k = F2I (x * 1000.0);
 
 
   if (i == 1)
