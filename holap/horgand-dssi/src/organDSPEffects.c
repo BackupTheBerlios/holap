@@ -34,14 +34,14 @@ Chorus_LFO (horgand_synth_t * s, float *Chorus_X)
 
   float out;
 
-  *Chorus_X += s->a[0].Chorus_LFO_Speed * s->increment;
+  *Chorus_X += s->a.Chorus_LFO_Speed * s->increment;
 
   if (*Chorus_X > 1)
 {
     *Chorus_X = 0.0f;
 }
   out =
-    NFsin (s, s->a[0].Chorus_Wave, *Chorus_X * D_PI) * s->Chorus_LFO_Frequency;
+    NFsin (s, s->a.Chorus_Wave, *Chorus_X * D_PI) * s->Chorus_LFO_Frequency;
 
   return (out);
 
@@ -55,7 +55,7 @@ void
 Calc_Chorus_LFO_Frequency (horgand_synth_t * s)
 {
   
-  s->Chorus_LFO_Frequency = s->a[0].modulation * s->a[0].Chorus_LFO_Amplitude*.5;
+  s->Chorus_LFO_Frequency = s->a.modulation * s->a.Chorus_LFO_Amplitude*.5;
 
 };
 
@@ -68,9 +68,9 @@ Effect_Chorus (horgand_synth_t * s, int nframes)
   int elkel, elkel2;
   float ldelay1, rdelay1, dell, valorl;
   int i = 0;
-  float chor_vol = s->a[0].Chorus_Volume * .5;
+  float chor_vol = s->a.Chorus_Volume * .5;
   float dllo;
-  float real_delay = (s->a[0].Chorus_Delay*s->SAMPLE_RATE *.0003) + ( s->SAMPLE_RATE * .001);
+  float real_delay = (s->a.Chorus_Delay*s->SAMPLE_RATE *.0003) + ( s->SAMPLE_RATE * .001);
 
   for (i = 0; i < nframes; i++)
 
@@ -130,13 +130,13 @@ Rotary_LFO (horgand_synth_t * s, float t)
 
   float out;
 
-  s->Rotary_X += s->a[0].Rotary_LFO_Speed * s->increment*.5;
+  s->Rotary_X += s->a.Rotary_LFO_Speed * s->increment*.5;
 
   if (s->Rotary_X > 1)
     s->Rotary_X = 0.0f;
 
   out =
-    NFsin (s, s->a[0].Rotary_Wave,
+    NFsin (s, s->a.Rotary_Wave,
 	   s->Rotary_X * D_PI) * s->Rotary_LFO_Frequency;
 
   return (out);
@@ -154,7 +154,7 @@ Effect_Rotary (horgand_synth_t * s, int nframes)
   float val, l, r;
   
   s->Rotary_LFO_Frequency =
-    s->a[0].modulation * s->a[0].Rotary_LFO_Amplitude * s->D_PI_to_SAMPLE_RATE;
+    s->a.modulation * s->a.Rotary_LFO_Amplitude * s->D_PI_to_SAMPLE_RATE;
 
 
   for (i = 0; i < nframes; i++)
@@ -240,7 +240,7 @@ Effect_Delay (horgand_synth_t * s, int nframes)
 {
   int i = 0;
   int elke, elke1;
-  int delay = (int) s->a[0].Delay_Delay;
+  int delay = (int) s->a.Delay_Delay;
   float voll, volr;
   float Delay_Volumer, Delay_Volumel;
   int a_rperhis = s->rperhis;
@@ -248,8 +248,8 @@ Effect_Delay (horgand_synth_t * s, int nframes)
 
   voll = 1 - s->Stereo_Side;
   volr = 1 - voll;
-  Delay_Volumel = voll * s->a[0].Delay_Volume * .5;
-  Delay_Volumer = volr * s->a[0].Delay_Volume * .5;
+  Delay_Volumel = voll * s->a.Delay_Volume * .5;
+  Delay_Volumer = volr * s->a.Delay_Volume * .5;
 
 
   for (i = 0; i < nframes; i++)

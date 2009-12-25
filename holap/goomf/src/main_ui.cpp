@@ -274,11 +274,16 @@ thread1 (void *arg)
 	  gui.D_Algo_c = 0;
         }
 
+      if(gui.Pexit)
+        {
+         gui.Pexit=0;
+         lo_send (m_host, osc_exiting_path, "");
+         exit(0);
+        } 
 
       Fl::wait ();
     }
 
-  lo_send (m_host, osc_exiting_path, "");
   
 
 };
@@ -457,7 +462,7 @@ quit_handler (const char *path, const char *types, lo_arg ** argv,
 	      int argc, void *data, void *user_data)
 {
   gui.Pexitprogram = 1;
-  lo_send (m_host, osc_exiting_path, "");
+  lo_send (m_host, osc_quit_path, "");
   exit(0);
   return 0;
 
@@ -469,6 +474,7 @@ exiting_handler (const char *path, const char *types, lo_arg ** argv,
 {
   gui.Pexitprogram = 1;
   lo_send (m_host, osc_exiting_path, "");
+  exit(0);
   return 0;
 }
 
@@ -535,6 +541,7 @@ main (int argc, char **argv)
   int loadOK = 0;
 
   funcion = 0;
+  gui.Pexit = 0 ;
   gui.Pexitprogram = 0;
   gui.ready = 0;
   gui.D_Vol_c = 0;

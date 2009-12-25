@@ -108,7 +108,7 @@ return i;
 }
 
 void goomf_ui::cb_ui_win_i(Fl_Double_Window*, void*) {
-  Pexitprogram=1;
+  Pexit=1;
 }
 void goomf_ui::cb_ui_win(Fl_Double_Window* o, void* v) {
   ((goomf_ui*)(o->user_data()))->cb_ui_win_i(o,v);

@@ -35,6 +35,7 @@ public:
   int ready; 
   int D_Vol_c; 
   int D_Tune_c; 
+  int Pexit; 
   int Pexitprogram; 
   char uBankFilename[255]; 
   horgand_ui();

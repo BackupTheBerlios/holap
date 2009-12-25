@@ -127,10 +127,17 @@ thread1 (void *arg)
 	  gui.D_Freq_c = 0;
 	}
 
+      if(gui.Pexit)
+        {
+          gui.Pexit=0; 
+          lo_send (m_host, osc_exiting_path, "");
+          exit(0);
+        }  
+
+
 
     }
 
-  lo_send (m_host, osc_exiting_path, "");
 
 };
 
@@ -286,6 +293,7 @@ exiting_handler (const char *path, const char *types, lo_arg ** argv,
 
   gui.Pexitprogram = 1;
   lo_send (m_host, osc_exiting_path, "");
+  exit(0);
   return 0;
 
 

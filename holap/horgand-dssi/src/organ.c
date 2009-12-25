@@ -302,16 +302,16 @@ Get_Keyb_Level_Scaling (horgand_synth_t * s, int nota)
 float
 pitch_Operator (horgand_synth_t * s, int i, int note)
 {
-  return (s->lasfreq[s->a[0].Operator[i].harmonic] +
-	  s->a[0].Operator[i].harmonic_fine);
+  return (s->lasfreq[s->a.Operator[i].harmonic] +
+	  s->a.Operator[i].harmonic_fine);
 }
 
 
 float
 pitch_Operator2 (horgand_synth_t * s, int i, int note)
 {
-  return (s->lasfreq[s->a[0].Operator[i].harmonic] -
-	  s->a[0].Operator[i].harmonic_fine);
+  return (s->lasfreq[s->a.Operator[i].harmonic] -
+	  s->a.Operator[i].harmonic_fine);
 }
 
 
@@ -322,9 +322,9 @@ pitch_Operator2 (horgand_synth_t * s, int i, int note)
 void
 volume_Operator (horgand_synth_t * s, int i, int l2)
 {
-  s->a[0].Operator[i].con1 =
-    s->a[0].Operator[i].volumen * s->velocity[l2] *
-    s->a[0].Normalize[s->a[0].Operator[i].harmonic];
+  s->a.Operator[i].con1 =
+    s->a.Operator[i].volumen * s->velocity[l2] *
+    s->a.Normalize[s->a.Operator[i].harmonic];
 
 };
 
@@ -356,16 +356,16 @@ Cenvelope (horgand_synth_t * s, int *note_active, int gate, float t, int nota)
 
   float val = 0;
 
-  if (t > s->a[0].c_attack + s->a[0].c_decay)
+  if (t > s->a.c_attack + s->a.c_decay)
     return 0.0f;
-  if (t > s->a[0].c_attack)
-    val = 1.0 - (t - s->a[0].c_attack) * s->u_c_decay;
+  if (t > s->a.c_attack)
+    val = 1.0 - (t - s->a.c_attack) * s->u_c_decay;
   else
     val = t * s->u_c_attack;
 
   if (gate)
-    return (s->a[0].Click_Vol * val);
-  return (s->a[0].Click2_Vol * val);
+    return (s->a.Click_Vol * val);
+  return (s->a.Click2_Vol * val);
 };
 
 
@@ -377,10 +377,10 @@ Penvelope (horgand_synth_t * s, int *note_active, int gate, float t, int nota)
 
   if ((gate) || (s->pedal))
     {
-      if (t > s->a[0].p_attack + s->a[0].p_decay)
+      if (t > s->a.p_attack + s->a.p_decay)
 	return 0.0f;
-      if (t > s->a[0].p_attack)
-	return (1.0 - (t - s->a[0].p_attack) * s->u_p_decay);
+      if (t > s->a.p_attack)
+	return (1.0 - (t - s->a.p_attack) * s->u_p_decay);
       return (t * s->u_p_attack);
     }
   else
@@ -401,11 +401,11 @@ Jenvelope (horgand_synth_t * s, int *note_active, int gate, float t, int nota)
 
   if (gate)
     {
-      if (t > s->a[0].attack + s->a[0].decay)
-	return (s->a[0].sustain);
-      if (t > s->a[0].attack)
+      if (t > s->a.attack + s->a.decay)
+	return (s->a.sustain);
+      if (t > s->a.attack)
 	return (1.0 -
-		(1.0 - s->a[0].sustain) * (t - s->a[0].attack) * s->u_decay);
+		(1.0 - s->a.sustain) * (t - s->a.attack) * s->u_decay);
 
       return (t * s->u_attack);
     }
@@ -439,10 +439,10 @@ Jenvelope (horgand_synth_t * s, int *note_active, int gate, float t, int nota)
 
       else
 	{
-	  if (s->a[0].sustain != 0)
-	    return (s->a[0].sustain);
+	  if (s->a.sustain != 0)
+	    return (s->a.sustain);
 	  else
-	    return (1.0 - (t - s->a[0].attack) * s->u_decay);
+	    return (1.0 - (t - s->a.attack) * s->u_decay);
 	}
     }
 
@@ -460,12 +460,12 @@ Pitch_LFO (horgand_synth_t * s, float t)
 
   float x, out;
 
-  if (t * 20 < s->a[0].Pitch_LFO_Delay)
+  if (t * 20 < s->a.Pitch_LFO_Delay)
     return (0.0f);
 
-  x = fmodf (s->a[0].Pitch_LFO_Speed * t, 1.0);
+  x = fmodf (s->a.Pitch_LFO_Speed * t, 1.0);
 
-  out = NFsin (s, s->a[0].LFO_Wave, x * D_PI) * s->LFO_Frequency;
+  out = NFsin (s, s->a.LFO_Wave, x * D_PI) * s->LFO_Frequency;
 
   return (out);
 
@@ -481,7 +481,7 @@ Get_Partial (horgand_synth_t * s, int nota)
   float partial = 0;
   float freq_note = 0;
 
-  l = s->note[nota] + s->transpose + s->a[0].organ_transpose;
+  l = s->note[nota] + s->transpose + s->a.organ_transpose;
   freq_note =
     (s->pitch >
      0) ? s->h[l].f2 + (s->h[l].f3 - s->h[l].f2) * s->pitch : s->h[l].f2 +
@@ -500,7 +500,7 @@ Calc_LFO_Frequency (horgand_synth_t * s)
 {
 
   s->LFO_Frequency =
-    s->a[0].modulation * s->a[0].LFOpitch * s->D_PI_to_SAMPLE_RATE*.5;
+    s->a.modulation * s->a.LFOpitch * s->D_PI_to_SAMPLE_RATE*.5;
 
 };
 
@@ -513,6 +513,7 @@ NFsin (horgand_synth_t * s, int i, float x)
 
 
   long int k = F2I (x * 1000.0);
+
 
   if (i == 1)
     return (s->lsin[k]);
@@ -556,8 +557,8 @@ Alg1s (horgand_synth_t * s, int nframes)
   float Click_Env = 0.0f;
   float m_partial;
 
-  memset (s->bufl, 0, sizeof(float) * 8192);
-  memset (s->bufr, 0, sizeof(float) * 8192);
+  memset (s->bufl, 0, sizeof(float) * nframes);
+  memset (s->bufr, 0, sizeof(float) * nframes);
     
  
   for (l2 = 0; l2 < POLY; l2++)
@@ -583,7 +584,7 @@ Alg1s (horgand_synth_t * s, int nframes)
 			   s->env_time[l2], l2);
 	      s->LFO_Volume = Pitch_LFO (s, s->env_time[l2]);
 
-	      if (s->a[0].Click)
+	      if (s->a.Click)
 		{
 		  Click_Env =
 		    Cenvelope (s, &s->note_active[l2], s->gate[l2],
@@ -599,25 +600,26 @@ Alg1s (horgand_synth_t * s, int nframes)
 		      Click_TVol =
 			Click_Env * s->velocity[l2] * s->organ_master;
 		      Am_Click =
-			s->a[0].Click_Vol1 * Click_TVol * NFsin (s, 3,
+			s->a.Click_Vol1 * Click_TVol * NFsin (s, 3,
 								 s->dcphi
 								 [l2]);
 		      Am_Click +=
-			s->a[0].Click_Vol2 * Click_TVol * NFsin (s, 3,
+			s->a.Click_Vol2 * Click_TVol * NFsin (s, 3,
 								 s->dcphi2
 								 [l2]);
 		      s->bufl[l1] += Am_Click;
 		      s->bufr[l1] += Am_Click;
 		    }
 		}
+		
 	      for (i = 1; i <= 10; i++)
 		{
 
-		  if (s->a[0].Operator[i].marimba == 0)
+		  if (s->a.Operator[i].marimba == 0)
 		    Env_Vol =
-		      s->Envelope_Volume[l2] * s->a[0].Operator[i].con1;
+		      s->Envelope_Volume[l2] * s->a.Operator[i].con1;
 		  else
-		    Env_Vol = s->Perc_Volume[l2] * s->a[0].Operator[i].con1;
+		    Env_Vol = s->Perc_Volume[l2] * s->a.Operator[i].con1;
 
 		  if (Env_Vol > 0.0f)
 		    {
@@ -652,13 +654,13 @@ Alg1s (horgand_synth_t * s, int nframes)
 
 
 
-  if (s->a[0].E_Chorus_On)
+  if (s->a.E_Chorus_On)
     Effect_Chorus (s, nframes);
-  if (s->a[0].E_Rotary_On)
+  if (s->a.E_Rotary_On)
     Effect_Rotary (s, nframes);
-  if (s->a[0].E_Delay_On)
+  if (s->a.E_Delay_On)
     Effect_Delay (s, nframes);
-  if (s->a[0].E_Reverb_On)
+  if (s->a.E_Reverb_On)
     Effect_Reverb (s, nframes);
   Write_Buffer_Effects (s, nframes);
 

@@ -118,9 +118,16 @@ thread1 (void *arg)
                     
         }
 
+      if (gui.Pexit)
+        {
+        gui.Pexit=0;
+        lo_send (m_host, osc_exiting_path, "");
+        exit(0);        
+        }
+
+
     }
 
-  lo_send (m_host, osc_exiting_path, "");
 
 };
 
@@ -384,7 +391,7 @@ quit_handler (const char *path, const char *types, lo_arg ** argv,
 {
 
   gui.Pexitprogram = 1;
-  lo_send (m_host, osc_exiting_path, "");
+  lo_send (m_host, osc_quit_path, "");
   exit(0);
   return 0;
 
@@ -397,6 +404,7 @@ exiting_handler (const char *path, const char *types, lo_arg ** argv,
 
   gui.Pexitprogram = 1;
   lo_send (m_host, osc_exiting_path, "");
+  exit(0);
   return 0;
 
 

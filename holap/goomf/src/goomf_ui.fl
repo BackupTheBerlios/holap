@@ -149,9 +149,11 @@ return i;} {}
   }
 } 
 
-class goomf_ui {open selected
+class goomf_ui {open
 } {
   decl {int Pexitprogram;} {public
+  }
+  decl {int Pexit;} {public
   }
   decl {int ready;} {public
   }
@@ -225,10 +227,11 @@ ui_win->show();
 void * v=MT;
 Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   }
-  Function {make_window()} {} {
+  Function {make_window()} {open
+  } {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;}
-      xywh {528 81 500 580} type Double color 137 hide
+      callback {Pexit=1;} selected
+      xywh {321 265 500 580} type Double color 137 visible
     } {
       Fl_Menu_Bar {} {open
         xywh {0 0 500 25} box BORDER_BOX color 138 selection_color 4 labelsize 18 labelcolor 7 textsize 18

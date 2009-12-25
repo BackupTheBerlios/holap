@@ -160,6 +160,8 @@ class horgand_ui {} {
   }
   decl {int D_Tune_c;} {public
   }
+  decl {int Pexit;} {public
+  }
   decl {int Pexitprogram;} {public
   }
   decl {char uBankFilename[255];} {public
@@ -173,12 +175,13 @@ ui_win->xclass("horgand-dssi");
 ready=1;
 ui_win->show();
 void * v=MT;
-Fl::add_timeout(1.0 * 0.04,tick,v);} {}
+Fl::add_timeout(1.0 * 0.04,tick,v);} {selected
+    }
   }
   Function {make_window()} {} {
     Fl_Window ui_win {
-      callback {Pexitprogram=1;} selected
-      xywh {1564 97 330 280} type Double color 147 visible
+      callback {Pexit=1;}
+      xywh {1557 90 330 280} type Double color 147 visible
     } {
       Fl_Box {} {
         image {horgand128.xpm} xywh {170 49 165 116} labelsize 18

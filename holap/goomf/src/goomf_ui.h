@@ -36,6 +36,7 @@ public:
 class goomf_ui {
 public:
   int Pexitprogram; 
+  int Pexit; 
   int ready; 
   int op; 
   int cop; 

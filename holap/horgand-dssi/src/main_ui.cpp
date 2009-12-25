@@ -84,9 +84,17 @@ thread1 (void *arg)
 	  gui.D_Tune_c = 0;
 	}
 
+       if(gui.Pexit) 
+       {
+       gui.Pexit= 0;
+       lo_send (m_host, osc_exiting_path, "");
+       exit(0);
+       }
+       
+    
     }
 
-  lo_send (m_host, osc_exiting_path, "");
+  lo_send (m_host, osc_quit_path, "");
 
 };
 
@@ -256,7 +264,7 @@ quit_handler (const char *path, const char *types, lo_arg ** argv,
 {
 
   gui.Pexitprogram = 1;
-  lo_send (m_host, osc_exiting_path, "");
+  lo_send (m_host, osc_quit_path, "");
   exit(0);
   return 0;
 
@@ -266,12 +274,10 @@ int
 exiting_handler (const char *path, const char *types, lo_arg ** argv,
 		 int argc, void *data, void *user_data)
 {
-
   gui.Pexitprogram = 1;
-  lo_send (m_host, osc_exiting_path, "");
+  lo_send (m_host, osc_quit_path, "");
+  exit(0);
   return 0;
-
-
 }
 
 int
@@ -333,6 +339,7 @@ main (int argc, char **argv)
   int done = 0;
 
   funcion = 0;
+  gui.Pexit = 0;
   gui.Pexitprogram = 0;
   gui.ready = 0;
   gui.D_Vol_c = 0;

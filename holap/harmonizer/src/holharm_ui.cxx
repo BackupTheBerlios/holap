@@ -111,7 +111,7 @@ return i;
 }
 
 void holharm_ui::cb_ui_win_i(Fl_Double_Window*, void*) {
-  Pexitprogram=1;
+  Pexit=1;
 }
 void holharm_ui::cb_ui_win(Fl_Double_Window* o, void* v) {
   ((holharm_ui*)(o->user_data()))->cb_ui_win_i(o,v);

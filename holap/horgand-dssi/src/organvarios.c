@@ -33,7 +33,7 @@ New_Bank (horgand_synth_t * s)
 
   New (s);
   for (j = 1; j <= 32; j++)
-    s->Banco[j] = s->a[0];
+    s->Banco[j] = s->a;
 
 };
 
@@ -47,106 +47,106 @@ New (horgand_synth_t * s)
 
   for (i = 1; i <= 10; i++)
     {
-      s->a[0].Operator[i].harmonic_fine = 0.0;
-      s->a[0].Operator[i].volumen = 0.0;
-      s->a[0].Operator[i].marimba = 0;
-      s->a[0].Operator[i].wave = 1;
+      s->a.Operator[i].harmonic_fine = 0.0;
+      s->a.Operator[i].volumen = 0.0;
+      s->a.Operator[i].marimba = 0;
+      s->a.Operator[i].wave = 1;
     }
 
-  s->a[0].Operator[1].harmonic = 1;
-  s->a[0].Operator[2].harmonic = 3;
-  s->a[0].Operator[3].harmonic = 4;
-  s->a[0].Operator[4].harmonic = 5;
-  s->a[0].Operator[5].harmonic = 7;
-  s->a[0].Operator[6].harmonic = 8;
-  s->a[0].Operator[7].harmonic = 11;
-  s->a[0].Operator[8].harmonic = 14;
-  s->a[0].Operator[9].harmonic = 19;
-  s->a[0].Operator[10].harmonic = 22;
+  s->a.Operator[1].harmonic = 1;
+  s->a.Operator[2].harmonic = 3;
+  s->a.Operator[3].harmonic = 4;
+  s->a.Operator[4].harmonic = 5;
+  s->a.Operator[5].harmonic = 7;
+  s->a.Operator[6].harmonic = 8;
+  s->a.Operator[7].harmonic = 11;
+  s->a.Operator[8].harmonic = 14;
+  s->a.Operator[9].harmonic = 19;
+  s->a.Operator[10].harmonic = 22;
 
 
-  s->a[0].E_Delay_On = 0;
-  s->a[0].Delay_Delay = 0;
-  s->a[0].Delay_Volume = 0;
-  s->a[0].Pitch_LFO_Speed = 0;
-  s->a[0].Pitch_LFO_Delay = 0;
-  s->a[0].Rotary_LFO_Speed = 0;
-  s->a[0].LFOpitch = 0;
-  s->a[0].modulation = .99;
-  s->a[0].organ_transpose = 0;
-  s->a[0].E_Rotary_On = 0;
+  s->a.E_Delay_On = 0;
+  s->a.Delay_Delay = 0;
+  s->a.Delay_Volume = 0;
+  s->a.Pitch_LFO_Speed = 0;
+  s->a.Pitch_LFO_Delay = 0;
+  s->a.Rotary_LFO_Speed = 0;
+  s->a.LFOpitch = 0;
+  s->a.modulation = .99;
+  s->a.organ_transpose = 0;
+  s->a.E_Rotary_On = 0;
   s->pitch = 0;
   s->pedal = 0;
   s->Master_Volume = 0.70;
-  s->a[0].Organ_Master_Volume = 0.70;
-  s->a[0].detune = 0;
-  s->a[0].scaling = 0;
-  s->a[0].Chorus_Volume = 0.60;
-  s->a[0].E_Chorus_On = 0;
-  s->a[0].Chorus_LFO_Speed = 0;
-  s->a[0].Chorus_LFO_Amplitude = 0;
-  s->a[0].Chorus_Delay = 0;
-  s->a[0].Reverb_Preset = 1;
-  s->a[0].E_Reverb_On = 0;
-  bzero (s->a[0].Name, sizeof (s->a[0].Name));
-  s->a[0].nombre = s->a[0].Name;
-  s->a[0].Normalize[1] = 1.0;
-  s->a[0].Normalize[2] = 1.0;
-  s->a[0].Normalize[3] = 1.0;
-  s->a[0].Normalize[4] = 1.0;
-  s->a[0].Normalize[5] = 1.0;
-  s->a[0].Normalize[6] = 1.0;
-  s->a[0].Normalize[7] = 1.0;
-  s->a[0].Normalize[8] = 1.0;
-  s->a[0].Normalize[9] = .22;
-  s->a[0].Normalize[10] = .2;
-  s->a[0].Normalize[11] = .166;
-  s->a[0].Normalize[12] = .142;
-  s->a[0].Normalize[13] = .133;
-  s->a[0].Normalize[14] = .125;
-  s->a[0].Normalize[15] = .111;
-  s->a[0].Normalize[16] = .1;
-  s->a[0].Normalize[17] = 0.095;
-  s->a[0].Normalize[18] = 0.090;
-  s->a[0].Normalize[19] = 0.083;
-  s->a[0].Normalize[20] = 0.076;
-  s->a[0].Normalize[21] = 0.071;
-  s->a[0].Normalize[22] = .066;
-  s->a[0].attack = 0.003;
-  s->u_attack = 1.0 / s->a[0].attack;
-  s->a[0].decay = 0.28;
-  s->u_decay = 1.0 / s->a[0].decay;
-  s->a[0].sustain = 0.8;
-  s->a[0].p_attack = 0.0002;
-  s->u_p_attack = 1.0 / s->a[0].p_attack;
-  s->a[0].p_decay = 0.077;
-  s->u_p_decay = 1.0 / s->a[0].p_decay;
+  s->a.Organ_Master_Volume = 0.70;
+  s->a.detune = 0;
+  s->a.scaling = 0;
+  s->a.Chorus_Volume = 0.60;
+  s->a.E_Chorus_On = 0;
+  s->a.Chorus_LFO_Speed = 0;
+  s->a.Chorus_LFO_Amplitude = 0;
+  s->a.Chorus_Delay = 0;
+  s->a.Reverb_Preset = 1;
+  s->a.E_Reverb_On = 0;
+  bzero (s->a.Name, sizeof (s->a.Name));
+  s->a.nombre = s->a.Name;
+  s->a.Normalize[1] = 1.0;
+  s->a.Normalize[2] = 1.0;
+  s->a.Normalize[3] = 1.0;
+  s->a.Normalize[4] = 1.0;
+  s->a.Normalize[5] = 1.0;
+  s->a.Normalize[6] = 1.0;
+  s->a.Normalize[7] = 1.0;
+  s->a.Normalize[8] = 1.0;
+  s->a.Normalize[9] = .22;
+  s->a.Normalize[10] = .2;
+  s->a.Normalize[11] = .166;
+  s->a.Normalize[12] = .142;
+  s->a.Normalize[13] = .133;
+  s->a.Normalize[14] = .125;
+  s->a.Normalize[15] = .111;
+  s->a.Normalize[16] = .1;
+  s->a.Normalize[17] = 0.095;
+  s->a.Normalize[18] = 0.090;
+  s->a.Normalize[19] = 0.083;
+  s->a.Normalize[20] = 0.076;
+  s->a.Normalize[21] = 0.071;
+  s->a.Normalize[22] = .066;
+  s->a.attack = 0.003;
+  s->u_attack = 1.0 / s->a.attack;
+  s->a.decay = 0.28;
+  s->u_decay = 1.0 / s->a.decay;
+  s->a.sustain = 0.8;
+  s->a.p_attack = 0.0002;
+  s->u_p_attack = 1.0 / s->a.p_attack;
+  s->a.p_decay = 0.077;
+  s->u_p_decay = 1.0 / s->a.p_decay;
   s->p_release = 0.1;
   s->u_p_release = 1.0 / s->p_release;
-  s->a[0].c_attack = 0.0001;
-  s->a[0].c_decay = 0.003;
-  s->u_c_attack = 1.0 / s->a[0].c_attack;
-  s->u_c_decay = 1.0 / s->a[0].c_decay;
-  s->a[0].Click_Vol = .2;
-  s->a[0].Click2_Vol = .09;
-  s->a[0].Click_Vol1 = .23;
-  s->a[0].Click_Vol2 = .04;
-  s->a[0].Click_Freq = 360;
-  s->a[0].Click_Freq2 = 6712;
-  s->a[0].Click = 0;
-  s->a[0].Rotary_LFO_Amplitude = 9980;
-  s->a[0].Speed_Sync = 0;
-  s->a[0].LFO_Wave = 1;
-  s->a[0].Chorus_Wave = 1;
-  s->a[0].Rotary_Wave = 1;
+  s->a.c_attack = 0.0001;
+  s->a.c_decay = 0.003;
+  s->u_c_attack = 1.0 / s->a.c_attack;
+  s->u_c_decay = 1.0 / s->a.c_decay;
+  s->a.Click_Vol = .2;
+  s->a.Click2_Vol = .09;
+  s->a.Click_Vol1 = .23;
+  s->a.Click_Vol2 = .04;
+  s->a.Click_Freq = 360;
+  s->a.Click_Freq2 = 6712;
+  s->a.Click = 0;
+  s->a.Rotary_LFO_Amplitude = 9980;
+  s->a.Speed_Sync = 0;
+  s->a.LFO_Wave = 1;
+  s->a.Chorus_Wave = 1;
+  s->a.Rotary_Wave = 1;
 
 }
 
 void
 Put_Combi_t (horgand_synth_t * s, int i)
 {
-  s->a[0] = s->Banco[i];
-  PutReverb (s, s->a[0].Reverb_Preset);
+  s->a = s->Banco[i];
+  PutReverb (s, s->a.Reverb_Preset);
   Calc_LFO_Frequency (s);
   Calc_Chorus_LFO_Frequency (s);
   syncadsr (s);
@@ -164,12 +164,12 @@ syncadsr (horgand_synth_t * s)
   memset (s->dcphi, 0, sizeof s->dcphi);
 
 
-  s->u_attack = 1.0 / s->a[0].attack;
-  s->u_decay = 1.0 / s->a[0].decay;
-  s->u_p_attack = 1.0 / s->a[0].p_attack;
-  s->u_p_decay = 1.0 / s->a[0].p_decay;
-  s->u_c_attack = 1.0 / s->a[0].c_attack;
-  s->u_c_decay = 1.0 / s->a[0].c_decay;
+  s->u_attack = 1.0 / s->a.attack;
+  s->u_decay = 1.0 / s->a.decay;
+  s->u_p_attack = 1.0 / s->a.p_attack;
+  s->u_p_decay = 1.0 / s->a.p_decay;
+  s->u_c_attack = 1.0 / s->a.c_attack;
+  s->u_c_decay = 1.0 / s->a.c_decay;
 
   s->total_vol = .1;
 
@@ -180,15 +180,15 @@ syncadsr (horgand_synth_t * s)
       s->p_op[i] = pitch_Operator (s, i, 0);
       s->p_op2[i] = pitch_Operator2 (s, i, 0);
       s->total_vol +=
-	s->a[0].Operator[i].volumen *
-	s->a[0].Normalize[s->a[0].Operator[i].harmonic];
-      s->k[i] = s->a[0].Operator[i].wave;
+	s->a.Operator[i].volumen *
+	s->a.Normalize[s->a.Operator[i].harmonic];
+      s->k[i] = s->a.Operator[i].wave;
     }
 
-  s->organ_master = s->a[0].Organ_Master_Volume / s->total_vol;
+  s->organ_master = s->a.Organ_Master_Volume / s->total_vol;
 
-  s->Click_sFreq = s->a[0].Click_Freq * s->D_PI_to_SAMPLE_RATE;
-  s->Click_2sFreq = s->a[0].Click_Freq2 * s->D_PI_to_SAMPLE_RATE;
+  s->Click_sFreq = s->a.Click_Freq * s->D_PI_to_SAMPLE_RATE;
+  s->Click_2sFreq = s->a.Click_Freq2 * s->D_PI_to_SAMPLE_RATE;
 
 
 

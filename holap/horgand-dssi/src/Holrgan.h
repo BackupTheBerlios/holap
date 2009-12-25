@@ -118,7 +118,7 @@ typedef struct
   LADSPA_Data *vol;
   LADSPA_Data *tune;
   
-  Todolo a[1];
+  Todolo a;
   freqVarios f[11];
   Menoscalculos h[192];
   int k[11];

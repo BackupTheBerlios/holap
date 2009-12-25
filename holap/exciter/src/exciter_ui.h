@@ -56,6 +56,7 @@ public:
   int D_Mag10_c; 
   int D_Freq_c; 
   int Pexitprogram; 
+  int Pexit; 
   holharm_ui();
   Fl_Double_Window* make_window();
   Fl_Double_Window *ui_win;

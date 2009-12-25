@@ -55,7 +55,7 @@ SSE="-msse -mfpmath=sse"
 fi
 
 
-CFLAGS="-c -pipe $SSE -ffast-math -O2 -Wall -combine -ffunction-sections -fomit-frame-pointer $MODULE_CFLAGS"
+CFLAGS="-O2 $SSE -ffast-math  -Wall -pipe -combine -ffunction-sections -fomit-frame-pointer $MODULE_CFLAGS"
 LDFLAGS="$MODULE_LIBS" 
 
 

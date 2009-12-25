@@ -141,12 +141,9 @@ horgand_select_program (LADSPA_Handle handle, unsigned long bank,
 
 
   horgand_synth_t *synth = (horgand_synth_t *) handle;
-
   if (program > 32)
     return;
-
   Put_Combi_t (synth, program);
-
 
 }
 
@@ -165,8 +162,6 @@ instantiatehorgand (const LADSPA_Descriptor * descriptor,
   synth->SAMPLE_RATE = (unsigned int) s_rate;
   init_vars (synth);
   Adjust_Audio (synth);
-
-
   sprintf (synth->BankFilename, "%s/Default.horeb", DATADIR);
   loadbank(synth, synth->BankFilename);
 
@@ -196,6 +191,7 @@ static void
 runhorgandWrapper (LADSPA_Handle instance, unsigned long sample_count)
 {
   runhorgand (instance, sample_count, NULL, 0);
+  
 }
 
 
@@ -205,6 +201,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 	    snd_seq_event_t * events, unsigned long event_count)
 {
   horgand_synth_t *synth = (horgand_synth_t *) instance;
+
   LADSPA_Data *const outputl = synth->output_l;
   LADSPA_Data *const outputr = synth->output_r;
   LADSPA_Data vol = *(synth->vol);
@@ -234,7 +231,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 
 	      if (events[event_pos].data.control.param == 1)
 		{
-		  synth->a[0].modulation =(float)
+		  synth->a.modulation =(float)
 		    events[event_pos].data.control.value / 128;
 		  Calc_LFO_Frequency (synth);
 		  Calc_Chorus_LFO_Frequency (synth);
@@ -249,7 +246,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 		}
 	      if (events[event_pos].data.control.param == 93)
 		{
-		  synth->a[0].Chorus_Volume =
+		  synth->a.Chorus_Volume =
 		    (float) events[event_pos].data.control.value / 128.0;
 		  break;
 		}
@@ -285,7 +282,7 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 			  synth->note[l1] = synth->rnote[l1];
 			  synth->velocity[l1] =
 			    events[event_pos].data.note.velocity / 126.0;
-			  if (synth->a[0].scaling)
+			  if (synth->a.scaling)
 			    synth->velocity[l1] =
 			      Get_Keyb_Level_Scaling (synth, l1);
 			  if (synth->velocity[l1] > 1.0)

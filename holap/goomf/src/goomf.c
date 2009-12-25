@@ -491,7 +491,7 @@ rungoomf (LADSPA_Handle instance, unsigned long sample_count,
 
 	case SND_SEQ_EVENT_PGMCHANGE:
 
-	  if (events[event_pos].data.control.value < 33)
+	  if (events[event_pos].data.control.value < 80)
 	    synth->preset = events[event_pos].data.control.value;
 	  break;
 

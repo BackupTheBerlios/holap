@@ -156,8 +156,7 @@ return i;} {}
   }
 } 
 
-class holharm_ui {open selected
-} {
+class holharm_ui {} {
   decl {int SQuality;} {public
   }
   decl {int D_Vol_c;} {public
@@ -180,6 +179,8 @@ class holharm_ui {open selected
   }
   decl {int D_recocount_c;} {public
   }
+  decl {int Pexit;} {public
+  }
   decl {int Pexitprogram;} {public
   }
   Function {holharm_ui()} {} {
@@ -195,8 +196,8 @@ Fl::add_timeout(1.0 * 0.04,tick,v);} {}
   Function {make_window()} {} {
     Fl_Window ui_win {
       label holharm
-      callback {Pexitprogram=1;}
-      xywh {1834 59 390 322} type Double color 147 hide
+      callback {Pexit=1;} selected
+      xywh {1827 52 390 322} type Double color 147 hide
     } {
       Fl_Box d_osc_label {
         xywh {0 -2 390 22} labelsize 9 labelcolor 3

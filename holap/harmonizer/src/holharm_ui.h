@@ -45,6 +45,7 @@ public:
   int D_Note_c; 
   int D_ChType_c; 
   int D_recocount_c; 
+  int Pexit; 
   int Pexitprogram; 
   holharm_ui();
   Fl_Double_Window* make_window();
