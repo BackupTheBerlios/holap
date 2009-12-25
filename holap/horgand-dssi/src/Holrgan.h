@@ -117,7 +117,7 @@ typedef struct
   LADSPA_Data *output_r;
   LADSPA_Data *vol;
   LADSPA_Data *tune;
-  
+
   Todolo a;
   freqVarios f[11];
   Menoscalculos h[192];
@@ -199,8 +199,6 @@ typedef struct
 
 } horgand_synth_t;
 
-long int lrintf (float x);
-
 float NFsin (horgand_synth_t * s, int i, float x);
 void Alg1s (horgand_synth_t * s, int nframes);
 float Jenvelope (horgand_synth_t * s, int *note_active, int gate, float t,
@@ -235,8 +233,6 @@ void syncadsr (horgand_synth_t * s);
 void Adjust_Audio (horgand_synth_t * s);
 void PutReverb (horgand_synth_t * s, int i);
 void init_vars (horgand_synth_t * s);
-
-
 
 #endif
 

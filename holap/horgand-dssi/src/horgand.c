@@ -209,7 +209,6 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
   unsigned long event_pos = 0;
   int i, l1;
 
-
       while (event_pos < event_count)
 	{
 	  switch (events[event_pos].type)
@@ -331,17 +330,14 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 	  event_pos++;
 	}
 
-      
 
       Alg1s(synth, sample_count);
-
+       
       for (i=0; i<sample_count; i++)
 	{
 	  outputl[i] = synth->bufl[i] * vol;
 	  outputr[i] = synth->bufr[i] * vol;
 	}
-    
-
 
 }
 
