@@ -39,8 +39,8 @@ init_vars (goomf_synth_t * s)
   s->lfol = 0.0f;
 // FM Operator frequencys
 
-  s->lasfreq[0] = 0.5;
-  s->lasfreq[1] = 0.75;
+  s->lasfreq[0] = 2.0;
+  s->lasfreq[1] = 1.2;
   s->lasfreq[2] = 1.0;
   s->lasfreq[3] = 1.5;
   s->lasfreq[4] = 2.0;
@@ -590,7 +590,7 @@ Alg1s (goomf_synth_t * s, int nframes)
 	      if (algo==1)
 	      s->f[i+1].dphi2 = m_partial * (pitch_Operator2 (s, i+1) + pLFO);
 	      else 
-	      s->f[i+1].dphi2 = s->f[i].dphi2 * (pitch_Operator (s, i+1) + pLFO);
+	      s->f[i+1].dphi2 = s->f[i].dphi2 * (pitch_Operator2 (s, i+1) + pLFO);
 	      if (s->f[i+1].dphi2 > D_PI)
 		s->f[i+1].dphi2 -= D_PI;
 	      s->f[i+1].phi2 += s->f[i+1].dphi2;
