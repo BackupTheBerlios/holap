@@ -208,14 +208,14 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 
   unsigned long event_pos = 0;
   int i, l1;
-
+   
       while (event_pos < event_count)
 	{
 	  switch (events[event_pos].type)
 	    {
 	    case SND_SEQ_EVENT_PITCHBEND:
 	      synth->pitch =
-		(float) events[event_pos].data.control.value / 8192.0;
+		(float) events[event_pos].data.control.value / 8192.0f;
 	      break;
 
 	    case SND_SEQ_EVENT_PGMCHANGE:
@@ -240,19 +240,19 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 	      if (events[event_pos].data.control.param == 91)
 		{
 		  synth->Reverb_Volume =
-		    (float) events[event_pos].data.control.value / 256.0;
+		    (float) events[event_pos].data.control.value / 256.0f;
 		  break;
 		}
 	      if (events[event_pos].data.control.param == 93)
 		{
 		  synth->a.Chorus_Volume =
-		    (float) events[event_pos].data.control.value / 128.0;
+		    (float) events[event_pos].data.control.value / 128.0f;
 		  break;
 		}
 	      if (events[event_pos].data.control.param == 7)
 		{
 		  synth->Master_Volume =
-		    (float) events[event_pos].data.control.value / 128.0;
+		    (float) events[event_pos].data.control.value / 128.0f;
 		  break;
 		}
 	      if (events[event_pos].data.control.param == 64)
@@ -279,12 +279,12 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 			{
 			  synth->note[l1] = events[event_pos].data.note.note;
 			  synth->velocity[l1] =
-			    events[event_pos].data.note.velocity / 126.0;
+			    events[event_pos].data.note.velocity / 126.0f;
 			  if (synth->a.scaling)
 			    synth->velocity[l1] =
 			      Get_Keyb_Level_Scaling (synth, l1);
-			  if (synth->velocity[l1] > 1.0)
-			    synth->velocity[l1] = 1.0;
+			  if (synth->velocity[l1] > 1.0f)
+			    synth->velocity[l1] = 1.0f;
 			  synth->env_time[l1] = 0;
 			  synth->gate[l1] = 1;
 			  synth->note_active[l1] = 1;
@@ -330,14 +330,19 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 	  event_pos++;
 	}
 
-
       Alg1s(synth, sample_count);
        
       for (i=0; i<sample_count; i++)
 	{
+
 	  outputl[i] = synth->bufl[i] * vol;
 	  outputr[i] = synth->bufr[i] * vol;
+
 	}
+
+
+
+
 
 }
 

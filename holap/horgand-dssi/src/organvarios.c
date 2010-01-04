@@ -72,16 +72,16 @@ New (horgand_synth_t * s)
   s->a.Pitch_LFO_Delay = 0;
   s->a.Rotary_LFO_Speed = 0;
   s->a.LFOpitch = 0;
-  s->a.modulation = .99;
+  s->a.modulation = .99f;
   s->a.organ_transpose = 0;
   s->a.E_Rotary_On = 0;
   s->pitch = 0;
   s->pedal = 0;
-  s->Master_Volume = 0.70;
-  s->a.Organ_Master_Volume = 0.70;
+  s->Master_Volume = 0.70f;
+  s->a.Organ_Master_Volume = 0.70f;
   s->a.detune = 0;
   s->a.scaling = 0;
-  s->a.Chorus_Volume = 0.60;
+  s->a.Chorus_Volume = 0.60f;
   s->a.E_Chorus_On = 0;
   s->a.Chorus_LFO_Speed = 0;
   s->a.Chorus_LFO_Amplitude = 0;
@@ -90,47 +90,47 @@ New (horgand_synth_t * s)
   s->a.E_Reverb_On = 0;
   bzero (s->a.Name, sizeof (s->a.Name));
   s->a.nombre = s->a.Name;
-  s->a.Normalize[1] = 1.0;
-  s->a.Normalize[2] = 1.0;
-  s->a.Normalize[3] = 1.0;
-  s->a.Normalize[4] = 1.0;
-  s->a.Normalize[5] = 1.0;
-  s->a.Normalize[6] = 1.0;
-  s->a.Normalize[7] = 1.0;
-  s->a.Normalize[8] = 1.0;
-  s->a.Normalize[9] = .22;
-  s->a.Normalize[10] = .2;
-  s->a.Normalize[11] = .166;
-  s->a.Normalize[12] = .142;
-  s->a.Normalize[13] = .133;
-  s->a.Normalize[14] = .125;
-  s->a.Normalize[15] = .111;
-  s->a.Normalize[16] = .1;
-  s->a.Normalize[17] = 0.095;
-  s->a.Normalize[18] = 0.090;
-  s->a.Normalize[19] = 0.083;
-  s->a.Normalize[20] = 0.076;
-  s->a.Normalize[21] = 0.071;
-  s->a.Normalize[22] = .066;
-  s->a.attack = 0.003;
-  s->u_attack = 1.0 / s->a.attack;
-  s->a.decay = 0.28;
-  s->u_decay = 1.0 / s->a.decay;
-  s->a.sustain = 0.8;
-  s->a.p_attack = 0.0002;
-  s->u_p_attack = 1.0 / s->a.p_attack;
-  s->a.p_decay = 0.077;
-  s->u_p_decay = 1.0 / s->a.p_decay;
-  s->p_release = 0.1;
-  s->u_p_release = 1.0 / s->p_release;
-  s->a.c_attack = 0.0001;
-  s->a.c_decay = 0.003;
-  s->u_c_attack = 1.0 / s->a.c_attack;
-  s->u_c_decay = 1.0 / s->a.c_decay;
-  s->a.Click_Vol = .2;
-  s->a.Click2_Vol = .09;
-  s->a.Click_Vol1 = .23;
-  s->a.Click_Vol2 = .04;
+  s->a.Normalize[1] = 1.0f;
+  s->a.Normalize[2] = 1.0f;
+  s->a.Normalize[3] = 1.0f;
+  s->a.Normalize[4] = 1.0f;
+  s->a.Normalize[5] = 1.0f;
+  s->a.Normalize[6] = 1.0f;
+  s->a.Normalize[7] = 1.0f;
+  s->a.Normalize[8] = 1.0f;
+  s->a.Normalize[9] = .22f;
+  s->a.Normalize[10] = .2f;
+  s->a.Normalize[11] = .166f;
+  s->a.Normalize[12] = .142f;
+  s->a.Normalize[13] = .133f;
+  s->a.Normalize[14] = .125f;
+  s->a.Normalize[15] = .111f;
+  s->a.Normalize[16] = .1f;
+  s->a.Normalize[17] = 0.095f;
+  s->a.Normalize[18] = 0.090f;
+  s->a.Normalize[19] = 0.083f;
+  s->a.Normalize[20] = 0.076f;
+  s->a.Normalize[21] = 0.071f;
+  s->a.Normalize[22] = .066f;
+  s->a.attack = 0.003f;
+  s->u_attack = 1.0f / s->a.attack;
+  s->a.decay = 0.28f;
+  s->u_decay = 1.0f / s->a.decay;
+  s->a.sustain = 0.8f;
+  s->a.p_attack = 0.0002f;
+  s->u_p_attack = 1.0f / s->a.p_attack;
+  s->a.p_decay = 0.077f;
+  s->u_p_decay = 1.0f / s->a.p_decay;
+  s->p_release = 0.1f;
+  s->u_p_release = 1.0f / s->p_release;
+  s->a.c_attack = 0.0001f;
+  s->a.c_decay = 0.003f;
+  s->u_c_attack = 1.0f / s->a.c_attack;
+  s->u_c_decay = 1.0f / s->a.c_decay;
+  s->a.Click_Vol = .2f;
+  s->a.Click2_Vol = .09f;
+  s->a.Click_Vol1 = .23f;
+  s->a.Click_Vol2 = .04f;
   s->a.Click_Freq = 360;
   s->a.Click_Freq2 = 6712;
   s->a.Click = 0;
@@ -164,14 +164,14 @@ syncadsr (horgand_synth_t * s)
   memset (s->dcphi, 0, sizeof s->dcphi);
 
 
-  s->u_attack = 1.0 / s->a.attack;
-  s->u_decay = 1.0 / s->a.decay;
-  s->u_p_attack = 1.0 / s->a.p_attack;
-  s->u_p_decay = 1.0 / s->a.p_decay;
-  s->u_c_attack = 1.0 / s->a.c_attack;
-  s->u_c_decay = 1.0 / s->a.c_decay;
+  s->u_attack = 1.0f / s->a.attack;
+  s->u_decay = 1.0f / s->a.decay;
+  s->u_p_attack = 1.0f / s->a.p_attack;
+  s->u_p_decay = 1.0f / s->a.p_decay;
+  s->u_c_attack = 1.0f / s->a.c_attack;
+  s->u_c_decay = 1.0f / s->a.c_decay;
 
-  s->total_vol = .1;
+  s->total_vol = .1f;
 
 
   for (i = 1; i < 11; i++)
@@ -208,50 +208,50 @@ PutReverb (horgand_synth_t * s, int i)
     {
     case 1:
       s->Reverb_Time = 16;
-      s->Reverb_Volume = 0.65;
-      s->Reverb_Diffussion = 0.14;
+      s->Reverb_Volume = 0.65f;
+      s->Reverb_Diffussion = 0.14f;
 
       break;
 
     case 2:
       s->Reverb_Time = 18;
-      s->Reverb_Volume = 0.65;
-      s->Reverb_Diffussion = 0.14;
+      s->Reverb_Volume = 0.65f;
+      s->Reverb_Diffussion = 0.14f;
       break;
 
     case 3:
       s->Reverb_Time = 20;
-      s->Reverb_Volume = 0.65;
-      s->Reverb_Diffussion = 0.16;
+      s->Reverb_Volume = 0.65f;
+      s->Reverb_Diffussion = 0.16f;
       break;
 
     case 4:
       s->Reverb_Time = 22;
-      s->Reverb_Volume = 0.65;
-      s->Reverb_Diffussion = 0.16;
+      s->Reverb_Volume = 0.65f;
+      s->Reverb_Diffussion = 0.16f;
       break;
 
     case 5:
       s->Reverb_Time = 24;
-      s->Reverb_Volume = 0.65;
-      s->Reverb_Diffussion = 0.16;
+      s->Reverb_Volume = 0.65f;
+      s->Reverb_Diffussion = 0.16f;
       break;
 
     case 6:
       s->Reverb_Time = 26;
-      s->Reverb_Volume = 0.65;
-      s->Reverb_Diffussion = 0.16;
+      s->Reverb_Volume = 0.65f;
+      s->Reverb_Diffussion = 0.16f;
 
     case 7:
       s->Reverb_Time = 30;
-      s->Reverb_Volume = 0.65;
-      s->Reverb_Diffussion = 0.16;
+      s->Reverb_Volume = 0.65f;
+      s->Reverb_Diffussion = 0.16f;
       break;
 
     case 8:
       s->Reverb_Time = 34;
-      s->Reverb_Volume = 0.65;
-      s->Reverb_Diffussion = 0.16;
+      s->Reverb_Volume = 0.65f;
+      s->Reverb_Diffussion = 0.16f;
       break;
     }
 

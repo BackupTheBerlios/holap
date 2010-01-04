@@ -68,9 +68,9 @@ Effect_Chorus (horgand_synth_t * s, int nframes)
   long int elkel, elkel2;
   float ldelay1, rdelay1, dell, valorl;
   int i = 0;
-  float chor_vol = s->a.Chorus_Volume * .5;
+  float chor_vol = s->a.Chorus_Volume * .5f;
   float dllo;
-  float real_delay = (s->a.Chorus_Delay*s->SAMPLE_RATE *.0003) + ( s->SAMPLE_RATE * .001);
+  float real_delay = (s->a.Chorus_Delay*s->SAMPLE_RATE *.0003f) + ( s->SAMPLE_RATE * .001f);
 
   for (i = 0; i < nframes; i++)
 
@@ -83,13 +83,13 @@ Effect_Chorus (horgand_synth_t * s, int nframes)
       s->ldelay = real_delay + Chorus_LFO(s, &s->Chorus_X_L);
 
       dell = (ldelay1 * (nframes - i) + s->ldelay * i) / nframes;
-      elkel=s->cl_counter - F2I(dell+1.5);
+      elkel=s->cl_counter - F2I(dell+1.5f);
       if (elkel<0) elkel +=8192;
       if (elkel>=8192) elkel -=8192;
       elkel2=elkel-1;
       if (elkel2<0) elkel2 +=8192;
       if (elkel2>=8192) elkel2 -=8192;
-      dllo = 1.0 - fmodf (dell, 1.0);
+      dllo = 1.0f - fmodf (dell, 1.0f);
       valorl = (dllo * s->cldelay[elkel]) + (s->cldelay[elkel2] * (1 - dllo));
       s->bufl[i] += valorl * chor_vol;
       s->cldelay[s->cl_counter] = s->bufl[i];
@@ -99,14 +99,14 @@ Effect_Chorus (horgand_synth_t * s, int nframes)
       s->rdelay =real_delay + Chorus_LFO (s, &s->Chorus_X_R);
       
       dell = (rdelay1 * (nframes - i) + s->rdelay * i) / nframes;
-      elkel=s->cl_counter - F2I(dell+1.5);
+      elkel=s->cl_counter - F2I(dell+1.5f);
       if (elkel<0) elkel +=8192;
       if (elkel>=8192) elkel -=8192;
       elkel2=elkel-1;
       if (elkel2<0) elkel2 +=8192;
       if (elkel2>=8192) elkel2 -=8192;
 
-      dllo = 1.0 - fmodf (dell, 1.0);
+      dllo = 1.0f - fmodf (dell, 1.0f);
       valorl = (dllo * s->crdelay[elkel]) + (s->crdelay[elkel2] * (1 - dllo));
       s->bufr[i] += valorl * chor_vol;
       s->crdelay[s->cl_counter] = s->bufr[i];
@@ -130,7 +130,7 @@ Rotary_LFO (horgand_synth_t * s, float t)
 
   float out;
 
-  s->Rotary_X += s->a.Rotary_LFO_Speed * s->increment*.5;
+  s->Rotary_X += s->a.Rotary_LFO_Speed * s->increment*.5f;
 
   if (s->Rotary_X > 1)
     s->Rotary_X = 0.0f;
@@ -161,7 +161,7 @@ Effect_Rotary (horgand_synth_t * s, int nframes)
     {
 
 
-      val = Rotary_LFO (s, s->Rotary_X)*.5;
+      val = Rotary_LFO (s, s->Rotary_X)*.5f;
 
       l = s->bufl[i];
       r = s->bufr[i];
@@ -199,7 +199,7 @@ Effect_Reverb (horgand_synth_t * s, int nframes)
       accum = stmp[i];
     }
 
-  tmprvol = accum * s->Reverb_Volume * 2.2;
+  tmprvol = accum * s->Reverb_Volume * 2.2f;
 
 
   for (i = 0; i < nframes; i++)
@@ -248,8 +248,8 @@ Effect_Delay (horgand_synth_t * s, int nframes)
 
   voll = 1 - s->Stereo_Side;
   volr = 1 - voll;
-  Delay_Volumel = voll * s->a.Delay_Volume * .5;
-  Delay_Volumer = volr * s->a.Delay_Volume * .5;
+  Delay_Volumel = voll * s->a.Delay_Volume * .5f;
+  Delay_Volumer = volr * s->a.Delay_Volume * .5f;
 
 
   for (i = 0; i < nframes; i++)
@@ -275,12 +275,12 @@ Effect_Delay (horgand_synth_t * s, int nframes)
   switch (s->To_Stereo_Side)
     {
     case 0:
-      s->Stereo_Side += 0.01;
+      s->Stereo_Side += 0.01f;
       if (s->Stereo_Side > 1)
 	s->To_Stereo_Side = 1;
       break;
     case 1:
-      s->Stereo_Side -= 0.01;
+      s->Stereo_Side -= 0.01f;
       if (s->Stereo_Side < 0)
 	s->To_Stereo_Side = 0;
       break;

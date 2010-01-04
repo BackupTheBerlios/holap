@@ -34,39 +34,39 @@ init_vars (horgand_synth_t * s)
   s->rperhis = 65100;
   s->capsg = 0;
   s->cl_counter = 0;
-  s->Master_Volume = 0.70;
+  s->Master_Volume = 0.70f;
 
 // FM Operator frequencys
 
-  s->lasfreq[1] = 0.5;
-  s->lasfreq[2] = 0.75;
-  s->lasfreq[3] = 1.0;
-  s->lasfreq[4] = 1.5;
-  s->lasfreq[5] = 2.0;
-  s->lasfreq[6] = 2.5;
-  s->lasfreq[7] = 3.0;
-  s->lasfreq[8] = 4.0;
-  s->lasfreq[9] = 4.5;
-  s->lasfreq[10] = 5.0;
-  s->lasfreq[11] = 6.0;
-  s->lasfreq[12] = 7.0;
-  s->lasfreq[13] = 7.5;
-  s->lasfreq[14] = 8.0;
-  s->lasfreq[15] = 9.0;
-  s->lasfreq[16] = 10.0;
-  s->lasfreq[17] = 10.5;
-  s->lasfreq[18] = 11.0;
-  s->lasfreq[19] = 12.0;
-  s->lasfreq[20] = 13.0;
-  s->lasfreq[21] = 14.0;
-  s->lasfreq[22] = 16.0;
+  s->lasfreq[1] = 0.5f;
+  s->lasfreq[2] = 0.75f;
+  s->lasfreq[3] = 1.0f;
+  s->lasfreq[4] = 1.5f;
+  s->lasfreq[5] = 2.0f;
+  s->lasfreq[6] = 2.5f;
+  s->lasfreq[7] = 3.0f;
+  s->lasfreq[8] = 4.0f;
+  s->lasfreq[9] = 4.5f;
+  s->lasfreq[10] = 5.0f;
+  s->lasfreq[11] = 6.0f;
+  s->lasfreq[12] = 7.0f;
+  s->lasfreq[13] = 7.5f;
+  s->lasfreq[14] = 8.0f;
+  s->lasfreq[15] = 9.0f;
+  s->lasfreq[16] = 10.0f;
+  s->lasfreq[17] = 10.5f;
+  s->lasfreq[18] = 11.0f;
+  s->lasfreq[19] = 12.0f;
+  s->lasfreq[20] = 13.0f;
+  s->lasfreq[21] = 14.0f;
+  s->lasfreq[22] = 16.0f;
 
   New (s);
 
 
   s->tune = 0;
-  s->release = 0.6;
-  s->u_release = 1.0 / s->release;
+  s->release = 0.6f;
+  s->u_release = 1.0f / s->release;
   s->transpose = 0;
   s->pitch = 0.0f;
   s->pedal = 0;
@@ -74,10 +74,10 @@ init_vars (horgand_synth_t * s)
   s->To_Stereo_Side = 0;
   s->Rotary_X = 0.0f;
   s->Chorus_X_L = 0.0f;
-  s->Chorus_X_R = 0.5;
+  s->Chorus_X_R = 0.5f;
   s->Reverb_Time = 10;
-  s->Reverb_Diffussion = 0.1;
-  s->Reverb_Volume = 0.20;
+  s->Reverb_Diffussion = 0.1f;
+  s->Reverb_Volume = 0.20f;
 
 // Init Reverb Taps 
 
@@ -128,9 +128,9 @@ init_vars (horgand_synth_t * s)
 
   for (i = 1; i <= 192; i++)
     {
-      s->h[i].f1 = 8.1757989156 * expf ((float) (i - 2) * logf (2.0) / 12.0);
-      s->h[i].f2 = 8.1757989156 * expf ((float) (i) * logf (2.0) / 12.0);
-      s->h[i].f3 = 8.1757989156 * expf ((float) (i + 2) * logf (2.0) / 12.0);
+      s->h[i].f1 = 8.1757989156 * expf ((float) (i - 2) * logf (2.0f) / 12.0f);
+      s->h[i].f2 = 8.1757989156 * expf ((float) (i) * logf (2.0f) / 12.0f);
+      s->h[i].f3 = 8.1757989156 * expf ((float) (i + 2) * logf (2.0f) / 12.0f);
     }
 
 // Init waves
@@ -181,64 +181,64 @@ init_vars (horgand_synth_t * s)
       x_sin = (float) (i * D_PI / sizesin);
 
       s->nsin[i] = sinf (x_sin + sinf (x_sin));
-      s->msin[i] = sinf (x_sin + sinf (1.5 * x_sin));
+      s->msin[i] = sinf (x_sin + sinf (1.5f * x_sin));
       if (i > 0)
 	s->msin[i - 1] =
-	  (s->msin[i - 1] * (1.0 + s->msin[i] - s->msin[i - 1]));
+	  (s->msin[i - 1] * (1.0f + s->msin[i] - s->msin[i - 1]));
       if (i > 1)
 	s->msin[i - 2] =
-	  (s->msin[i - 2] * (1.0 + s->msin[i - 1] - s->msin[i - 2]));
+	  (s->msin[i - 2] * (1.0f + s->msin[i - 1] - s->msin[i - 2]));
       if (i > 2)
 	s->msin[i - 3] =
-	  (s->msin[i - 3] * (1.0 + s->msin[i - 2] - s->msin[i - 3]));
+	  (s->msin[i - 3] * (1.0f + s->msin[i - 2] - s->msin[i - 3]));
       if (i > 3)
 	s->msin[i - 4] =
-	  (s->msin[i - 4] * (1.0 + s->msin[i - 3] - s->msin[i - 4]));
+	  (s->msin[i - 4] * (1.0f + s->msin[i - 3] - s->msin[i - 4]));
       if (i > 4)
 	s->msin[i - 5] =
-	  (s->msin[i - 5] * (1.0 + s->msin[i - 4] - s->msin[i - 5]));
+	  (s->msin[i - 5] * (1.0f + s->msin[i - 4] - s->msin[i - 5]));
       if (i > 5)
 	s->msin[i - 6] =
-	  (s->msin[i - 6] * (1.0 + s->msin[i - 5] - s->msin[i - 6]));
+	  (s->msin[i - 6] * (1.0f + s->msin[i - 5] - s->msin[i - 6]));
       if (i > 6)
 	s->msin[i - 7] =
-	  (s->msin[i - 7] * (1.0 + s->msin[i - 6] - s->msin[i - 7]));
+	  (s->msin[i - 7] * (1.0f + s->msin[i - 6] - s->msin[i - 7]));
       if (i > 7)
 	s->msin[i - 8] =
-	  (s->msin[i - 8] * (1.0 + s->msin[i - 7] - s->msin[i - 8]));
+	  (s->msin[i - 8] * (1.0f + s->msin[i - 7] - s->msin[i - 8]));
 
-      s->psin[i] = sinf (x_sin + sinf (2.0 * x_sin));
+      s->psin[i] = sinf (x_sin + sinf (2.0f * x_sin));
       s->qsin[i] = sinf (s->nsin[i] + s->lsin[i] + s->psin[i]);
       s->rsin[i] = sinf (s->lsin[i] + sinf (s->msin[i]));
       s->tsin[i] = sinf (s->lsin[i]);
 
       s->ssin[i] =
 	(s->lsin[i] + s->nsin[i] + s->msin[i] + s->psin[i] + s->qsin[i] +
-	 s->rsin[i] + s->tsin[i]) / 7.0;
+	 s->rsin[i] + s->tsin[i]) / 7.0f;
       if (i > 0)
 	s->ssin[i - 1] =
-	  (s->ssin[i - 1] * (1.0 + s->ssin[i] - s->ssin[i - 1]));
+	  (s->ssin[i - 1] * (1.0f + s->ssin[i] - s->ssin[i - 1]));
       if (i > 1)
 	s->ssin[i - 2] =
-	  (s->ssin[i - 2] * (1.0 + s->ssin[i - 1] - s->ssin[i - 2]));
+	  (s->ssin[i - 2] * (1.0f + s->ssin[i - 1] - s->ssin[i - 2]));
       if (i > 2)
 	s->ssin[i - 3] =
-	  (s->ssin[i - 3] * (1.0 + s->ssin[i - 2] - s->ssin[i - 3]));
+	  (s->ssin[i - 3] * (1.0f + s->ssin[i - 2] - s->ssin[i - 3]));
       if (i > 3)
 	s->ssin[i - 4] =
-	  (s->ssin[i - 4] * (1.0 + s->ssin[i - 3] - s->ssin[i - 4]));
+	  (s->ssin[i - 4] * (1.0f + s->ssin[i - 3] - s->ssin[i - 4]));
       if (i > 4)
 	s->ssin[i - 5] =
-	  (s->ssin[i - 5] * (1.0 + s->ssin[i - 4] - s->ssin[i - 5]));
+	  (s->ssin[i - 5] * (1.0f + s->ssin[i - 4] - s->ssin[i - 5]));
       if (i > 5)
 	s->ssin[i - 6] =
-	  (s->ssin[i - 6] * (1.0 + s->ssin[i - 5] - s->ssin[i - 6]));
+	  (s->ssin[i - 6] * (1.0f + s->ssin[i - 5] - s->ssin[i - 6]));
       if (i > 6)
 	s->ssin[i - 7] =
-	  (s->ssin[i - 7] * (1.0 + s->ssin[i - 6] - s->ssin[i - 7]));
+	  (s->ssin[i - 7] * (1.0f + s->ssin[i - 6] - s->ssin[i - 7]));
       if (i > 7)
 	s->ssin[i - 8] =
-	  (s->ssin[i - 8] * (1.0 + s->ssin[i - 7] - s->ssin[i - 8]));
+	  (s->ssin[i - 8] * (1.0f + s->ssin[i - 7] - s->ssin[i - 8]));
 
       s->usin[i] = sinf (s->ssin[i]);
 
@@ -266,7 +266,7 @@ init_vars (horgand_synth_t * s)
 void
 Adjust_Audio (horgand_synth_t * s)
 {
-  s->increment = .5 / (float) s->SAMPLE_RATE;
+  s->increment = .5f / (float) s->SAMPLE_RATE;
   s->D_PI_to_SAMPLE_RATE = D_PI / (float) s->SAMPLE_RATE;
 }
 
@@ -274,7 +274,7 @@ Adjust_Audio (horgand_synth_t * s)
 float
 Get_Keyb_Level_Scaling (horgand_synth_t * s, int nota)
 {
-  return (1.5 * s->velocity[nota] * sin ((120 - s->note[nota]) / 120.0));
+  return (1.5f * s->velocity[nota] * sin ((120 - s->note[nota]) / 120.0f));
 };
 
 
@@ -342,7 +342,7 @@ Cenvelope (horgand_synth_t * s, int *note_active, int gate, float t, int nota)
   if (t > s->a.c_attack + s->a.c_decay)
     return 0.0f;
   if (t > s->a.c_attack)
-    val = 1.0 - (t - s->a.c_attack) * s->u_c_decay;
+    val = 1.0f - (t - s->a.c_attack) * s->u_c_decay;
   else
     val = t * s->u_c_attack;
 
@@ -363,11 +363,11 @@ Penvelope (horgand_synth_t * s, int *note_active, int gate, float t, int nota)
       if (t > s->a.p_attack + s->a.p_decay)
 	return 0.0f;
       if (t > s->a.p_attack)
-	return (1.0 - (t - s->a.p_attack) * s->u_p_decay);
+	return (1.0f - (t - s->a.p_attack) * s->u_p_decay);
       return (t * s->u_p_attack);
     }
   else
-    return s->Perc_Volume[nota] * (1.0 - t * s->u_p_release);
+    return s->Perc_Volume[nota] * (1.0f - t * s->u_p_release);
 
 
 
@@ -387,8 +387,8 @@ Jenvelope (horgand_synth_t * s, int *note_active, int gate, float t, int nota)
       if (t > s->a.attack + s->a.decay)
 	return (s->a.sustain);
       if (t > s->a.attack)
-	return (1.0 -
-		(1.0 - s->a.sustain) * (t - s->a.attack) * s->u_decay);
+	return (1.0f -
+		(1.0f - s->a.sustain) * (t - s->a.attack) * s->u_decay);
 
       return (t * s->u_attack);
     }
@@ -399,8 +399,8 @@ Jenvelope (horgand_synth_t * s, int *note_active, int gate, float t, int nota)
 	{
 	  if (s->release > t)
 	    {
-	      Env = s->Envelope_Volume[nota] * (1.0 - t * s->u_release);
-	      if (Env < 0.0015)
+	      Env = s->Envelope_Volume[nota] * (1.0f - t * s->u_release);
+	      if (Env < 0.0015f)
 		{
 		  if (*note_active)
 		    *note_active = 0;
@@ -425,7 +425,7 @@ Jenvelope (horgand_synth_t * s, int *note_active, int gate, float t, int nota)
 	  if (s->a.sustain != 0)
 	    return (s->a.sustain);
 	  else
-	    return (1.0 - (t - s->a.attack) * s->u_decay);
+	    return (1.0f - (t - s->a.attack) * s->u_decay);
 	}
     }
 
@@ -446,7 +446,7 @@ Pitch_LFO (horgand_synth_t * s, float t)
   if (t * 20 < s->a.Pitch_LFO_Delay)
     return (0.0f);
 
-  x = fmodf (s->a.Pitch_LFO_Speed * t, 1.0);
+  x = fmodf (s->a.Pitch_LFO_Speed * t, 1.0f);
 
   out = NFsin (s, s->a.LFO_Wave, x * D_PI) * s->LFO_Frequency;
 
@@ -469,7 +469,7 @@ Get_Partial (horgand_synth_t * s, int nota)
     (s->pitch >
      0) ? s->h[l].f2 + (s->h[l].f3 - s->h[l].f2) * s->pitch : s->h[l].f2 +
     (s->h[l].f2 - s->h[l].f1) * s->pitch;
-  partial = (1.0 + *(s->tune) / 16.0) * freq_note * s->D_PI_to_SAMPLE_RATE;
+  partial = (1.0f + *(s->tune) / 16.0f) * freq_note * s->D_PI_to_SAMPLE_RATE;
   if (partial > D_PI)
     partial = fmodf (partial, D_PI);
   return (partial);
@@ -483,7 +483,7 @@ Calc_LFO_Frequency (horgand_synth_t * s)
 {
 
   s->LFO_Frequency =
-    s->a.modulation * s->a.LFOpitch * s->D_PI_to_SAMPLE_RATE*.5;
+    s->a.modulation * s->a.LFOpitch * s->D_PI_to_SAMPLE_RATE*.5f;
 
 };
 
@@ -495,7 +495,7 @@ NFsin (horgand_synth_t * s, int i, float x)
 {
 
 
-  long int k = F2I (x * 1000.0);
+  long int k = F2I (x * 1000.0f);
 
 
   if (i == 1)
