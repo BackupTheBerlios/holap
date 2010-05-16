@@ -72,6 +72,7 @@ cleanuphorgand (LADSPA_Handle instance)
 {
   horgand_synth_t *synth = (horgand_synth_t *) instance;
   free (synth);
+
 }
 
 static void
@@ -138,8 +139,6 @@ horgand_select_program (LADSPA_Handle handle, unsigned long bank,
 			unsigned long program)
 {
 
-
-
   horgand_synth_t *synth = (horgand_synth_t *) handle;
   if (program > 32)
     return;
@@ -202,8 +201,8 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
 {
   horgand_synth_t *synth = (horgand_synth_t *) instance;
 
-  LADSPA_Data *const outputl = synth->output_l;
-  LADSPA_Data *const outputr = synth->output_r;
+  LADSPA_Data *const outl = synth->output_l;
+  LADSPA_Data *const outr = synth->output_r;
   LADSPA_Data vol = *(synth->vol);
 
   unsigned long event_pos = 0;
@@ -334,10 +333,8 @@ runhorgand (LADSPA_Handle instance, unsigned long sample_count,
        
       for (i=0; i<sample_count; i++)
 	{
-
-	  outputl[i] = synth->bufl[i] * vol;
-	  outputr[i] = synth->bufr[i] * vol;
-
+	  outl[i] = synth->bufl[i] * vol;
+	  outr[i] = synth->bufr[i] * vol;
 	}
 
 
@@ -356,8 +353,6 @@ getControllerhorgand (LADSPA_Handle instance, unsigned long port)
     case horgand_VOLUME:
       return DSSI_CC (7);
     }
-
-
   return -1;
 }
 
@@ -431,8 +426,6 @@ horgand_init()
       port_range_hints[horgand_MASTERTUNE].LowerBound = -1.0;
       port_range_hints[horgand_MASTERTUNE].UpperBound = 1.0;
 
-
-      
 
       horgandLDescriptor->instantiate = instantiatehorgand;
       horgandLDescriptor->connect_port = connectPorthorgand;

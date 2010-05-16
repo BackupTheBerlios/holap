@@ -54,7 +54,6 @@ else
 SSE="-msse -mfpmath=sse"
 fi
 
-
 CFLAGS="-O2 $SSE -ffast-math  -Wall -pipe -combine -ffunction-sections -fomit-frame-pointer $MODULE_CFLAGS"
 LDFLAGS="$MODULE_LIBS" 
 
@@ -63,3 +62,4 @@ AC_CONFIG_FILES([Makefile
                  data/Makefile
                  src/Makefile])
 AC_OUTPUT
+

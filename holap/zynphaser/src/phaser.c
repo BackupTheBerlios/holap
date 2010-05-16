@@ -28,6 +28,7 @@
 
 
 #define PHASER_LFO_SHAPE 2
+#define DENORMAL_GUARD 1e-18f
 void
 Phaser_Init(ZPhaser_t * s)
 {
@@ -92,14 +93,14 @@ out (ZPhaser_t * s, float * smpsl, float * smpsr, unsigned long count)
       //Left channel
       for (j = 0; j < Pstages * 2; j++)
 	{			//Phasing routine
-	  tmp = s->oldl[j];
+	  tmp = s->oldl[j]+DENORMAL_GUARD;
 	  s->oldl[j] = gl * tmp + inl;
 	  inl = tmp - gl * s->oldl[j];
 	};
       //Right channel
       for (j = 0; j < Pstages * 2; j++)
 	{			//Phasing routine
-	  tmp = s->oldr[j];
+	  tmp = s->oldr[j]+DENORMAL_GUARD;
 	  s->oldr[j] = (gr * tmp) + inr;
 	  inr = tmp - (gr * s->oldr[j]);
 	};

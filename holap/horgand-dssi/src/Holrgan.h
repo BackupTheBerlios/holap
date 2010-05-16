@@ -26,7 +26,6 @@
 #include <alsa/asoundlib.h>
 #include "../config.h"
 #include <ladspa.h>
-#define BUFSIZE 4096
 #define POLY 16
 #define D_PI 6.283185
 #define F2I(x)  ( lrintf(x) )

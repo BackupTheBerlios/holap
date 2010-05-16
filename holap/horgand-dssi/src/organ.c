@@ -595,7 +595,7 @@ Alg1s (horgand_synth_t * s, int nframes)
 		    }
 		}
 		
-	      for (i = 1; i <= 10; i++)
+	      for (i = 1; i <=10; i++)
 		{
 
 		  if (s->a.Operator[i].marimba == 0)

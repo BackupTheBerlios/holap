@@ -28,7 +28,7 @@
 
 #define dB2rap(dB) ((expf((dB)*LOG_10/20.0)))
 #define LOG_10 2.302585093
-
+#define DENORMAL_GUARD 1e-18f
 
 
 void
@@ -428,7 +428,7 @@ singlefilterout (ZReverb_t * s, AnalogFilter *filter, float * smp, fstage *x, fs
 	  y->c1 = y0;
 	  x->c1 = smp[i];
 	  //output
-	  smp[i] = y0;
+	  smp[i] = y0 + DENORMAL_GUARD;
 	};
     };
   if (filter->order == 2)
@@ -443,7 +443,7 @@ singlefilterout (ZReverb_t * s, AnalogFilter *filter, float * smp, fstage *x, fs
 	  x->c2 = x->c1;
 	  x->c1 = smp[i];
 	  //output
-	  smp[i] = y0;
+	  smp[i] = y0+DENORMAL_GUARD;
 	};
     };
 };
